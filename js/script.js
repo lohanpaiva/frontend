@@ -1,94 +1,96 @@
 document.addEventListener("DOMContentLoaded", () => {
+  const API_BASE = "https://backend-mqk0.onrender.com";
 
   // =========================
   // SCROLL
   // =========================
   window.scrollToForm = function () {
-    const el = document.getElementById('formSection');
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
+    const el = document.getElementById("formSection");
+    if (el) el.scrollIntoView({ behavior: "smooth" });
   };
 
   // =========================
-// FORM
-// =========================
-const form = document.getElementById('form');
+  // FORM
+  // =========================
+  const form = document.getElementById("form");
 
-if (form) {
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
+  if (form) {
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
 
-    const nome = document.getElementById('nome')?.value?.trim() || '';
-    const cpf = document.getElementById('cpf')?.value?.trim() || '';
-    const sintomas = document.getElementById('sintomas')?.value?.trim() || '';
+      const nome = document.getElementById("nome")?.value?.trim() || "";
+      const cpf = document.getElementById("cpf")?.value?.trim() || "";
+      const sintomas = document.getElementById("sintomas")?.value?.trim() || "";
 
-    if (!nome || !cpf) {
-      alert('Preencha nome e CPF.');
-      return;
-    }
-
-    try {
-      const response = await fetch('https://SEU-BACKEND.onrender.com/pedido', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          nome,
-          cpf,
-          sintomas,
-          detalhes: sintomas,
-          diasAfastamento: 1
-        })
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        alert(data.mensagem || 'Erro ao criar pedido.');
+      if (!nome || !cpf) {
+        alert("Preencha nome e CPF.");
         return;
       }
 
-      // dados básicos do formulário
-      localStorage.setItem('nome', nome);
-      localStorage.setItem('cpf', cpf);
-      localStorage.setItem('sintomas', sintomas);
+      try {
+        const response = await fetch(`${API_BASE}/pedido`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            nome,
+            cpf,
+            sintomas,
+            detalhes: sintomas,
+            diasAfastamento: 1
+          })
+        });
 
-      // novo payload do pedido
-      localStorage.setItem('ultimoPedido', JSON.stringify({
-        pedidoId: data.pedidoId,
-        status: data.status,
-        codigoValidacao: data.codigoValidacao,
-        pdfUrl: data.pdfUrl,
-        urlValidacao: data.urlValidacao,
-        nome,
-        cpf,
-        sintomas
-      }));
+        const data = await response.json();
 
-      localStorage.setItem('ultimoPedidoId', data.pedidoId);
-      localStorage.setItem('ultimoPedidoStatus', data.status);
-      localStorage.setItem('ultimoPedidoPdfUrl', data.pdfUrl || '');
-      localStorage.setItem('ultimoPedidoCodigo', data.codigoValidacao || '');
-      localStorage.setItem('ultimoPedidoValidacao', data.urlValidacao || '');
+        if (!response.ok) {
+          alert(data.mensagem || "Erro ao criar pedido.");
+          return;
+        }
 
-      window.location.href = 'requisicao.html';
-    } catch (error) {
-      console.error('Erro ao enviar pedido:', error);
-      alert('Não foi possível enviar o pedido agora.');
-    }
-  });
-}
+        localStorage.setItem("nome", nome);
+        localStorage.setItem("cpf", cpf);
+        localStorage.setItem("sintomas", sintomas);
+
+        localStorage.setItem(
+          "ultimoPedido",
+          JSON.stringify({
+            pedidoId: data.pedidoId,
+            status: data.status,
+            codigoValidacao: data.codigoValidacao,
+            pdfUrl: data.pdfUrl,
+            urlValidacao: data.urlValidacao,
+            nome,
+            cpf,
+            sintomas
+          })
+        );
+
+        localStorage.setItem("ultimoPedidoId", data.pedidoId || "");
+        localStorage.setItem("ultimoPedidoStatus", data.status || "");
+        localStorage.setItem("ultimoPedidoPdfUrl", data.pdfUrl || "");
+        localStorage.setItem("ultimoPedidoCodigo", data.codigoValidacao || "");
+        localStorage.setItem("ultimoPedidoValidacao", data.urlValidacao || "");
+
+        window.location.href = "requisicao.html";
+      } catch (error) {
+        console.error("Erro ao enviar pedido:", error);
+        alert("Não foi possível enviar o pedido agora.");
+      }
+    });
+  }
 
   // =========================
   // ANIMAÇÃO
   // =========================
-  const elements = document.querySelectorAll('.fade');
+  const elements = document.querySelectorAll(".fade");
 
-  window.addEventListener('scroll', () => {
-    elements.forEach(el => {
+  window.addEventListener("scroll", () => {
+    elements.forEach((el) => {
       const top = el.getBoundingClientRect().top;
       if (top < window.innerHeight - 50) {
-        el.classList.add('show');
+        el.classList.add("show");
       }
     });
   });
@@ -97,7 +99,7 @@ if (form) {
   // CONTADOR
   // =========================
   function atualizarContador() {
-    const el = document.getElementById('contador');
+    const el = document.getElementById("contador");
     if (!el) return;
 
     const num = Math.floor(Math.random() * 20) + 80;
@@ -110,12 +112,12 @@ if (form) {
   // =========================
   // NOTIFICAÇÃO
   // =========================
-  const nomes = ["Jorge","Maria","Lucas","Ana","Carlos","Fernanda"];
-  const estados = ["SP","RJ","MG","BA","RS"];
+  const nomes = ["Jorge", "Maria", "Lucas", "Ana", "Carlos", "Fernanda"];
+  const estados = ["SP", "RJ", "MG", "BA", "RS"];
 
   function mostrarNotificacao() {
-    const el = document.getElementById('notificacao');
-    const som = document.getElementById('somNotificacao');
+    const el = document.getElementById("notificacao");
+    const som = document.getElementById("somNotificacao");
 
     if (!el) return;
 
@@ -123,7 +125,7 @@ if (form) {
     const estado = estados[Math.floor(Math.random() * estados.length)];
 
     el.innerText = `${nome} (${estado}) acabou de receber um atestado`;
-    el.style.display = 'block';
+    el.style.display = "block";
 
     if (som) {
       som.currentTime = 0;
@@ -131,7 +133,7 @@ if (form) {
     }
 
     setTimeout(() => {
-      el.style.display = 'none';
+      el.style.display = "none";
     }, 4000);
   }
 
@@ -143,7 +145,7 @@ if (form) {
   let vendas = 127;
 
   function atualizarVendas() {
-    const el = document.getElementById('vendasNum');
+    const el = document.getElementById("vendasNum");
     if (!el) return;
 
     vendas += Math.floor(Math.random() * 3);
@@ -162,7 +164,7 @@ if (form) {
   ];
 
   function atualizarChat() {
-    const el = document.getElementById('chatMsg');
+    const el = document.getElementById("chatMsg");
     if (!el) return;
 
     el.innerText = mensagens[Math.floor(Math.random() * mensagens.length)];
@@ -173,11 +175,11 @@ if (form) {
   // =========================
   // FAQ
   // =========================
-  document.querySelectorAll('.pergunta').forEach(p => {
-    p.addEventListener('click', () => {
+  document.querySelectorAll(".pergunta").forEach((p) => {
+    p.addEventListener("click", () => {
       const r = p.nextElementSibling;
       if (r) {
-        r.style.display = r.style.display === 'block' ? 'none' : 'block';
+        r.style.display = r.style.display === "block" ? "none" : "block";
       }
     });
   });
@@ -188,7 +190,7 @@ if (form) {
   let posicao = Math.floor(Math.random() * 10) + 8;
 
   function atualizarFila() {
-    const el = document.getElementById('posicaoFila');
+    const el = document.getElementById("posicaoFila");
     if (!el) return;
 
     if (posicao > 1) posicao--;
@@ -201,16 +203,16 @@ if (form) {
   // MÁSCARAS
   // =========================
   function mascaraCPF(v) {
-    v = v.replace(/\D/g,'');
-    v = v.replace(/(\d{3})(\d)/,'$1.$2');
-    v = v.replace(/(\d{3})(\d)/,'$1.$2');
-    v = v.replace(/(\d{3})(\d{1,2})$/,'$1-$2');
+    v = v.replace(/\D/g, "");
+    v = v.replace(/(\d{3})(\d)/, "$1.$2");
+    v = v.replace(/(\d{3})(\d)/, "$1.$2");
+    v = v.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
     return v;
   }
 
-  const cpfInput = document.getElementById('cpf');
+  const cpfInput = document.getElementById("cpf");
   if (cpfInput) {
-    cpfInput.addEventListener('input', e => {
+    cpfInput.addEventListener("input", (e) => {
       e.target.value = mascaraCPF(e.target.value);
     });
   }
@@ -218,27 +220,21 @@ if (form) {
   // =========================
   // OPÇÕES
   // =========================
-  document.querySelectorAll('.opcoes').forEach(container => {
+  document.querySelectorAll(".opcoes").forEach((container) => {
+    const isMulti = container.classList.contains("multi");
 
-    const isMulti = container.classList.contains('multi');
-
-    container.querySelectorAll('.opcao').forEach(opcao => {
-
-      opcao.addEventListener('click', () => {
-
+    container.querySelectorAll(".opcao").forEach((opcao) => {
+      opcao.addEventListener("click", () => {
         if (!isMulti) {
-          container.querySelectorAll('.opcao')
-            .forEach(o => o.classList.remove('ativa'));
+          container
+            .querySelectorAll(".opcao")
+            .forEach((o) => o.classList.remove("ativa"));
 
-          opcao.classList.add('ativa');
+          opcao.classList.add("ativa");
         } else {
-          opcao.classList.toggle('ativa');
+          opcao.classList.toggle("ativa");
         }
-
       });
-
     });
-
   });
-
 });

@@ -1,4 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
+  const API_BASE = "https://backend-mqk0.onrender.com";
+
   const formValidacao = document.getElementById("formValidacao");
   const inputCodigo = document.getElementById("codigo");
   const resultadoValidacao = document.getElementById("resultadoValidacao");
@@ -81,12 +83,12 @@ document.addEventListener("DOMContentLoaded", () => {
     `;
 
     try {
-      const API_BASE = "https://SEU-BACKEND.onrender.com";
-      const response = await fetch(`${API_BASE}/api/validacao/${codigo}`);
+      const response = await fetch(`${API_BASE}/api/validacao/${encodeURIComponent(codigo)}`);
       const data = await response.json();
 
       renderResultado(data);
     } catch (error) {
+      console.error("Erro ao consultar documento:", error);
       renderErro("Não foi possível validar o documento neste momento.");
     }
   }
