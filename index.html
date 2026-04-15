@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>MEDFLIX TELEMEDICINA</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/style.css">
+
+  <style>
+  .btn-header-secondary {
+    background: rgba(21, 84, 192, 0.08);
+    color: #1554c0;
+    border: 1px solid rgba(21, 84, 192, 0.16);
+    padding: 10px 16px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: 700;
+    transition: 0.25s ease;
+    white-space: nowrap;
+  }
+
+  .btn-header-secondary:hover {
+    background: rgba(21, 84, 192, 0.14);
+  }
+
+  .btn-secondary-light {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 14px 18px;
+    border-radius: 14px;
+    text-decoration: none;
+    font-weight: 700;
+    transition: 0.25s ease;
+    background: #edf4ff;
+    color: #1554c0;
+    border: 1px solid #dbe6f2;
+  }
+
+  .btn-secondary-light:hover {
+    transform: translateY(-1px);
+    background: #e3efff;
+  }
+
+  .btn-institutional {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 14px 18px;
+    border-radius: 14px;
+    text-decoration: none;
+    font-weight: 700;
+    transition: 0.25s ease;
+    background: #fff;
+    color: #17324d;
+    border: 1px solid #dbe6f2;
+  }
+
+  .btn-institutional:hover {
+    transform: translateY(-1px);
+    background: #f8fbff;
+  }
+
+  /* ===== AJUSTES DE ALINHAMENTO DO TOPO ===== */
+
+  .topbar-content {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .header-container {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+  }
+
+  .logo-area {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    min-width: 0;
+    flex-shrink: 0;
+  }
+
+  .logo-img {
+    width: 56px;
+    height: 56px;
+    object-fit: contain;
+    flex-shrink: 0;
+  }
+
+  .logo-title {
+    margin: 0 0 4px;
+    line-height: 1.1;
+  }
+
+  .logo-subtitle {
+    margin: 0;
+    line-height: 1.4;
+  }
+
+  .nav {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+
+  .nav a {
+    white-space: nowrap;
+  }
+
+  .hero {
+    padding: 26px 0 34px;
+  }
+
+  .hero-container {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 18px;
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(300px, 0.9fr);
+    gap: 34px;
+    align-items: center;
+  }
+
+  .hero-text {
+    max-width: 680px;
+  }
+
+  .hero-text h2 {
+    margin-top: 12px;
+    margin-bottom: 14px;
+    line-height: 1.08;
+  }
+
+  .hero-text p {
+    max-width: 620px;
+  }
+
+  .hero-list {
+    margin: 18px 0 0;
+    padding-left: 18px;
+  }
+
+  .hero-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 22px;
+  }
+
+  .hero-actions > * {
+    flex: 0 0 auto;
+  }
+
+  .hero-infos {
+    margin-top: 22px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+    max-width: 640px;
+  }
+
+  .hero-info-card {
+    min-height: 96px;
+  }
+
+  .hero-visual {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .hero-card {
+    width: 100%;
+    max-width: 360px;
+  }
+
+  .hero-mini-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .patient-shortcut {
+    padding: 0 18px;
+    margin-top: 0;
+    margin-bottom: 10px;
+  }
+
+  .patient-shortcut-box {
+    max-width: 1180px;
+    margin: 0 auto;
+    background: linear-gradient(180deg, #f8fbff 0%, #eef5ff 100%);
+    border: 1px solid #dbe6f2;
+    border-radius: 18px;
+    padding: 18px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    flex-wrap: wrap;
+    box-shadow: 0 10px 28px rgba(15, 63, 146, 0.06);
+  }
+
+  .patient-shortcut-text strong {
+    display: block;
+    font-size: 18px;
+    color: #0f3f92;
+    margin-bottom: 6px;
+  }
+
+  .patient-shortcut-text span {
+    display: block;
+    color: #5f748b;
+    line-height: 1.6;
+    font-size: 14px;
+    max-width: 720px;
+  }
+
+  .patient-shortcut-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .security-strip {
+    max-width: 1180px;
+    margin: 16px auto 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    padding: 0 18px;
+  }
+
+  .security-pill {
+    background: #fff;
+    border: 1px solid #dbe6f2;
+    color: #17324d;
+    border-radius: 999px;
+    padding: 10px 14px;
+    font-size: 13px;
+    font-weight: 700;
+    box-shadow: 0 8px 20px rgba(15, 63, 146, 0.04);
+  }
+
+  .mobile-fixed-cta {
+    display: none;
+  }
+
+  @media (max-width: 1100px) {
+    .nav {
+      gap: 10px;
+    }
+
+    .hero-container {
+      gap: 24px;
+    }
+  }
+
+  @media (max-width: 900px) {
+    .header-container {
+      position: relative;
+    }
+
+    .nav .btn-header-secondary {
+      width: 100%;
+      text-align: center;
+      justify-content: center;
+    }
+
+    .hero {
+      padding: 20px 0 28px;
+    }
+
+    .hero-container {
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+
+    .hero-text {
+      max-width: 100%;
+    }
+
+    .hero-visual {
+      justify-content: flex-start;
+    }
+
+    .hero-card {
+      max-width: 100%;
+    }
+  }
+
+  @media (max-width: 760px) {
+    .topbar-content {
+      justify-content: center;
+      text-align: center;
+      gap: 6px;
+      padding: 0 12px;
+    }
+
+    .header-container {
+      padding: 12px;
+    }
+
+    .logo-img {
+      width: 48px;
+      height: 48px;
+    }
+
+    .patient-shortcut {
+      padding: 0 12px;
+    }
+
+    .patient-shortcut-box {
+      padding: 16px;
+      border-radius: 16px;
+    }
+
+    .patient-shortcut-text strong {
+      font-size: 17px;
+    }
+
+    .patient-shortcut-text span {
+      font-size: 14px;
+    }
+
+    .patient-shortcut-actions {
+      width: 100%;
+      flex-direction: column;
+    }
+
+    .patient-shortcut-actions a,
+    .patient-shortcut-actions button {
+      width: 100%;
+    }
+
+    .hero-container {
+      padding: 0 12px;
+    }
+
+    .hero-actions {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 10px;
+    }
+
+    .hero-actions > * {
+      width: 100%;
+    }
+
+    .hero-infos {
+      grid-template-columns: 1fr;
+      max-width: 100%;
+    }
+
+    .security-strip {
+      padding: 0 12px;
+      gap: 8px;
+    }
+
+    .security-pill {
+      width: 100%;
+      text-align: center;
+    }
+
+    .mobile-fixed-cta {
+      display: block;
+      position: fixed;
+      left: 12px;
+      right: 12px;
+      bottom: 12px;
+      z-index: 999;
+    }
+
+    .mobile-fixed-cta button {
+      width: 100%;
+      border: none;
+      border-radius: 16px;
+      padding: 16px 18px;
+      font-size: 16px;
+      font-weight: 800;
+      background: linear-gradient(135deg, #11b874, #20d58c);
+      color: white;
+      box-shadow: 0 16px 34px rgba(17, 184, 116, 0.28);
+      cursor: pointer;
+    }
+
+    body {
+      padding-bottom: 88px;
+    }
+  }
+</style>
+</head>
+<body>
+
+  <div id="notificacao" class="notificacao"></div>
+  <audio id="somNotificacao" src="https://www.soundjay.com/buttons/sounds/button-3.mp3"></audio>
+
+  <div class="topbar">
+    <div class="topbar-content">
+      <span>🕒 Atendimento online 24 horas por dia, todos os dias</span>
+      <span>📄 Atestado online rápido com validação por QR Code</span>
+    </div>
+  </div>
+
+  <header class="header" id="siteHeader">
+    <div class="header-container">
+
+      <div class="logo-area">
+        <img src="assets/MEDFLIX.png" alt="MedFlix Telemedicina" class="logo-img">
+        <div>
+          <h1 class="logo-title">MEDFLIX TELEMEDICINA</h1>
+          <p class="logo-subtitle">
+            Atendimento médico digital com agilidade e segurança
+          </p>
+        </div>
+      </div>
+
+      <button
+        class="menu-toggle"
+        id="menuToggle"
+        aria-label="Abrir menu"
+        aria-expanded="false"
+        aria-controls="mainNav"
+        type="button"
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <nav class="nav" id="mainNav">
+        <a href="#como-funciona">Como funciona</a>
+        <a href="#beneficios">Benefícios</a>
+        <a href="#legalidade">Segurança</a>
+        <a href="#depoimentos">Avaliações</a>
+        <a href="#faq">FAQ</a>
+        <a href="#quem-somos">Quem somos</a>
+        <a href="consultar.html">Validar documento</a>
+        <a href="paciente.html" class="btn-header-secondary">Área do paciente</a>
+        <a href="#formulario" class="btn-header">Solicitar agora</a>
+      </nav>
+
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-container">
+      <div class="hero-text">
+        <span class="hero-badge">Atendimento médico online • 24 horas • Todos os dias</span>
+
+        <h2>Atestado online rápido em até 5 minutos</h2>
+
+        <p>
+          Solicite seu atendimento médico online com rapidez, praticidade e segurança.
+          Valores a partir de <strong>R$29</strong>, processo simples e
+          documento com <strong>validação por QR Code</strong>.
+        </p>
+
+        <ul class="hero-list">
+          <li>Atendimento 100% online</li>
+          <li>Disponível 24 horas por dia</li>
+          <li>Valores a partir de R$29</li>
+          <li>Documento digital com QR Code</li>
+        </ul>
+
+        <div class="hero-actions">
+          <button class="btn-primary" onclick="scrollToForm('formulario')">Solicitar agora</button>
+
+          <a href="paciente.html" class="btn-secondary-light">Área do paciente</a>
+
+          <a href="consultar.html" class="btn-institutional">Validar documento</a>
+        </div>
+
+        <div class="hero-infos">
+          <div class="hero-info-card">
+            <strong>Atendimento 24h</strong>
+            <span>Todos os dias da semana, com praticidade para o paciente</span>
+          </div>
+
+          <div class="hero-info-card">
+            <strong>Segurança no processo</strong>
+            <span>Fluxo digital organizado, com validação e consulta online do documento</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-visual">
+        <div class="hero-card">
+          <h3>Por que escolher a MEDFLIX?</h3>
+          <p>Uma forma rápida, moderna e segura de solicitar seu atendimento sem sair de casa.</p>
+
+          <div class="hero-mini-grid">
+            <div class="mini-box">
+              <strong>24h</strong>
+              <span>Todos os dias</span>
+            </div>
+            <div class="mini-box">
+              <strong>5 min</strong>
+              <span>Fluxo rápido</span>
+            </div>
+            <div class="mini-box">
+              <strong>R$29</strong>
+              <span>A partir de</span>
+            </div>
+            <div class="mini-box">
+              <strong>QR</strong>
+              <span>Validação</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="patient-shortcut">
+    <div class="patient-shortcut-box">
+      <div class="patient-shortcut-text">
+        <strong>Já fez seu pedido?</strong>
+        <span>
+          Entre na sua área do paciente para acompanhar com facilidade e acessar seu documento quando estiver disponível.
+        </span>
+      </div>
+
+      <div class="patient-shortcut-actions">
+        <a href="paciente.html" class="btn-secondary-light">Entrar na área do paciente</a>
+        <a href="consultar.html" class="btn-institutional">Validar documento</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="trust-strip">
+    <div class="trust-item">Atendimento 24h</div>
+    <div class="trust-item">A partir de R$29</div>
+    <div class="trust-item">QR Code de validação</div>
+    <div class="trust-item">Processo 100% online</div>
+  </section>
+
+  <section class="medicos-section">
+    <div class="medicos-container">
+
+      <div class="medicos-text">
+        <span class="section-tag">Equipe médica</span>
+        <h2>Médicos qualificados para seu atendimento</h2>
+        <p>
+          Atendimento com profissionais com CRM ativo, trazendo mais segurança,
+          credibilidade e confiança para o paciente.
+        </p>
+      </div>
+
+      <div class="medicos-grid">
+
+        <div class="medico-card">
+          <img src="assets/medicos/ALEXANDRE.jpg" alt="Dr Alexandre">
+          <div class="medico-info">
+            <strong>Dr. Alexandre</strong>
+            <span>Clínico Geral</span>
+          </div>
+          <div class="medico-badge">CRM Ativo</div>
+        </div>
+
+        <div class="medico-card">
+          <img src="assets/medicos/SERGIO.jpg" alt="Dr Sergio">
+          <div class="medico-info">
+            <strong>Dr. Sérgio</strong>
+            <span>Clínico Geral</span>
+          </div>
+          <div class="medico-badge">CRM Ativo</div>
+        </div>
+
+        <div class="medico-card">
+          <img src="assets/medicos/GEOVANNA.jpg" alt="Dra Geovanna">
+          <div class="medico-info">
+            <strong>Dra. Geovanna</strong>
+            <span>Clínica Geral</span>
+          </div>
+          <div class="medico-badge">CRM Ativo</div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <section class="section" id="como-funciona">
+    <div class="section-header">
+      <span class="section-tag">Fluxo simples</span>
+      <h2>Como funciona a solicitação</h2>
+      <p>O processo foi pensado para ser rápido, simples e fácil de entender.</p>
+    </div>
+
+    <div class="steps-grid">
+      <div class="step-card fade">
+        <div class="step-number">1</div>
+        <h3>Preencha seus dados</h3>
+        <p>Informe seus dados iniciais e descreva sua necessidade de forma simples e rápida.</p>
+      </div>
+
+      <div class="step-card fade">
+        <div class="step-number">2</div>
+        <h3>Acompanhamento do pedido</h3>
+        <p>Seu pedido segue pelo fluxo digital da plataforma com organização e praticidade.</p>
+      </div>
+
+      <div class="step-card fade">
+        <div class="step-number">3</div>
+        <h3>Documento disponível</h3>
+        <p>Quando estiver pronto, ele poderá ser acessado pela área do paciente.</p>
+      </div>
+
+      <div class="step-card fade">
+        <div class="step-number">4</div>
+        <h3>Validação por QR Code</h3>
+        <p>O documento digital pode ser validado a qualquer momento pela plataforma.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt" id="beneficios">
+    <div class="section-header">
+      <span class="section-tag">Vantagens para o paciente</span>
+      <h2>Tudo o que você precisa saber</h2>
+    </div>
+
+    <div class="benefit-grid">
+      <div class="benefit-card fade">
+        <h3>Atendimento 24 horas</h3>
+        <p>Você pode iniciar sua solicitação a qualquer hora, todos os dias da semana.</p>
+      </div>
+
+      <div class="benefit-card fade">
+        <h3>Rapidez no processo</h3>
+        <p>Fluxo online pensado para quem busca praticidade e agilidade no atendimento.</p>
+      </div>
+
+      <div class="benefit-card fade">
+        <h3>Valores acessíveis</h3>
+        <p>Solicitações com valores a partir de R$29.</p>
+      </div>
+
+      <div class="benefit-card fade">
+        <h3>Validação por QR Code</h3>
+        <p>Mais segurança para conferência e autenticidade do documento digital.</p>
+      </div>
+
+      <div class="benefit-card fade">
+        <h3>Processo 100% online</h3>
+        <p>Você resolve tudo sem sair de casa, de forma digital e organizada.</p>
+      </div>
+
+      <div class="benefit-card fade">
+        <h3>Área do paciente</h3>
+        <p>Depois, você pode acompanhar o pedido e acessar o documento quando estiver disponível.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="legalidade">
+    <div class="section-header">
+      <span class="section-tag">Segurança e confiança</span>
+      <h2>Um serviço pensado para ser simples e seguro</h2>
+      <p>
+        A MEDFLIX foi organizada para oferecer uma experiência digital clara, rápida e confiável.
+        O paciente acompanha o pedido pela área própria e o documento conta com validação por QR Code,
+        reforçando a segurança e a conferência online.
+      </p>
+    </div>
+
+    <div class="benefit-grid">
+      <div class="benefit-card fade">
+        <h3>Médicos com CRM ativo</h3>
+        <p>Mais confiança no atendimento e na emissão do documento.</p>
+      </div>
+
+      <div class="benefit-card fade">
+        <h3>Documento digital</h3>
+        <p>Formato moderno, rápido e prático para uma experiência totalmente online.</p>
+      </div>
+
+      <div class="benefit-card fade">
+        <h3>Validação online</h3>
+        <p>Consulta por código e QR Code para reforçar a autenticidade do documento.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="depoimentos">
+    <div class="section-header">
+      <span class="section-tag">Avaliações</span>
+      <h2>O que os pacientes dizem</h2>
+      <p>Uma experiência rápida, prática e moderna para quem precisa resolver tudo online.</p>
+    </div>
+
+    <div class="depoimentos-grid">
+      <div class="testimonial-card fade">
+        <div class="stars">★★★★★</div>
+        <p>Atendimento rápido e processo muito fácil de entender. Gostei bastante da praticidade.</p>
+        <strong>Paciente verificado</strong>
+      </div>
+
+      <div class="testimonial-card fade">
+        <div class="stars">★★★★★</div>
+        <p>Visual profissional, fluxo organizado e tudo bem simples para solicitar.</p>
+        <strong>Paciente verificado</strong>
+      </div>
+
+      <div class="testimonial-card fade">
+        <div class="stars">★★★★★</div>
+        <p>Ótima opção para quem precisa resolver online sem perder tempo.</p>
+        <strong>Paciente verificado</strong>
+      </div>
+    </div>
+
+    <div class="google-proof fade">
+      <div class="google-proof-card">
+        <img src="assets/google.png" alt="Avaliações positivas no Google" class="google-proof-img">
+        <div class="google-proof-text">
+          <h3>Reputação positiva no Google</h3>
+          <p>Confira a avaliação dos pacientes e a confiança gerada pela experiência com a plataforma.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-small">
+    <div class="fila" id="filaBox">
+      ⏳ Você está na posição <b id="posicaoFila">12</b> na fila de atendimento...
+    </div>
+  </section>
+
+  <section class="section form-section fade" id="formulario">
+    <div class="form-wrapper">
+      <div class="form-left">
+        <span class="section-tag">Iniciar solicitação</span>
+        <h2>Comece agora seu atendimento online</h2>
+        <p>
+          Preencha os dados iniciais abaixo para avançar no atendimento
+          de forma rápida, segura e totalmente digital.
+        </p>
+
+        <ul class="form-checks">
+          <li>Atendimento 100% online</li>
+          <li>Fluxo rápido e orientado</li>
+          <li>Consulta posterior pela área do paciente</li>
+        </ul>
+      </div>
+
+      <div class="form-card">
+        <form id="form">
+          <input type="text" id="nome" placeholder="Seu nome completo" required>
+          <input type="text" id="cpf" placeholder="Seu CPF" required>
+          <textarea id="sintomas" placeholder="Descreva resumidamente seus sintomas"></textarea>
+
+          <button type="submit" class="btn-primary btn-full">Continuar solicitação</button>
+        </form>
+        <div class="form-consent">
+        <label>
+        <input type="checkbox" id="consentimento" required>
+        Declaro que li e aceito os 
+        <a href="termos.html" target="_blank">Termos de Uso</a> e 
+        <a href="privacidade.html" target="_blank">Política de Privacidade</a>.
+        </label>
+        </div>
+        <div id="resultado"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="section-header">
+      <span class="section-tag">Área do paciente</span>
+      <h2>Já fez seu pedido?</h2>
+      <p>
+        Acompanhe com facilidade pela sua área do paciente e acesse seu documento quando estiver disponível.
+      </p>
+    </div>
+
+    <div style="text-align:center; margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;">
+      <a href="paciente.html" class="btn-secondary-light">Entrar na área do paciente</a>
+      <a href="consultar.html" class="btn-institutional">Validar documento</a>
+    </div>
+  </section>
+<section class="section section-alt" id="quem-somos">
+  <div class="section-header">
+    <span class="section-tag">Quem somos</span>
+    <h2>Sobre a MEDFLIX TELEMEDICINA</h2>
+  </div>
+
+  <div style="max-width: 900px; margin: 0 auto; text-align: center; line-height: 1.7; color: #17324d;">
+    
+    <p>
+      A <strong>Medflix Serviços Médicos Ltda</strong> é uma empresa especializada em soluções digitais na área da saúde,
+      oferecendo atendimento médico online com praticidade, agilidade e segurança.
+    </p>
+
+    <p>
+      Atuamos com um fluxo 100% digital, conectando pacientes a profissionais qualificados,
+      sempre prezando pela organização, clareza e experiência do usuário.
+    </p>
+
+    <p>
+      Nosso compromisso é proporcionar um serviço acessível, confiável e eficiente,
+      com processos transparentes e tecnologia que facilita o acesso ao atendimento médico.
+    </p>
+
+    <p>
+      ✔ Empresa com CNPJ ativo<br>
+      ✔ Estrutura digital organizada<br>
+      ✔ Atendimento com profissionais qualificados<br>
+      ✔ Plataforma com validação de documentos
+    </p>
+
+    <div style="margin-top: 20px;">
+      <a href="assets/CNPJ.pdf" target="_blank" class="btn-institutional">
+        📄 Ver comprovante do CNPJ
+      </a>
+    </div>
+
+  </div>
+</section>
+  <section class="section" id="faq">
+    <div class="section-header">
+      <span class="section-tag">Perguntas frequentes</span>
+      <h2>Dúvidas frequentes</h2>
+    </div>
+
+    <div class="faq-list">
+      <div class="faq-item fade">
+        <div class="pergunta">O atendimento funciona 24 horas?</div>
+        <div class="resposta">Sim. A plataforma informa atendimento online 24 horas por dia, todos os dias da semana.</div>
+      </div>
+
+      <div class="faq-item fade">
+        <div class="pergunta">Quanto custa?</div>
+        <div class="resposta">Os valores começam a partir de R$29.</div>
+      </div>
+
+      <div class="faq-item fade">
+        <div class="pergunta">É tudo online?</div>
+        <div class="resposta">Sim. O fluxo é digital desde a solicitação até a consulta e acesso ao documento quando disponível.</div>
+      </div>
+
+      <div class="faq-item fade">
+        <div class="pergunta">O documento possui validação?</div>
+        <div class="resposta">Sim. O documento digital conta com validação por QR Code.</div>
+      </div>
+
+      <div class="faq-item fade">
+        <div class="pergunta">Posso acompanhar meu pedido depois?</div>
+        <div class="resposta">Sim. A plataforma possui área do paciente para consulta do andamento e acesso ao documento quando disponível.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-final">
+    <div class="cta-final-box">
+      <h2>Atestado online rápido, prático e seguro</h2>
+      <p>Inicie agora sua solicitação e siga pelo fluxo digital da MEDFLIX TELEMEDICINA.</p>
+      <button class="btn-primary" onclick="scrollToForm()">Solicitar agora</button>
+    </div>
+  </section>
+
+  <div class="chat-box" id="chatBox">
+    💬 Suporte online<br>
+    <span id="chatMsg">Em breve um atendente irá lhe atender...</span>
+  </div>
+
+  <div class="mobile-fixed-cta">
+    <button type="button" onclick="scrollToForm()">Solicitar atestado</button>
+  </div>
+
+  <script>
+    const siteHeader = document.getElementById("siteHeader");
+    const menuToggle = document.getElementById("menuToggle");
+    const mainNav = document.getElementById("mainNav");
+    const navLinks = mainNav ? mainNav.querySelectorAll("a") : [];
+
+    function updateHeaderOnScroll() {
+      if (!siteHeader) return;
+
+      if (window.scrollY > 20) {
+        siteHeader.classList.add("scrolled");
+      } else {
+        siteHeader.classList.remove("scrolled");
+      }
+    }
+
+    function openMenu() {
+      if (!menuToggle || !mainNav) return;
+      menuToggle.classList.add("active");
+      mainNav.classList.add("open");
+      menuToggle.setAttribute("aria-expanded", "true");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeMenu() {
+      if (!menuToggle || !mainNav) return;
+      menuToggle.classList.remove("active");
+      mainNav.classList.remove("open");
+      menuToggle.setAttribute("aria-expanded", "false");
+      document.body.style.overflow = "";
+    }
+
+    function toggleMenu() {
+      if (!mainNav) return;
+      const isOpen = mainNav.classList.contains("open");
+      if (isOpen) {
+        closeMenu();
+      } else {
+        openMenu();
+      }
+    }
+
+    function scrollToForm() {
+      const form = document.getElementById("formulario");
+      if (form) {
+        form.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+
+    if (menuToggle) {
+      menuToggle.addEventListener("click", toggleMenu);
+    }
+
+    navLinks.forEach((link) => {
+      link.addEventListener("click", () => {
+        if (window.innerWidth <= 900) {
+          closeMenu();
+        }
+      });
+    });
+
+    document.addEventListener("click", (event) => {
+      if (!mainNav || !menuToggle) return;
+
+      const clickedInsideNav = mainNav.contains(event.target);
+      const clickedToggle = menuToggle.contains(event.target);
+
+      if (!clickedInsideNav && !clickedToggle && mainNav.classList.contains("open")) {
+        closeMenu();
+      }
+    });
+
+    window.addEventListener("resize", () => {
+      if (window.innerWidth > 900) {
+        closeMenu();
+      }
+    });
+
+    window.addEventListener("scroll", updateHeaderOnScroll);
+    window.addEventListener("load", updateHeaderOnScroll);
+
+    const formInicial = document.getElementById("form");
+    const resultado = document.getElementById("resultado");
+
+    if (formInicial) {
+      formInicial.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const nome = document.getElementById("nome")?.value?.trim() || "";
+        const cpf = document.getElementById("cpf")?.value?.trim() || "";
+        const sintomas = document.getElementById("sintomas")?.value?.trim() || "";
+
+        if (!nome || !cpf) {
+          if (resultado) {
+            resultado.innerHTML = '<div style="margin-top:12px;color:#b42318;">Preencha nome e CPF para continuar.</div>';
+          }
+          return;
+        }
+
+        localStorage.setItem("preCadastroMedFlix", JSON.stringify({
+          nome,
+          cpf,
+          sintomas
+        }));
+
+        window.location.href = "requisicao.html";
+      });
+    }
+  </script>
+
+  <script src="js/script.js"></script>
+
+  <script>
+    window.addEventListener("DOMContentLoaded", () => {
+      const formInicial = document.getElementById("form");
+      const resultado = document.getElementById("resultado");
+
+      if (!formInicial) return;
+
+      formInicial.addEventListener("submit", function (e) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+
+        const nome = document.getElementById("nome")?.value?.trim() || "";
+        const cpf = document.getElementById("cpf")?.value?.trim() || "";
+        const sintomas = document.getElementById("sintomas")?.value?.trim() || "";
+
+        if (!nome || !cpf) {
+          if (resultado) {
+            resultado.innerHTML = '<div style="margin-top:12px;color:#b42318;">Preencha nome e CPF para continuar.</div>';
+          }
+          return;
+        }
+
+        localStorage.setItem("preCadastroMedFlix", JSON.stringify({
+          nome,
+          cpf,
+          sintomas
+        }));
+
+        window.location.href = "requisicao.html";
+      }, true);
+    });
+  </script>
+  <footer style="margin-top:40px; padding: 30px 18px; background:#0f3f92; color:#fff; text-align:center;">
+  
+  <div style="max-width:900px; margin:0 auto;">
+    <strong>MEDFLIX SERVIÇOS MÉDICOS LTDA</strong><br>
+    CNPJ: 36.179.982/0001-78<br><br>
+
+    <span style="opacity:0.85;">
+      Plataforma digital de intermediação de atendimento médico online.
+    </span>
+
+    <div style="margin-top:12px;">
+      <a href="assets/CNPJ.pdf" target="_blank" style="color:#fff; text-decoration:underline;">
+        Ver comprovante de inscrição
+      </a>
+    </div>
+
+    <div style="margin-top:16px; font-size:13px; opacity:0.7;">
+      © 2026 MEDFLIX TELEMEDICINA - Todos os direitos reservados
+    </div>
+  </div>
+
+</footer>
+<div id="cookie-banner" class="cookie-banner hidden">
+  <div class="cookie-container">
+    <p>
+      Utilizamos cookies para melhorar sua experiência, segurança e personalização.
+      Ao continuar, você concorda com nossa 
+      <a href="privacidade.html">Política de Privacidade</a>.
+    </p>
+
+    <div class="cookie-actions">
+      <button id="accept-cookies" class="btn-primary">Aceitar</button>
+      <button id="reject-cookies" class="btn-secondary">Recusar</button>
+    </div>
+  </div>
+</div>
+<div style="margin-top:20px;">
+  <a href="termos.html">Termos de Uso</a> |
+  <a href="privacidade.html">Política de Privacidade</a> |
+  <a href="responsabilidade.html">Responsabilidade Médica</a>
+</div>
+<script>
+(function() {
+  const banner = document.getElementById('cookie-banner');
+  const accepted = localStorage.getItem('cookies_consent');
+
+  if (!accepted) {
+    banner.classList.remove('hidden');
+  }
+
+  document.getElementById('accept-cookies').onclick = () => {
+    localStorage.setItem('cookies_consent', 'accepted');
+    registrarConsentimento('cookies', 'accepted');
+    banner.style.display = 'none';
+  };
+
+  document.getElementById('reject-cookies').onclick = () => {
+    localStorage.setItem('cookies_consent', 'rejected');
+    registrarConsentimento('cookies', 'rejected');
+    banner.style.display = 'none';
+  };
+})();
+</script>
+<script>
+document.querySelector("form").addEventListener("submit", function(e) {
+  const checkbox = document.getElementById("consentimento");
+
+  if (!checkbox.checked) {
+    e.preventDefault();
+    alert("Você precisa aceitar os termos para continuar.");
+  } else {
+    registrarConsentimento('termos', 'accepted');
+  }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Validação de Documento | MEDFLIX TELEMEDICINA</title>
+
+  <script src="https://kit.fontawesome.com/917245ba0f.js" crossorigin="anonymous"></script>
+
+  <style>
+    :root {
+      --primary: #1554c0;
+      --primary-dark: #0f3f92;
+      --success: #16a34a;
+      --danger: #dc2626;
+      --warning: #b45309;
+      --text: #17324d;
+      --text-soft: #64748b;
+      --border: #dbe6f2;
+      --bg: #f4f8fc;
+      --white: #ffffff;
+      --radius: 20px;
+      --shadow: 0 16px 40px rgba(15,63,146,0.10);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(21,84,192,0.08), transparent 30%),
+        radial-gradient(circle at bottom right, rgba(17,184,116,0.08), transparent 25%),
+        linear-gradient(180deg, #f8fbff 0%, #eef5fc 100%);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    .topo {
+      background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+      color: white;
+      padding: 22px 16px;
+      text-align: center;
+    }
+
+    .topo h1 {
+      margin: 0;
+      font-size: 24px;
+    }
+
+    .topo p {
+      margin: 6px 0 0;
+      font-size: 13px;
+      opacity: 0.9;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 28px auto;
+      padding: 0 16px;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.97);
+      border: 1px solid rgba(21,84,192,0.08);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 24px;
+    }
+
+    .card h2 {
+      margin: 0 0 10px;
+      color: var(--primary-dark);
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--text-soft);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .busca {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    input {
+      padding: 14px;
+      border-radius: 12px;
+      border: 1px solid #cfdceb;
+      font-size: 15px;
+    }
+
+    button {
+      padding: 14px 16px;
+      border-radius: 12px;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+      background: linear-gradient(135deg, #11b874, #20d58c);
+      color: white;
+    }
+
+    .resultado {
+      margin-top: 22px;
+      border-radius: 18px;
+      padding: 20px;
+      border: 1px solid var(--border);
+    }
+
+    .valido {
+      background: #ecfdf5;
+      border-color: #bbf7d0;
+    }
+
+    .invalido {
+      background: #fff1f2;
+      border-color: #fecdd3;
+    }
+
+    .status {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .status i {
+      font-size: 26px;
+    }
+
+    .valido i { color: var(--success); }
+    .invalido i { color: var(--danger); }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .item {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px;
+    }
+
+    .item span {
+      font-size: 11px;
+      color: var(--text-soft);
+      display: block;
+    }
+
+    .item strong {
+      font-size: 14px;
+      color: var(--text);
+    }
+
+    .rodape {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 12px;
+      color: var(--text-soft);
+    }
+
+    @media (max-width: 600px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="topo">
+    <h1>Validação de Documento</h1>
+    <p>Consulta oficial de autenticidade - MEDFLIX TELEMEDICINA</p>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <h2>Verificar autenticidade</h2>
+      <p>
+        Digite o código presente no documento ou utilize o QR Code.
+        Apenas informações essenciais são exibidas para preservar a privacidade.
+      </p>
+
+      <div class="busca">
+        <input id="codigo" placeholder="Digite o código do documento"/>
+        <button onclick="consultar()">Consultar</button>
+      </div>
+    </section>
+
+    <section id="resultado" class="resultado hidden"></section>
+  </main>
+
+  <div class="rodape">
+    © 2026 MEDFLIX TELEMEDICINA
+  </div>
+
+<script>
+const API = "https://SEU-BACKEND.onrender.com";
+
+function mascararNome(nome = "") {
+  if (!nome) return "-";
+  const partes = nome.split(" ");
+  return partes[0] + " " + (partes[1] ? partes[1][0] + "***" : "***");
+}
+
+function mascararCpf(cpf = "") {
+  const n = cpf.replace(/\D/g, "");
+  if (n.length !== 11) return "***";
+  return `***.***.***-${n.slice(9)}`;
+}
+
+async function consultar() {
+  const codigo = document.getElementById("codigo").value.trim();
+  const box = document.getElementById("resultado");
+
+  if (!codigo) {
+    alert("Digite o código.");
+    return;
+  }
+
+  box.className = "resultado";
+  box.innerHTML = "Consultando...";
+  box.classList.remove("hidden");
+
+  try {
+    const res = await fetch(`${API}/validacao/${codigo}`);
+    const data = await res.json();
+
+    if (!res.ok) throw new Error();
+
+    box.classList.add("valido");
+
+    box.innerHTML = `
+      <div class="status">
+        <i class="fa-solid fa-circle-check"></i>
+        <strong>Documento válido</strong>
+      </div>
+
+      <div class="grid">
+        <div class="item">
+          <span>Código</span>
+          <strong>${data.codigo}</strong>
+        </div>
+
+        <div class="item">
+          <span>Paciente</span>
+          <strong>${mascararNome(data.nome)}</strong>
+        </div>
+
+        <div class="item">
+          <span>CPF</span>
+          <strong>${mascararCpf(data.cpf)}</strong>
+        </div>
+
+        <div class="item">
+          <span>Data de emissão</span>
+          <strong>${data.data}</strong>
+        </div>
+
+        <div class="item">
+          <span>Médico</span>
+          <strong>${data.medico}</strong>
+        </div>
+
+        <div class="item">
+          <span>CRM</span>
+          <strong>${data.crm}</strong>
+        </div>
+      </div>
+    `;
+  } catch {
+    box.classList.add("invalido");
+
+    box.innerHTML = `
+      <div class="status">
+        <i class="fa-solid fa-circle-xmark"></i>
+        <strong>Documento não encontrado</strong>
+      </div>
+
+      <p>
+        O código informado não foi localizado na base de dados.
+        Verifique as informações ou entre em contato com o emissor.
+      </p>
+    `;
+  }
+}
+
+window.onload = () => {
+  const url = new URL(window.location.href);
+  const codigo = url.searchParams.get("codigo");
+
+  if (codigo) {
+    document.getElementById("codigo").value = codigo;
+    consultar();
+  }
+};
+</script>
+
+</body>
+</html>

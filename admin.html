@@ -1,0 +1,2308 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <script>
+    if (localStorage.getItem('medflix_admin_logado') !== 'true') {
+      window.location.href = './login.html';
+    }
+  </script>
+
+  <title>Admin - MEDFLIX TELEMEDICINA</title>
+
+  <script src="https://kit.fontawesome.com/917245ba0f.js" crossorigin="anonymous"></script>
+
+  <style>
+    :root {
+      --primary: #1554c0;
+      --primary-dark: #0f3f92;
+      --primary-soft: #edf4ff;
+      --secondary: #11b874;
+      --secondary-dark: #0d925c;
+      --warning: #f59e0b;
+      --danger: #dc2626;
+      --danger-dark: #b91c1c;
+      --success: #16a34a;
+      --info: #0891b2;
+      --text: #17324d;
+      --text-soft: #5f748b;
+      --bg: #f4f8fc;
+      --white: #ffffff;
+      --border: #dbe6f2;
+      --border-strong: #bfd3ea;
+      --shadow: 0 14px 40px rgba(21, 84, 192, 0.10);
+      --shadow-soft: 0 10px 30px rgba(15, 63, 146, 0.08);
+      --radius: 22px;
+      --radius-sm: 14px;
+      --topbar-height: 82px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(21, 84, 192, 0.08), transparent 28%),
+        radial-gradient(circle at bottom right, rgba(17, 184, 116, 0.08), transparent 24%),
+        linear-gradient(180deg, #f8fbff 0%, #eef5fc 100%);
+      color: var(--text);
+    }
+
+    .topo {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      background: linear-gradient(135deg, rgba(15,63,146,0.96), rgba(21,84,192,0.94));
+      color: white;
+      padding: 20px;
+      box-shadow: 0 10px 24px rgba(21, 84, 192, 0.16);
+      backdrop-filter: blur(12px);
+    }
+
+    .topo-wrap {
+      max-width: 1380px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .topo-esquerda {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .logo-admin {
+      width: 54px;
+      height: 54px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.14);
+    }
+
+    .topo h1 {
+      margin: 0 0 4px;
+      font-size: 28px;
+      letter-spacing: 0.2px;
+    }
+
+    .topo p {
+      margin: 0;
+      color: rgba(255,255,255,0.9);
+      font-size: 14px;
+    }
+
+    .topo-acoes {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .topo-chip {
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: white;
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-size: 13px;
+      font-weight: 700;
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .container {
+      max-width: 1380px;
+      margin: 26px auto;
+      padding: 0 20px 40px;
+    }
+
+    .grid-principal {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 340px;
+      gap: 22px;
+      align-items: start;
+    }
+
+    .lado-principal,
+    .lado-direito {
+      min-width: 0;
+    }
+
+    .metricas {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 16px;
+      margin-bottom: 22px;
+    }
+
+    .metrica {
+      background: rgba(255,255,255,0.92);
+      border: 1px solid rgba(21, 84, 192, 0.08);
+      border-radius: 20px;
+      padding: 18px;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .metrica::after {
+      content: "";
+      position: absolute;
+      right: -16px;
+      bottom: -16px;
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: rgba(21, 84, 192, 0.06);
+    }
+
+    .metrica-topo {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .metrica-icone {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      background: var(--primary-soft);
+      color: var(--primary-dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+
+    .metrica span {
+      display: block;
+      font-size: 13px;
+      color: var(--text-soft);
+      margin-bottom: 8px;
+      position: relative;
+      z-index: 1;
+      min-height: 34px;
+    }
+
+    .metrica strong {
+      font-size: 30px;
+      color: var(--primary-dark);
+      position: relative;
+      z-index: 1;
+      letter-spacing: -0.5px;
+    }
+
+    .filtros {
+      background: rgba(255,255,255,0.94);
+      border: 1px solid rgba(21, 84, 192, 0.08);
+      border-radius: 22px;
+      padding: 18px;
+      margin-bottom: 22px;
+      display: grid;
+      grid-template-columns: 1.7fr 1fr 1fr 1fr 1fr 1fr auto auto;
+      gap: 12px;
+      box-shadow: var(--shadow);
+    }
+
+    .campo-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .campo-wrap label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-soft);
+      padding-left: 2px;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 13px 14px;
+      border-radius: 14px;
+      border: 1px solid #cfdceb;
+      font-size: 14px;
+      outline: none;
+      background: #fff;
+      color: var(--text);
+      transition: 0.25s ease;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 90px;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: rgba(21, 84, 192, 0.4);
+      box-shadow: 0 0 0 4px rgba(21, 84, 192, 0.08);
+    }
+
+    button, .btn-link-like {
+      border: none;
+      border-radius: 14px;
+      padding: 13px 16px;
+      cursor: pointer;
+      font-weight: 700;
+      transition: 0.25s ease;
+      font-size: 14px;
+    }
+
+    button:hover,
+    .btn-link-like:hover {
+      transform: translateY(-1px);
+    }
+
+    button:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--secondary), #20d58c);
+      color: #fff;
+      box-shadow: 0 10px 20px rgba(17, 184, 116, 0.18);
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(135deg, var(--secondary-dark), #18bf7c);
+    }
+
+    .btn-sec {
+      background: #edf4ff;
+      color: var(--primary-dark);
+    }
+
+    .btn-dark {
+      background: linear-gradient(135deg, #16355f, #0f2541);
+      color: white;
+    }
+
+    .btn-outline {
+      background: white;
+      color: var(--primary-dark);
+      border: 1px solid #dbe6f2;
+    }
+
+    .painel-vazio {
+      background: var(--white);
+      border: 1px dashed #bfd0e6;
+      border-radius: 20px;
+      padding: 30px;
+      text-align: center;
+      color: var(--text-soft);
+      box-shadow: var(--shadow);
+    }
+
+    .painel-vazio i {
+      font-size: 24px;
+      margin-bottom: 12px;
+      color: var(--primary);
+      display: block;
+    }
+
+    .sidebar-card,
+    .card {
+      background: rgba(255,255,255,0.96);
+      border: 1px solid rgba(21, 84, 192, 0.08);
+      border-radius: 24px;
+      padding: 22px;
+      box-shadow: var(--shadow);
+    }
+
+    .sidebar-card {
+      margin-bottom: 18px;
+      position: sticky;
+      top: 112px;
+    }
+
+    .sidebar-card + .sidebar-card {
+      margin-top: 18px;
+    }
+
+    .sidebar-card h3 {
+      margin: 0 0 14px;
+      color: var(--primary-dark);
+      font-size: 17px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .sidebar-card p {
+      margin: 8px 0;
+      color: var(--text-soft);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .sidebar-mini-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .sidebar-mini-item {
+      border: 1px solid #e6eef9;
+      background: #f8fbff;
+      border-radius: 16px;
+      padding: 12px;
+      font-size: 14px;
+    }
+
+    .sidebar-mini-item strong {
+      display: block;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+
+    .card {
+      margin-bottom: 18px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 6px;
+      background: linear-gradient(180deg, var(--primary), var(--secondary));
+      opacity: 0.85;
+    }
+
+    .card-topo {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      align-items: flex-start;
+      margin-bottom: 18px;
+      padding-left: 10px;
+    }
+
+    .paciente-bloco strong {
+      display: block;
+      font-size: 24px;
+      color: var(--primary-dark);
+      margin-bottom: 8px;
+      word-break: break-word;
+    }
+
+    .meta-linha {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      color: var(--text-soft);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .meta-linha span {
+      background: #f7fbff;
+      border: 1px solid #e2edf8;
+      border-radius: 999px;
+      padding: 8px 12px;
+    }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 15px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      white-space: nowrap;
+      box-shadow: inset 0 0 0 1px rgba(0,0,0,0.03);
+    }
+
+    .pendente_pagamento {
+      background: #fff7ed;
+      color: #9a3412;
+    }
+
+    .pago {
+      background: #ecfeff;
+      color: #155e75;
+    }
+
+    .comprovante_enviado {
+      background: #eff6ff;
+      color: #1d4ed8;
+    }
+
+    .emitido {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .reprovado,
+    .cancelado {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 18px;
+      margin-bottom: 18px;
+      padding-left: 10px;
+    }
+
+    .bloco {
+      background: #f9fcff;
+      border: 1px solid #e0ebf7;
+      border-radius: 18px;
+      padding: 18px;
+      height: 100%;
+    }
+
+    .bloco h3 {
+      margin: 0 0 14px;
+      font-size: 16px;
+      color: var(--primary-dark);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .bloco p {
+      margin: 7px 0;
+      line-height: 1.65;
+    }
+
+    .linha-info {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .campo {
+      background: white;
+      border: 1px solid #e4edf8;
+      border-radius: 14px;
+      padding: 13px;
+    }
+
+    .campo span {
+      display: block;
+      font-size: 12px;
+      color: var(--text-soft);
+      margin-bottom: 6px;
+    }
+
+    .campo strong {
+      color: var(--text);
+      font-size: 14px;
+      word-break: break-word;
+      line-height: 1.45;
+    }
+
+    .timeline {
+      display: grid;
+      gap: 12px;
+      margin-top: 6px;
+    }
+
+    .timeline-item {
+      display: grid;
+      grid-template-columns: 18px 1fr;
+      gap: 10px;
+      align-items: start;
+    }
+
+    .timeline-dot {
+      width: 13px;
+      height: 13px;
+      border-radius: 50%;
+      background: var(--primary);
+      margin-top: 5px;
+      box-shadow: 0 0 0 4px rgba(21,84,192,0.10);
+    }
+
+    .timeline-item p {
+      margin: 0;
+      color: var(--text-soft);
+      line-height: 1.55;
+      font-size: 14px;
+    }
+
+    .form-aprovacao {
+      margin-top: 14px;
+      margin-left: 10px;
+      padding: 18px;
+      border: 1px solid #e5e7eb;
+      border-radius: 18px;
+      background: linear-gradient(180deg, #fbfdff, #f8fbff);
+    }
+
+    .form-aprovacao h4 {
+      margin: 0 0 14px;
+      color: var(--primary-dark);
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .form-grid .col-span-2 {
+      grid-column: span 2;
+    }
+
+    .acoes {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .btn-aprovar {
+      background: linear-gradient(135deg, var(--secondary), #20d58c);
+      color: white;
+    }
+
+    .btn-aprovar:hover {
+      background: linear-gradient(135deg, var(--secondary-dark), #18bf7c);
+    }
+
+    .btn-reprovar {
+      background: linear-gradient(135deg, var(--danger), var(--danger-dark));
+      color: white;
+    }
+
+    .btn-pdf,
+    .btn-comp,
+    .btn-validar,
+    .btn-pix,
+    .btn-link-like {
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border-radius: 14px;
+      padding: 12px 16px;
+      font-weight: 700;
+      min-height: 46px;
+    }
+
+    .btn-pdf {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-comp {
+      background: #f8fafc;
+      color: var(--primary-dark);
+      border: 1px solid #dbe6f2;
+    }
+
+    .btn-validar {
+      background: #ecfdf5;
+      color: #166534;
+      border: 1px solid #bbf7d0;
+    }
+
+    .btn-pix {
+      background: #ecfeff;
+      color: #155e75;
+      border: 1px solid #a5f3fc;
+    }
+
+    .badge-mini,
+    .badge-uf,
+    .badge-auto,
+    .badge-risco {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: 12px;
+      font-weight: 700;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+
+    .badge-mini {
+      background: #edf4ff;
+      color: var(--primary-dark);
+    }
+
+    .badge-uf {
+      background: #eff6ff;
+      color: #1d4ed8;
+      border: 1px solid #bfdbfe;
+    }
+
+    .badge-auto {
+      background: #ecfdf5;
+      color: #166534;
+      border: 1px solid #bbf7d0;
+    }
+
+    .badge-risco {
+      background: #fff7ed;
+      color: #9a3412;
+      border: 1px solid #fed7aa;
+    }
+
+    .aviso-medico,
+    .destaque-pagamento,
+    .aviso-assinatura,
+    .aviso-validacao {
+      margin-top: 14px;
+      border-radius: 16px;
+      padding: 13px 15px;
+      font-size: 14px;
+      line-height: 1.6;
+      border: 1px solid transparent;
+    }
+
+    .aviso-medico.ok,
+    .aviso-assinatura.ok,
+    .aviso-validacao.ok {
+      background: #ecfdf5;
+      color: #166534;
+      border-color: #bbf7d0;
+    }
+
+    .aviso-medico.warn,
+    .aviso-assinatura.warn,
+    .aviso-validacao.warn {
+      background: #fff7ed;
+      color: #9a3412;
+      border-color: #fed7aa;
+    }
+
+    .aviso-validacao.critical {
+      background: #fee2e2;
+      color: #991b1b;
+      border-color: #fecaca;
+    }
+
+    .destaque-pagamento {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+    }
+
+    .destaque-pagamento.ok {
+      background: #ecfeff;
+      border-color: #a5f3fc;
+      color: #155e75;
+    }
+
+    .destaque-pagamento.warn {
+      background: #fff7ed;
+      border-color: #fed7aa;
+      color: #9a3412;
+    }
+
+    .pix-code-box {
+      margin-top: 12px;
+      background: white;
+      border: 1px solid #dbe6f2;
+      border-radius: 14px;
+      padding: 12px;
+      word-break: break-word;
+      font-size: 12px;
+      color: #334155;
+      max-height: 120px;
+      overflow: auto;
+      line-height: 1.55;
+    }
+
+    .medico-preview {
+      margin-top: 14px;
+      border: 1px solid #dbe6f2;
+      border-radius: 16px;
+      background: white;
+      padding: 14px;
+    }
+
+    .medico-preview-topo {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+
+    .medico-preview-topo strong {
+      color: var(--primary-dark);
+      font-size: 15px;
+    }
+
+    .assinatura-wrap {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    .assinatura-box {
+      width: 220px;
+      min-height: 86px;
+      border: 1px dashed #cfe0f2;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px;
+      background: #fbfdff;
+      overflow: hidden;
+    }
+
+    .assinatura-box img {
+      width: 100%;
+      max-height: 74px;
+      object-fit: contain;
+    }
+
+    .assinatura-box span {
+      color: var(--text-soft);
+      font-size: 13px;
+      text-align: center;
+      line-height: 1.5;
+    }
+
+    .resumo-lateral {
+      display: grid;
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .resumo-lateral .item {
+      background: #f8fbff;
+      border: 1px solid #e5eef8;
+      border-radius: 16px;
+      padding: 13px;
+    }
+
+    .resumo-lateral .item span {
+      display: block;
+      font-size: 12px;
+      color: var(--text-soft);
+      margin-bottom: 5px;
+    }
+
+    .resumo-lateral .item strong {
+      font-size: 14px;
+      color: var(--text);
+    }
+
+    .estado-count-list {
+      display: grid;
+      gap: 8px;
+      margin-top: 14px;
+      max-height: 320px;
+      overflow: auto;
+      padding-right: 4px;
+    }
+
+    .estado-count-item {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      padding: 11px 12px;
+      border-radius: 14px;
+      background: #f8fbff;
+      border: 1px solid #e5eef8;
+      font-size: 14px;
+    }
+
+    .estado-count-item strong {
+      color: var(--primary-dark);
+    }
+
+    .estado-count-item span {
+      color: var(--text-soft);
+      font-weight: 700;
+    }
+
+    .toolbar-interna {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+
+    .toolbar-interna h2 {
+      margin: 0;
+      font-size: 22px;
+      color: var(--primary-dark);
+    }
+
+    .toolbar-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .switch {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: #fff;
+      border: 1px solid #dbe6f2;
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-soft);
+    }
+
+    .switch input {
+      width: auto;
+      margin: 0;
+      accent-color: var(--secondary);
+    }
+
+    .toast-wrap {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 999;
+      display: grid;
+      gap: 10px;
+      width: min(360px, calc(100vw - 30px));
+    }
+
+    .toast {
+      background: white;
+      color: var(--text);
+      border-radius: 16px;
+      padding: 14px 16px;
+      box-shadow: 0 16px 34px rgba(15,63,146,0.16);
+      border: 1px solid #dbe6f2;
+      display: grid;
+      grid-template-columns: 24px 1fr;
+      gap: 10px;
+      align-items: start;
+      animation: subir 0.2s ease;
+    }
+
+    .toast.success {
+      border-color: #bbf7d0;
+    }
+
+    .toast.error {
+      border-color: #fecaca;
+    }
+
+    .toast.info {
+      border-color: #bae6fd;
+    }
+
+    .toast i {
+      margin-top: 2px;
+    }
+
+    .toast.success i { color: var(--success); }
+    .toast.error i { color: var(--danger); }
+    .toast.info i { color: var(--info); }
+
+    @keyframes subir {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 1320px) {
+      .grid-principal {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar-card {
+        position: static;
+      }
+
+      .metricas {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    @media (max-width: 1100px) {
+      .metricas {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .filtros {
+        grid-template-columns: 1fr 1fr 1fr;
+      }
+
+      .form-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .form-grid .col-span-2 {
+        grid-column: span 2;
+      }
+    }
+
+    @media (max-width: 980px) {
+      .card-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .metricas,
+      .filtros,
+      .linha-info,
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .form-grid .col-span-2 {
+        grid-column: span 1;
+      }
+
+      .card-topo,
+      .toolbar-interna {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .acoes {
+        flex-direction: column;
+      }
+
+      .acoes button,
+      .acoes a,
+      .acoes span {
+        width: 100%;
+      }
+
+      .topo-wrap {
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="topo">
+    <div class="topo-wrap">
+      <div class="topo-esquerda">
+        <div class="logo-admin">
+          <i class="fa-solid fa-user-doctor"></i>
+        </div>
+        <div>
+          <h1>MEDFLIX TELEMEDICINA</h1>
+          <p>Painel administrativo de atendimento, pagamento, alocação médica por UF e emissão de documentos</p>
+        </div>
+      </div>
+
+      <div class="topo-acoes">
+        <div class="topo-chip">
+          <i class="fa-solid fa-user-shield"></i>
+          Admin: <span id="adminLogadoNome">admin</span>
+        </div>
+        <div class="topo-chip">
+          <i class="fa-solid fa-map-location-dot"></i>
+          27 UFs prontas para vinculação
+        </div>
+        <div class="topo-chip">
+          <i class="fa-solid fa-file-signature"></i>
+          Assinatura por médico / assets
+        </div>
+        <button class="btn-outline" type="button" onclick="logoutAdmin()">
+          <i class="fa-solid fa-right-from-bracket"></i>
+          Sair
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="metricas">
+      <div class="metrica">
+        <div class="metrica-topo">
+          <span>Total de pedidos</span>
+          <div class="metrica-icone"><i class="fa-solid fa-layer-group"></i></div>
+        </div>
+        <strong id="mTotal">0</strong>
+      </div>
+
+      <div class="metrica">
+        <div class="metrica-topo">
+          <span>Pendentes de pagamento</span>
+          <div class="metrica-icone"><i class="fa-solid fa-clock"></i></div>
+        </div>
+        <strong id="mPendentesPagamento">0</strong>
+      </div>
+
+      <div class="metrica">
+        <div class="metrica-topo">
+          <span>Pagamentos confirmados</span>
+          <div class="metrica-icone"><i class="fa-solid fa-money-check-dollar"></i></div>
+        </div>
+        <strong id="mPagos">0</strong>
+      </div>
+
+      <div class="metrica">
+        <div class="metrica-topo">
+          <span>Comprovantes enviados</span>
+          <div class="metrica-icone"><i class="fa-solid fa-receipt"></i></div>
+        </div>
+        <strong id="mComprovantes">0</strong>
+      </div>
+
+      <div class="metrica">
+        <div class="metrica-topo">
+          <span>Emitidos</span>
+          <div class="metrica-icone"><i class="fa-solid fa-file-circle-check"></i></div>
+        </div>
+        <strong id="mEmitidos">0</strong>
+      </div>
+
+      <div class="metrica">
+        <div class="metrica-topo">
+          <span>Com estado informado</span>
+          <div class="metrica-icone"><i class="fa-solid fa-location-dot"></i></div>
+        </div>
+        <strong id="mComEstado">0</strong>
+      </div>
+
+      <div class="metrica">
+        <div class="metrica-topo">
+          <span>Médico compatível com UF</span>
+          <div class="metrica-icone"><i class="fa-solid fa-user-check"></i></div>
+        </div>
+        <strong id="mUfCompativel">0</strong>
+      </div>
+    </div>
+
+    <div class="grid-principal">
+      <div class="lado-principal">
+        <div class="filtros">
+          <div class="campo-wrap">
+            <label for="busca">Busca geral</label>
+            <input id="busca" placeholder="Buscar por nome, CPF, telefone, ID, CRM ou código de validação">
+          </div>
+
+          <div class="campo-wrap">
+            <label for="statusFiltro">Status</label>
+            <select id="statusFiltro">
+              <option value="">Todos os status</option>
+              <option value="pendente_pagamento">Pendente de pagamento</option>
+              <option value="pago">Pago</option>
+              <option value="comprovante_enviado">Comprovante enviado</option>
+              <option value="emitido">Emitido</option>
+              <option value="reprovado">Reprovado</option>
+              <option value="cancelado">Cancelado</option>
+            </select>
+          </div>
+
+          <div class="campo-wrap">
+            <label for="diasFiltro">Dias</label>
+            <select id="diasFiltro">
+              <option value="">Qualquer período</option>
+              <option value="1">1 dia</option>
+              <option value="2">2 dias</option>
+              <option value="3">3 dias</option>
+              <option value="5">5 dias ou mais</option>
+            </select>
+          </div>
+
+          <div class="campo-wrap">
+            <label for="estadoFiltro">UF do paciente</label>
+            <select id="estadoFiltro">
+              <option value="">Todos os estados</option>
+            </select>
+          </div>
+
+          <div class="campo-wrap">
+            <label for="compatibilidadeFiltro">Compatibilidade UF</label>
+            <select id="compatibilidadeFiltro">
+              <option value="">Todos</option>
+              <option value="compativel">Compatível</option>
+              <option value="nao_compativel">Não compatível</option>
+              <option value="sem_estado">Sem estado</option>
+            </select>
+          </div>
+
+          <div class="campo-wrap">
+            <label for="ordenacao">Ordenação</label>
+            <select id="ordenacao">
+              <option value="desc">Mais recentes primeiro</option>
+              <option value="asc">Mais antigos primeiro</option>
+            </select>
+          </div>
+
+          <button class="btn-primary" onclick="carregar()">
+            <i class="fa-solid fa-rotate-right"></i> Atualizar
+          </button>
+
+          <button class="btn-sec" onclick="limparFiltros()">
+            <i class="fa-solid fa-filter-circle-xmark"></i> Limpar
+          </button>
+        </div>
+
+        <div class="toolbar-interna">
+          <h2>Pedidos em análise operacional</h2>
+          <div class="toolbar-right">
+            <label class="switch">
+              <input type="checkbox" id="autoRefresh">
+              Autoatualizar
+            </label>
+            <button class="btn-dark" onclick="rolarParaPrimeiroPendente()">
+              <i class="fa-solid fa-bolt"></i> Ir para próximo pendente
+            </button>
+          </div>
+        </div>
+
+        <div id="lista"></div>
+      </div>
+
+      <div class="lado-direito">
+        <div class="sidebar-card">
+          <h3><i class="fa-solid fa-stethoscope"></i> Cadastro médico por UF</h3>
+          <p>
+            Os médicos estão centralizados em um arquivo externo, facilitando manutenção,
+            expansão e futura migração para banco de dados.
+          </p>
+          <div class="sidebar-mini-list">
+            <div class="sidebar-mini-item">
+              <strong>Arquivo central</strong>
+              Use <code>medicos.js</code> para editar nomes, CRM, cidade, UF e assinatura.
+            </div>
+            <div class="sidebar-mini-item">
+              <strong>Assinatura padronizada</strong>
+              As imagens seguem o padrão:
+              <br><code>/assets/PRIMEIRONOME.png</code>
+            </div>
+            <div class="sidebar-mini-item">
+              <strong>Vinculação automática</strong>
+              Ao abrir cada pedido, o admin sugere automaticamente o médico da mesma UF do paciente.
+            </div>
+          </div>
+        </div>
+
+        <div class="sidebar-card">
+          <h3><i class="fa-solid fa-chart-pie"></i> Distribuição por UF</h3>
+          <p>Visão rápida dos estados mais recorrentes no momento.</p>
+          <div id="estadoCountList" class="estado-count-list">
+            <div class="estado-count-item">
+              <strong>Sem dados</strong>
+              <span>0</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="sidebar-card">
+          <h3><i class="fa-solid fa-lightbulb"></i> Controles atuais</h3>
+          <p><strong>1.</strong> Emissão bloqueada sem assinatura.</p>
+          <p><strong>2.</strong> Emissão bloqueada com UF divergente.</p>
+          <p><strong>3.</strong> Reprovação exige motivo obrigatório.</p>
+          <p><strong>4.</strong> Telefone do paciente visível para contato operacional.</p>
+          <p><strong>5.</strong> Admin protegido por login local.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-wrap" id="toastWrap"></div>
+
+  <script src="./medicos.js"></script>
+
+  <script>
+    let pedidos = [];
+    let autoRefreshInterval = null;
+
+    const API_BASE = 'https://SEU-BACKEND.onrender.com';
+    const MEDICOS_POR_UF = window.MEDICOS_POR_UF || {};
+
+    function logoutAdmin() {
+      localStorage.removeItem('medflix_admin_logado');
+      localStorage.removeItem('medflix_admin_usuario');
+      localStorage.removeItem('medflix_admin_login_em');
+      window.location.href = './login.html';
+    }
+
+    const nomeAdmin = localStorage.getItem('medflix_admin_usuario') || 'admin';
+    const adminLogadoNomeEl = document.getElementById('adminLogadoNome');
+    if (adminLogadoNomeEl) {
+      adminLogadoNomeEl.textContent = nomeAdmin;
+    }
+
+    function formatarData(data) {
+      if (!data) return '-';
+      const d = new Date(data);
+      if (Number.isNaN(d.getTime())) return data;
+      return d.toLocaleString('pt-BR');
+    }
+
+    function normalizarUF(valor) {
+      return String(valor || '').trim().toUpperCase();
+    }
+
+    function formatarMoeda(valor) {
+      const numero = Number(valor || 0);
+      return numero.toLocaleString('pt-BR', {
+        style: 'currency',
+        currency: 'BRL'
+      });
+    }
+
+    function getCpf(p) {
+      return p.paciente?.cpf || p.cpf || '-';
+    }
+
+    function getTelefone(p) {
+      return p.paciente?.telefone || p.telefone || '-';
+    }
+
+    function getNome(p) {
+      return p.paciente?.nome || p.nome || '-';
+    }
+
+    function getStatus(p) {
+      return (p.status || 'pendente_pagamento').toLowerCase();
+    }
+
+    function getDias(p) {
+      return Number(p.documento?.diasAfastamento || p.diasAfastamento || 0);
+    }
+
+    function getPacienteEstado(p) {
+      return normalizarUF(
+        p.paciente?.estado ||
+        p.paciente?.uf ||
+        p.estado ||
+        p.uf ||
+        p.localizacao?.estado
+      );
+    }
+
+    function getPacienteCidade(p) {
+      return (
+        p.paciente?.cidade ||
+        p.cidade ||
+        p.localizacao?.cidade ||
+        '-'
+      );
+    }
+
+    function getMedicoUf(p) {
+      return normalizarUF(p.medico?.uf || '');
+    }
+
+    function getPagamentoStatus(p) {
+      return (p.pagamento?.status || '').toLowerCase();
+    }
+
+    function getCodigoValidacao(p) {
+      return p.documento?.codigoValidacao || '';
+    }
+
+    function getCrmTexto(p) {
+      return p.medico?.crm || '';
+    }
+
+    function escapeHtml(valor) {
+      return String(valor ?? '')
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#039;');
+    }
+
+    function slugStatus(status) {
+      return String(status || '')
+        .replaceAll('_', ' ')
+        .replace(/\b\w/g, c => c.toUpperCase());
+    }
+
+    function mostrarToast(tipo, mensagem) {
+      const wrap = document.getElementById('toastWrap');
+      const icone = tipo === 'success'
+        ? 'fa-circle-check'
+        : tipo === 'error'
+          ? 'fa-circle-xmark'
+          : 'fa-circle-info';
+
+      const toast = document.createElement('div');
+      toast.className = `toast ${tipo}`;
+      toast.innerHTML = `
+        <i class="fa-solid ${icone}"></i>
+        <div>${escapeHtml(mensagem)}</div>
+      `;
+      wrap.appendChild(toast);
+
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(8px)';
+      }, 3200);
+
+      setTimeout(() => {
+        toast.remove();
+      }, 3600);
+    }
+
+    function obterMedicoPorUF(uf) {
+      const chave = normalizarUF(uf);
+      return MEDICOS_POR_UF[chave] || null;
+    }
+
+    function getMedicoSugeridoParaPedido(p) {
+      const ufPaciente = getPacienteEstado(p);
+      return obterMedicoPorUF(ufPaciente);
+    }
+
+    function medicoDoPedidoOuSugerido(p) {
+      const sugerido = getMedicoSugeridoParaPedido(p);
+      return {
+        id: p.medico?.id || sugerido?.id || '',
+        nome: p.medico?.nome || sugerido?.nome || '',
+        crm: p.medico?.crm || sugerido?.crm || '',
+        uf: p.medico?.uf || sugerido?.uf || getPacienteEstado(p) || '',
+        cidade: p.medico?.cidade || sugerido?.cidade || getPacienteCidade(p) || '',
+        assinatura: p.medico?.assinatura || sugerido?.assinatura || ''
+      };
+    }
+
+    function isUfCompativel(p) {
+      const pacienteEstado = getPacienteEstado(p);
+      const medicoUf = getMedicoUf(p) || normalizarUF(medicoDoPedidoOuSugerido(p).uf);
+      return !!(pacienteEstado && medicoUf && pacienteEstado === medicoUf);
+    }
+
+    function getValidacaoOperacionalPedido(p, medicoAtualizado = null) {
+      const pacienteUf = getPacienteEstado(p);
+      const medico = medicoAtualizado || medicoDoPedidoOuSugerido(p);
+
+      const nome = String(medico?.nome || '').trim();
+      const crm = String(medico?.crm || '').trim();
+      const uf = normalizarUF(medico?.uf || '');
+      const assinatura = String(medico?.assinatura || '').trim();
+
+      const erros = [];
+      const avisos = [];
+
+      if (!window.MEDICOS_POR_UF || !Object.keys(window.MEDICOS_POR_UF).length) {
+        erros.push('O arquivo medicos.js não foi carregado corretamente.');
+      }
+
+      if (!pacienteUf) {
+        erros.push('O paciente não possui UF informada.');
+      }
+
+      if (!getMedicoSugeridoParaPedido(p) && pacienteUf) {
+        erros.push(`Não existe médico cadastrado para a UF ${pacienteUf}.`);
+      }
+
+      if (!nome) erros.push('Nome do médico não informado.');
+      if (!crm) erros.push('CRM do médico não informado.');
+      if (!uf) erros.push('UF do médico não informada.');
+      if (!assinatura) erros.push('Assinatura do médico não informada.');
+
+      if (pacienteUf && uf && pacienteUf !== uf) {
+        erros.push(`UF divergente: paciente ${pacienteUf} e médico ${uf}.`);
+      }
+
+      if (assinatura && !assinatura.startsWith('/assets/')) {
+        avisos.push('A assinatura informada não está no padrão /assets/PRIMEIRONOME.png.');
+      }
+
+      return {
+        valido: erros.length === 0,
+        erros,
+        avisos
+      };
+    }
+
+    function atualizarMetricas(lista) {
+      document.getElementById('mTotal').innerText = lista.length;
+
+      document.getElementById('mPendentesPagamento').innerText =
+        lista.filter(p => getStatus(p) === 'pendente_pagamento').length;
+
+      document.getElementById('mPagos').innerText =
+        lista.filter(p => getStatus(p) === 'pago' || getPagamentoStatus(p) === 'pago').length;
+
+      document.getElementById('mComprovantes').innerText =
+        lista.filter(p => getStatus(p) === 'comprovante_enviado').length;
+
+      document.getElementById('mEmitidos').innerText =
+        lista.filter(p => getStatus(p) === 'emitido').length;
+
+      document.getElementById('mComEstado').innerText =
+        lista.filter(p => !!getPacienteEstado(p)).length;
+
+      document.getElementById('mUfCompativel').innerText =
+        lista.filter(p => isUfCompativel(p)).length;
+    }
+
+    function preencherFiltroEstados() {
+      const select = document.getElementById('estadoFiltro');
+      const atual = select.value;
+
+      const estados = [...new Set(
+        pedidos
+          .map(p => getPacienteEstado(p))
+          .filter(Boolean)
+      )].sort();
+
+      select.innerHTML = '<option value="">Todos os estados</option>' +
+        estados.map(uf => `<option value="${uf}">${uf}</option>`).join('');
+
+      if (estados.includes(atual)) {
+        select.value = atual;
+      }
+    }
+
+    function preencherResumoEstados() {
+      const box = document.getElementById('estadoCountList');
+      const contagem = {};
+
+      pedidos.forEach(p => {
+        const uf = getPacienteEstado(p) || 'Sem UF';
+        contagem[uf] = (contagem[uf] || 0) + 1;
+      });
+
+      const itens = Object.entries(contagem)
+        .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], 'pt-BR'));
+
+      if (!itens.length) {
+        box.innerHTML = `
+          <div class="estado-count-item">
+            <strong>Sem dados</strong>
+            <span>0</span>
+          </div>
+        `;
+        return;
+      }
+
+      box.innerHTML = itens.map(([uf, total]) => `
+        <div class="estado-count-item">
+          <strong>${escapeHtml(uf)}</strong>
+          <span>${total}</span>
+        </div>
+      `).join('');
+    }
+
+    async function carregar() {
+      try {
+        const res = await fetch(`${API_BASE}/pedidos`);
+        pedidos = await res.json();
+        preencherFiltroEstados();
+        preencherResumoEstados();
+        render();
+      } catch (error) {
+        document.getElementById('lista').innerHTML = `
+          <div class="painel-vazio">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            Não foi possível carregar os pedidos.
+          </div>
+        `;
+        mostrarToast('error', 'Não foi possível carregar os pedidos.');
+      }
+    }
+
+    function limparFiltros() {
+      document.getElementById('busca').value = '';
+      document.getElementById('statusFiltro').value = '';
+      document.getElementById('diasFiltro').value = '';
+      document.getElementById('estadoFiltro').value = '';
+      document.getElementById('compatibilidadeFiltro').value = '';
+      document.getElementById('ordenacao').value = 'desc';
+      render();
+    }
+
+    function copiarPixCodigo(codigo) {
+      if (!codigo) return;
+      navigator.clipboard.writeText(codigo)
+        .then(() => mostrarToast('success', 'Código PIX copiado com sucesso.'))
+        .catch(() => mostrarToast('error', 'Não foi possível copiar o código PIX.'));
+    }
+
+    function aplicarMedicoDaUF(idPedido, forcar = true) {
+      const pedido = pedidos.find(p => String(p.id) === String(idPedido));
+      if (!pedido) return;
+
+      const sugerido = getMedicoSugeridoParaPedido(pedido);
+      if (!sugerido) {
+        mostrarToast('info', 'Não existe médico cadastrado para a UF deste paciente.');
+        atualizarPreviewMedico(idPedido);
+        return;
+      }
+
+      const nomeEl = document.getElementById(`medico_${idPedido}`);
+      const crmEl = document.getElementById(`crm_${idPedido}`);
+      const ufEl = document.getElementById(`uf_${idPedido}`);
+      const cidadeEl = document.getElementById(`cidade_${idPedido}`);
+      const assinaturaEl = document.getElementById(`assinatura_${idPedido}`);
+      const medicoIdEl = document.getElementById(`medicoId_${idPedido}`);
+
+      if (nomeEl && (forcar || !nomeEl.value.trim())) nomeEl.value = sugerido.nome || '';
+      if (crmEl && (forcar || !crmEl.value.trim())) crmEl.value = sugerido.crm || '';
+      if (ufEl && (forcar || !ufEl.value.trim())) ufEl.value = sugerido.uf || '';
+      if (cidadeEl && (forcar || !cidadeEl.value.trim())) cidadeEl.value = sugerido.cidade || '';
+      if (assinaturaEl && (forcar || !assinaturaEl.value.trim())) assinaturaEl.value = sugerido.assinatura || '';
+      if (medicoIdEl && (forcar || !medicoIdEl.value.trim())) medicoIdEl.value = sugerido.id || '';
+
+      atualizarPreviewMedico(idPedido);
+      mostrarToast('success', `Médico da UF ${sugerido.uf} aplicado ao pedido.`);
+    }
+
+    function aoMudarUfMedico(idPedido) {
+      const ufEl = document.getElementById(`uf_${idPedido}`);
+      const uf = normalizarUF(ufEl?.value || '');
+      const medico = obterMedicoPorUF(uf);
+
+      if (!medico) {
+        atualizarPreviewMedico(idPedido);
+        return;
+      }
+
+      const nomeEl = document.getElementById(`medico_${idPedido}`);
+      const crmEl = document.getElementById(`crm_${idPedido}`);
+      const cidadeEl = document.getElementById(`cidade_${idPedido}`);
+      const assinaturaEl = document.getElementById(`assinatura_${idPedido}`);
+      const medicoIdEl = document.getElementById(`medicoId_${idPedido}`);
+
+      if (nomeEl) nomeEl.value = medico.nome || nomeEl.value;
+      if (crmEl) crmEl.value = medico.crm || crmEl.value;
+      if (cidadeEl) cidadeEl.value = medico.cidade || cidadeEl.value;
+      if (assinaturaEl) assinaturaEl.value = medico.assinatura || assinaturaEl.value;
+      if (medicoIdEl) medicoIdEl.value = medico.id || medicoIdEl.value;
+
+      atualizarPreviewMedico(idPedido);
+    }
+
+    function atualizarPreviewMedico(idPedido) {
+      const pedido = pedidos.find(p => String(p.id) === String(idPedido));
+      if (!pedido) return;
+
+      const nome = document.getElementById(`medico_${idPedido}`)?.value || '';
+      const crm = document.getElementById(`crm_${idPedido}`)?.value || '';
+      const uf = normalizarUF(document.getElementById(`uf_${idPedido}`)?.value || '');
+      const cidade = document.getElementById(`cidade_${idPedido}`)?.value || '';
+      const assinatura = document.getElementById(`assinatura_${idPedido}`)?.value || '';
+      const preview = document.getElementById(`medicoPreview_${idPedido}`);
+      const imgBox = document.getElementById(`assinaturaBox_${idPedido}`);
+      const assinaturaStatus = document.getElementById(`assinaturaStatus_${idPedido}`);
+      const validacaoBox = document.getElementById(`validacaoOperacional_${idPedido}`);
+      const botaoAprovar = document.getElementById(`btnAprovar_${idPedido}`);
+
+      const validacao = getValidacaoOperacionalPedido(pedido, {
+        nome,
+        crm,
+        uf,
+        cidade,
+        assinatura
+      });
+
+      if (preview) {
+        preview.innerHTML = `
+          <div class="resumo-lateral">
+            <div class="item">
+              <span>Médico selecionado</span>
+              <strong>${escapeHtml(nome || 'Não informado')}</strong>
+            </div>
+            <div class="item">
+              <span>CRM</span>
+              <strong>${escapeHtml(crm || 'Não informado')}</strong>
+            </div>
+            <div class="item">
+              <span>UF / Cidade</span>
+              <strong>${escapeHtml((uf || '-') + (cidade ? ' • ' + cidade : ''))}</strong>
+            </div>
+          </div>
+        `;
+      }
+
+      if (imgBox) {
+        if (assinatura) {
+          imgBox.innerHTML = `<img src="${escapeHtml(assinatura)}" alt="Assinatura do médico">`;
+        } else {
+          imgBox.innerHTML = `<span>Sem assinatura definida para este médico.</span>`;
+        }
+      }
+
+      if (assinaturaStatus) {
+        assinaturaStatus.className = `aviso-assinatura ${assinatura ? 'ok' : 'warn'}`;
+        assinaturaStatus.innerHTML = assinatura
+          ? `<i class="fa-solid fa-file-signature"></i> Assinatura definida para envio no payload de aprovação.`
+          : `<i class="fa-solid fa-triangle-exclamation"></i> Defina o caminho da assinatura em <b>/assets</b> antes de emitir este pedido.`;
+      }
+
+      if (validacaoBox) {
+        if (validacao.valido && !validacao.avisos.length) {
+          validacaoBox.className = 'aviso-validacao ok';
+          validacaoBox.innerHTML = `<i class="fa-solid fa-shield-check"></i> Conferência operacional aprovada. Este pedido está apto para emissão.`;
+        } else if (validacao.valido && validacao.avisos.length) {
+          validacaoBox.className = 'aviso-validacao warn';
+          validacaoBox.innerHTML = `
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            <b>Atenção antes de emitir:</b><br>
+            ${validacao.avisos.map(item => `• ${escapeHtml(item)}`).join('<br>')}
+          `;
+        } else {
+          validacaoBox.className = 'aviso-validacao critical';
+          validacaoBox.innerHTML = `
+            <i class="fa-solid fa-ban"></i>
+            <b>Emissão bloqueada:</b><br>
+            ${validacao.erros.map(item => `• ${escapeHtml(item)}`).join('<br>')}
+            ${validacao.avisos.length ? `<br><br>${validacao.avisos.map(item => `• ${escapeHtml(item)}`).join('<br>')}` : ''}
+          `;
+        }
+      }
+
+      if (botaoAprovar) {
+        botaoAprovar.disabled = !validacao.valido;
+        botaoAprovar.title = validacao.valido ? 'Pronto para aprovar' : 'Corrija os itens de validação antes de aprovar';
+      }
+    }
+
+    function gerarOpcoesUfSelecionaveis(ufAtual = '') {
+      const atual = normalizarUF(ufAtual);
+      const opcoes = Object.keys(MEDICOS_POR_UF).sort().map(ufOption => `
+        <option value="${escapeHtml(ufOption)}" ${ufOption === atual ? 'selected' : ''}>
+          ${escapeHtml(ufOption)}
+        </option>
+      `).join('');
+
+      return `
+        <option value="">Selecione</option>
+        ${opcoes}
+      `;
+    }
+
+    function render() {
+      const busca = document.getElementById('busca').value.trim().toLowerCase();
+      const statusFiltro = document.getElementById('statusFiltro').value;
+      const diasFiltro = document.getElementById('diasFiltro').value;
+      const estadoFiltro = document.getElementById('estadoFiltro').value;
+      const compatibilidadeFiltro = document.getElementById('compatibilidadeFiltro').value;
+      const ordenacao = document.getElementById('ordenacao').value;
+
+      let filtrados = pedidos.filter(p => {
+        const nome = getNome(p).toLowerCase();
+        const cpf = getCpf(p).toLowerCase();
+        const telefone = getTelefone(p).toLowerCase();
+        const id = String(p.id || '').toLowerCase();
+        const status = getStatus(p);
+        const dias = getDias(p);
+        const estadoPaciente = getPacienteEstado(p);
+        const crm = getCrmTexto(p).toLowerCase();
+        const codigoValidacao = getCodigoValidacao(p).toLowerCase();
+        const compativel = isUfCompativel(p);
+
+        const okBusca =
+          nome.includes(busca) ||
+          cpf.includes(busca) ||
+          telefone.includes(busca) ||
+          id.includes(busca) ||
+          crm.includes(busca) ||
+          codigoValidacao.includes(busca);
+
+        const okStatus = statusFiltro ? status === statusFiltro : true;
+
+        let okDias = true;
+        if (diasFiltro === '1') okDias = dias === 1;
+        if (diasFiltro === '2') okDias = dias === 2;
+        if (diasFiltro === '3') okDias = dias === 3;
+        if (diasFiltro === '5') okDias = dias >= 5;
+
+        const okEstado = estadoFiltro ? estadoPaciente === estadoFiltro : true;
+
+        let okCompatibilidade = true;
+        if (compatibilidadeFiltro === 'compativel') okCompatibilidade = compativel;
+        if (compatibilidadeFiltro === 'nao_compativel') okCompatibilidade = !!estadoPaciente && !compativel;
+        if (compatibilidadeFiltro === 'sem_estado') okCompatibilidade = !estadoPaciente;
+
+        return okBusca && okStatus && okDias && okEstado && okCompatibilidade;
+      });
+
+      filtrados.sort((a, b) => {
+        const aTime = new Date(a.documento?.dataEmissao || a.criadoEm || 0).getTime();
+        const bTime = new Date(b.documento?.dataEmissao || b.criadoEm || 0).getTime();
+        return ordenacao === 'asc' ? aTime - bTime : bTime - aTime;
+      });
+
+      atualizarMetricas(pedidos);
+
+      if (!filtrados.length) {
+        document.getElementById('lista').innerHTML = `
+          <div class="painel-vazio">
+            <i class="fa-solid fa-folder-open"></i>
+            Nenhum pedido encontrado com os filtros atuais.
+          </div>
+        `;
+        return;
+      }
+
+      let html = '';
+
+      filtrados.forEach(p => {
+        const status = getStatus(p);
+        const nomePaciente = getNome(p);
+        const cpf = getCpf(p);
+        const telefone = getTelefone(p);
+        const dataEmissao = formatarData(p.documento?.dataEmissao || p.criadoEm);
+        const dias = getDias(p);
+        const sintomas = p.documento?.observacoes || p.sintomas || 'Não informado';
+        const textoDoc = p.documento?.texto || 'Não informado';
+        const codigo = p.documento?.codigoValidacao || '-';
+        const pacienteEstado = getPacienteEstado(p) || '-';
+        const pacienteCidade = getPacienteCidade(p);
+        const comprovanteUrl = p.comprovante?.url ? `${API_BASE}${p.comprovante.url}` : '';
+        const pdfUrl = p.pdf?.url ? `${API_BASE}${p.pdf.url}` : '';
+        const validacaoUrl = p.pdf?.urlValidacao || '';
+        const pagamentoStatus = getPagamentoStatus(p) || '-';
+        const pagamentoValor = p.pagamento?.valor ? formatarMoeda(p.pagamento.valor) : '-';
+        const pagamentoTxid = p.pagamento?.txid || '-';
+        const pagamentoCriadoEm = formatarData(p.pagamento?.criadoEm);
+        const ultimoWebhookEm = formatarData(p.pagamento?.ultimoWebhookEm);
+        const pixCode = p.pagamento?.copiaECola || '';
+        const medicoVigente = medicoDoPedidoOuSugerido(p);
+        const medicoNome = medicoVigente.nome || '-';
+        const medicoCrm = medicoVigente.crm || '-';
+        const medicoUf = normalizarUF(medicoVigente.uf || '-') || '-';
+        const ufCompativel = pacienteEstado !== '-' && medicoUf !== '-' && pacienteEstado === medicoUf;
+        const assinatura = medicoVigente.assinatura || '';
+        const assinaturaExiste = !!assinatura;
+        const ufSelecionada = medicoVigente.uf || pacienteEstado || '';
+        const medicoSugeridoExiste = !!getMedicoSugeridoParaPedido(p);
+
+        html += `
+          <div class="card" id="pedido-${escapeHtml(String(p.id))}">
+            <div class="card-topo">
+              <div class="paciente-bloco">
+                <strong>${escapeHtml(nomePaciente)}</strong>
+
+                <div class="meta-linha">
+                  <span><b>CPF:</b> ${escapeHtml(cpf)}</span>
+                  <span><b>Telefone:</b> ${escapeHtml(telefone)}</span>
+                  <span><b>ID:</b> ${escapeHtml(String(p.id || '-'))}</span>
+                  <span><b>Criação / emissão:</b> ${escapeHtml(dataEmissao)}</span>
+                </div>
+
+                <div class="badge-mini">
+                  <i class="fa-solid fa-shield-halved"></i>
+                  Código de validação: ${escapeHtml(codigo)}
+                </div>
+
+                <div class="badge-uf">
+                  <i class="fa-solid fa-location-dot"></i>
+                  Paciente: ${escapeHtml(pacienteCidade)}${pacienteCidade !== '-' ? ' / ' : ''}${escapeHtml(pacienteEstado)}
+                </div>
+
+                ${medicoSugeridoExiste ? `
+                  <div class="badge-auto">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    Médico sugerido automaticamente para UF ${escapeHtml(getPacienteEstado(p))}
+                  </div>
+                ` : `
+                  <div class="badge-risco">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                    Sem médico cadastrado para a UF ${escapeHtml(pacienteEstado)}
+                  </div>
+                `}
+              </div>
+
+              <span class="status ${escapeHtml(status)}">${escapeHtml(slugStatus(status))}</span>
+            </div>
+
+            <div class="card-grid">
+              <div class="bloco">
+                <h3>
+                  <i class="fa-solid fa-notes-medical"></i>
+                  Resumo clínico e dados do paciente
+                </h3>
+
+                <p><b>Queixa / sintomas:</b> ${escapeHtml(sintomas)}</p>
+                <p><b>Texto do documento:</b> ${escapeHtml(textoDoc)}</p>
+
+                <div class="linha-info">
+                  <div class="campo">
+                    <span>Telefone do paciente</span>
+                    <strong>${escapeHtml(telefone)}</strong>
+                  </div>
+
+                  <div class="campo">
+                    <span>Tipo</span>
+                    <strong>${escapeHtml(p.documento?.tipo || '-')}</strong>
+                  </div>
+
+                  <div class="campo">
+                    <span>Afastamento</span>
+                    <strong>${escapeHtml(String(dias))} dia(s)</strong>
+                  </div>
+
+                  <div class="campo">
+                    <span>CID</span>
+                    <strong>${escapeHtml(p.documento?.cid || '-')}</strong>
+                  </div>
+
+                  <div class="campo">
+                    <span>Status atual</span>
+                    <strong>${escapeHtml(slugStatus(status))}</strong>
+                  </div>
+
+                  <div class="campo">
+                    <span>Estado do paciente</span>
+                    <strong>${escapeHtml(pacienteEstado)}</strong>
+                  </div>
+
+                  <div class="campo">
+                    <span>Cidade do paciente</span>
+                    <strong>${escapeHtml(pacienteCidade)}</strong>
+                  </div>
+                </div>
+              </div>
+
+              <div class="bloco">
+                <h3>
+                  <i class="fa-solid fa-money-check-dollar"></i>
+                  Pagamento, médico e emissão
+                </h3>
+
+                <div class="timeline">
+                  <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <p><b>Pedido criado</b><br>${escapeHtml(dataEmissao)}</p>
+                  </div>
+
+                  <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <p><b>Pagamento</b><br>Status: ${escapeHtml(pagamentoStatus)} | Valor: ${escapeHtml(pagamentoValor)}</p>
+                  </div>
+
+                  <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <p><b>TXID</b><br>${escapeHtml(pagamentoTxid)}</p>
+                  </div>
+
+                  <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <p><b>Comprovante</b><br>${p.comprovante?.enviadoEm ? escapeHtml(formatarData(p.comprovante.enviadoEm)) : 'Ainda não enviado'}</p>
+                  </div>
+
+                  <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <p><b>Webhook / atualização</b><br>${escapeHtml(ultimoWebhookEm !== '-' ? ultimoWebhookEm : pagamentoCriadoEm)}</p>
+                  </div>
+
+                  <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <p><b>Médico vinculado / sugerido</b><br>${escapeHtml(medicoNome)} - ${escapeHtml(medicoCrm)} / ${escapeHtml(medicoUf)}</p>
+                  </div>
+                </div>
+
+                ${(status === 'pago' || pagamentoStatus === 'pago') ? `
+                  <div class="destaque-pagamento ok">
+                    <i class="fa-solid fa-circle-check"></i>
+                    Pagamento confirmado. Este pedido já pode seguir para emissão do documento.
+                  </div>
+                ` : `
+                  <div class="destaque-pagamento warn">
+                    <i class="fa-solid fa-clock"></i>
+                    Pagamento ainda pendente ou sem confirmação automática.
+                  </div>
+                `}
+
+                ${pixCode ? `
+                  <div class="pix-code-box">${escapeHtml(pixCode)}</div>
+                ` : ''}
+
+                ${pacienteEstado !== '-' ? `
+                  <div class="aviso-medico ${ufCompativel ? 'ok' : 'warn'}">
+                    ${
+                      ufCompativel
+                        ? `<i class="fa-solid fa-circle-check"></i> Médico atual compatível com o estado do paciente (<b>${escapeHtml(pacienteEstado)}</b>).`
+                        : `<i class="fa-solid fa-triangle-exclamation"></i> Ideal vincular médico com CRM/UF de <b>${escapeHtml(pacienteEstado)}</b> para este paciente.`
+                    }
+                  </div>
+                ` : ''}
+
+                <div class="acoes">
+                  ${pixCode ? `
+                    <button class="btn-pix" type="button" onclick='copiarPixCodigo(${JSON.stringify(pixCode)})'>
+                      <i class="fa-solid fa-copy"></i>
+                      Copiar PIX
+                    </button>
+                  ` : ''}
+
+                  ${comprovanteUrl ? `
+                    <a class="btn-comp" href="${escapeHtml(comprovanteUrl)}" target="_blank">
+                      <i class="fa-solid fa-receipt"></i>
+                      Ver comprovante
+                    </a>
+                  ` : `
+                    <span class="btn-comp" style="opacity:.7; cursor:default;">
+                      <i class="fa-solid fa-ban"></i>
+                      Sem comprovante
+                    </span>
+                  `}
+
+                  ${pdfUrl ? `
+                    <a class="btn-pdf" href="${escapeHtml(pdfUrl)}" target="_blank">
+                      <i class="fa-solid fa-file-pdf"></i>
+                      Baixar PDF
+                    </a>
+                  ` : ''}
+
+                  ${validacaoUrl ? `
+                    <a class="btn-validar" href="${escapeHtml(validacaoUrl)}" target="_blank">
+                      <i class="fa-solid fa-qrcode"></i>
+                      Validar documento
+                    </a>
+                  ` : ''}
+                </div>
+              </div>
+            </div>
+
+            ${(status === 'comprovante_enviado' || status === 'pago') ? `
+              <div class="form-aprovacao">
+                <h4>
+                  <i class="fa-solid fa-file-signature"></i>
+                  Conferir pagamento, alocar médico por UF e emitir documento
+                </h4>
+
+                <div class="form-grid">
+                  <input type="hidden" id="medicoId_${escapeHtml(String(p.id))}" value="${escapeHtml(medicoVigente.id || '')}">
+
+                  <div class="campo-wrap">
+                    <label for="medico_${escapeHtml(String(p.id))}">Nome do médico</label>
+                    <input id="medico_${escapeHtml(String(p.id))}" placeholder="Nome do médico" value="${escapeHtml(medicoVigente.nome || '')}" oninput="atualizarPreviewMedico('${escapeHtml(String(p.id))}')">
+                  </div>
+
+                  <div class="campo-wrap">
+                    <label for="crm_${escapeHtml(String(p.id))}">CRM</label>
+                    <input id="crm_${escapeHtml(String(p.id))}" placeholder="CRM" value="${escapeHtml(medicoVigente.crm || '')}" oninput="atualizarPreviewMedico('${escapeHtml(String(p.id))}')">
+                  </div>
+
+                  <div class="campo-wrap">
+                    <label for="uf_${escapeHtml(String(p.id))}">UF do médico</label>
+                    <select id="uf_${escapeHtml(String(p.id))}" onchange="aoMudarUfMedico('${escapeHtml(String(p.id))}')">
+                      ${gerarOpcoesUfSelecionaveis(ufSelecionada)}
+                    </select>
+                  </div>
+
+                  <div class="campo-wrap">
+                    <label for="cidade_${escapeHtml(String(p.id))}">Cidade do médico</label>
+                    <input id="cidade_${escapeHtml(String(p.id))}" placeholder="Cidade" value="${escapeHtml(medicoVigente.cidade || pacienteCidade || '')}" oninput="atualizarPreviewMedico('${escapeHtml(String(p.id))}')">
+                  </div>
+
+                  <div class="campo-wrap">
+                    <label for="dias_${escapeHtml(String(p.id))}">Dias de afastamento</label>
+                    <input id="dias_${escapeHtml(String(p.id))}" placeholder="Dias de afastamento" value="${escapeHtml(String(dias || ''))}">
+                  </div>
+
+                  <div class="campo-wrap">
+                    <label for="cid_${escapeHtml(String(p.id))}">CID opcional</label>
+                    <input id="cid_${escapeHtml(String(p.id))}" placeholder="CID opcional" value="${escapeHtml(p.documento?.cid || '')}">
+                  </div>
+
+                  <div class="campo-wrap col-span-2">
+                    <label for="assinatura_${escapeHtml(String(p.id))}">Caminho da assinatura em assets</label>
+                    <input id="assinatura_${escapeHtml(String(p.id))}" placeholder="/assets/PRIMEIRONOME.png" value="${escapeHtml(assinatura || '')}" oninput="atualizarPreviewMedico('${escapeHtml(String(p.id))}')">
+                  </div>
+
+                  <div class="campo-wrap col-span-2">
+                    <label for="observacaoAdmin_${escapeHtml(String(p.id))}">Observação interna da emissão</label>
+                    <input id="observacaoAdmin_${escapeHtml(String(p.id))}" placeholder="Opcional: conferido manualmente, pago via webhook, etc.">
+                  </div>
+                </div>
+
+                <div class="medico-preview">
+                  <div class="medico-preview-topo">
+                    <strong>Médico e assinatura que serão enviados na aprovação</strong>
+                    <button class="btn-outline" type="button" onclick="aplicarMedicoDaUF('${escapeHtml(String(p.id))}', true)">
+                      <i class="fa-solid fa-location-crosshairs"></i>
+                      Aplicar médico da UF do paciente
+                    </button>
+                  </div>
+
+                  <div id="medicoPreview_${escapeHtml(String(p.id))}">
+                    <div class="resumo-lateral">
+                      <div class="item">
+                        <span>Médico selecionado</span>
+                        <strong>${escapeHtml(medicoNome)}</strong>
+                      </div>
+                      <div class="item">
+                        <span>CRM</span>
+                        <strong>${escapeHtml(medicoCrm)}</strong>
+                      </div>
+                      <div class="item">
+                        <span>UF / Cidade</span>
+                        <strong>${escapeHtml(medicoUf)}${medicoVigente.cidade ? ' • ' + escapeHtml(medicoVigente.cidade) : ''}</strong>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="assinatura-wrap">
+                    <div class="assinatura-box" id="assinaturaBox_${escapeHtml(String(p.id))}">
+                      ${assinaturaExiste
+                        ? `<img src="${escapeHtml(assinatura)}" alt="Assinatura do médico">`
+                        : `<span>Sem assinatura definida para este médico.</span>`
+                      }
+                    </div>
+                    <div style="flex:1; min-width:220px;">
+                      <div id="assinaturaStatus_${escapeHtml(String(p.id))}" class="aviso-assinatura ${assinaturaExiste ? 'ok' : 'warn'}">
+                        ${assinaturaExiste
+                          ? `<i class="fa-solid fa-file-signature"></i> Assinatura definida para envio no payload de aprovação.`
+                          : `<i class="fa-solid fa-triangle-exclamation"></i> Defina o caminho da assinatura em <b>/assets</b> antes de emitir este pedido.`
+                        }
+                      </div>
+                    </div>
+                  </div>
+
+                  <div id="validacaoOperacional_${escapeHtml(String(p.id))}" class="aviso-validacao warn">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                    Validando...
+                  </div>
+                </div>
+
+                <div class="acoes">
+                  <button class="btn-aprovar" id="btnAprovar_${escapeHtml(String(p.id))}" onclick="aprovar('${escapeHtml(String(p.id))}')">
+                    <i class="fa-solid fa-circle-check"></i>
+                    Aprovar e emitir PDF
+                  </button>
+
+                  <button class="btn-reprovar" onclick="reprovar('${escapeHtml(String(p.id))}')">
+                    <i class="fa-solid fa-circle-xmark"></i>
+                    Reprovar pedido
+                  </button>
+                </div>
+              </div>
+            ` : ''}
+
+            ${status === 'pendente_pagamento' ? `
+              <div class="form-aprovacao">
+                <h4><i class="fa-solid fa-hourglass-half"></i> Aguardando ação do paciente</h4>
+                <p>Este pedido ainda não possui confirmação de pagamento.</p>
+              </div>
+            ` : ''}
+          </div>
+        `;
+      });
+
+      document.getElementById('lista').innerHTML = html;
+
+      filtrados.forEach(p => {
+        const id = String(p.id);
+        setTimeout(() => atualizarPreviewMedico(id), 0);
+      });
+    }
+
+    async function aprovar(id) {
+      const pedido = pedidos.find(p => String(p.id) === String(id));
+      if (!pedido) {
+        mostrarToast('error', 'Pedido não encontrado.');
+        return;
+      }
+
+      const medico = document.getElementById(`medico_${id}`)?.value?.trim() || '';
+      const crm = document.getElementById(`crm_${id}`)?.value?.trim() || '';
+      const cidade = document.getElementById(`cidade_${id}`)?.value?.trim() || '';
+      const uf = normalizarUF(document.getElementById(`uf_${id}`)?.value || '');
+      const dias = document.getElementById(`dias_${id}`)?.value?.trim() || '';
+      const cid = document.getElementById(`cid_${id}`)?.value?.trim() || '';
+      const assinatura = document.getElementById(`assinatura_${id}`)?.value?.trim() || '';
+      const medicoId = document.getElementById(`medicoId_${id}`)?.value?.trim() || '';
+      const observacaoAdmin = document.getElementById(`observacaoAdmin_${id}`)?.value?.trim() || '';
+
+      if (!medico) {
+        mostrarToast('error', 'Informe o nome do médico.');
+        return;
+      }
+
+      if (!crm) {
+        mostrarToast('error', 'Informe o CRM do médico.');
+        return;
+      }
+
+      if (!uf) {
+        mostrarToast('error', 'Informe a UF do médico.');
+        return;
+      }
+
+      if (!assinatura) {
+        mostrarToast('error', 'Informe a assinatura do médico antes de emitir.');
+        return;
+      }
+
+      if (!dias || Number(dias) <= 0) {
+        mostrarToast('error', 'Informe os dias de afastamento corretamente.');
+        return;
+      }
+
+      const validacao = getValidacaoOperacionalPedido(pedido, {
+        nome: medico,
+        crm,
+        uf,
+        cidade,
+        assinatura
+      });
+
+      if (!validacao.valido) {
+        mostrarToast('error', validacao.erros[0] || 'Corrija os dados antes de aprovar.');
+        atualizarPreviewMedico(id);
+        return;
+      }
+
+      try {
+        const res = await fetch(`${API_BASE}/pedido/${id}/aprovar`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            medico,
+            crm,
+            cidade,
+            uf,
+            dias,
+            cid,
+            assinatura,
+            medicoId,
+            observacaoAdmin,
+            aprovadoEm: new Date().toISOString(),
+            adminUsuario: localStorage.getItem('medflix_admin_usuario') || 'admin'
+          })
+        });
+
+        const data = await res.json().catch(() => ({}));
+
+        if (!res.ok) {
+          mostrarToast('error', data.mensagem || 'Erro ao aprovar pedido.');
+          return;
+        }
+
+        mostrarToast('success', 'Pedido aprovado e PDF gerado com sucesso.');
+        carregar();
+      } catch (error) {
+        mostrarToast('error', 'Erro ao aprovar pedido.');
+      }
+    }
+
+    async function reprovar(id) {
+      const motivo = (prompt('Informe o motivo da reprovação:') || '').trim();
+
+      if (!motivo) {
+        mostrarToast('error', 'É obrigatório informar o motivo da reprovação.');
+        return;
+      }
+
+      try {
+        const res = await fetch(`${API_BASE}/pedido/${id}/reprovar`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            motivo,
+            adminUsuario: localStorage.getItem('medflix_admin_usuario') || 'admin',
+            reprovadoEm: new Date().toISOString()
+          })
+        });
+
+        const data = await res.json().catch(() => ({}));
+
+        if (!res.ok) {
+          mostrarToast('error', data.mensagem || 'Erro ao reprovar pedido.');
+          return;
+        }
+
+        mostrarToast('success', 'Pedido reprovado com sucesso.');
+        carregar();
+      } catch (error) {
+        mostrarToast('error', 'Erro ao reprovar pedido.');
+      }
+    }
+
+    function rolarParaPrimeiroPendente() {
+      const alvo = pedidos.find(p =>
+        getStatus(p) === 'comprovante_enviado' ||
+        getStatus(p) === 'pago' ||
+        getStatus(p) === 'pendente_pagamento'
+      );
+
+      if (!alvo) {
+        mostrarToast('info', 'Não há pedidos pendentes no momento.');
+        return;
+      }
+
+      const el = document.getElementById(`pedido-${alvo.id}`);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        el.style.boxShadow = '0 0 0 3px rgba(17,184,116,0.18), 0 14px 40px rgba(21,84,192,0.10)';
+        setTimeout(() => {
+          el.style.boxShadow = '';
+        }, 1800);
+      }
+    }
+
+    function configurarAutoRefresh() {
+      const marcado = document.getElementById('autoRefresh').checked;
+
+      if (autoRefreshInterval) {
+        clearInterval(autoRefreshInterval);
+        autoRefreshInterval = null;
+      }
+
+      if (marcado) {
+        autoRefreshInterval = setInterval(() => {
+          carregar();
+        }, 20000);
+        mostrarToast('info', 'Autoatualização ativada a cada 20 segundos.');
+      } else {
+        mostrarToast('info', 'Autoatualização desativada.');
+      }
+    }
+
+    document.getElementById('busca').addEventListener('input', render);
+    document.getElementById('statusFiltro').addEventListener('change', render);
+    document.getElementById('diasFiltro').addEventListener('change', render);
+    document.getElementById('estadoFiltro').addEventListener('change', render);
+    document.getElementById('compatibilidadeFiltro').addEventListener('change', render);
+    document.getElementById('ordenacao').addEventListener('change', render);
+    document.getElementById('autoRefresh').addEventListener('change', configurarAutoRefresh);
+
+    carregar();
+  </script>
+</body>
+</html>

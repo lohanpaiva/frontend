@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pedido Recebido | MEDFLIX TELEMEDICINA</title>
+  <script src="https://kit.fontawesome.com/917245ba0f.js" crossorigin="anonymous"></script>
+
+  <style>
+    :root {
+      --primary: #1554c0;
+      --primary-dark: #0f3f92;
+      --primary-soft: #edf4ff;
+      --secondary: #11b874;
+      --secondary-dark: #0d925c;
+      --success: #16a34a;
+      --success-soft: #ecfdf5;
+      --text: #17324d;
+      --text-soft: #64748b;
+      --white: #ffffff;
+      --border: #dbe6f2;
+      --shadow: 0 18px 42px rgba(15, 63, 146, 0.10);
+      --shadow-soft: 0 12px 28px rgba(15, 63, 146, 0.08);
+      --radius: 24px;
+      --radius-sm: 18px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(21,84,192,0.09), transparent 28%),
+        radial-gradient(circle at bottom right, rgba(17,184,116,0.08), transparent 22%),
+        linear-gradient(180deg, #f8fbff 0%, #eef5fc 100%);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .topo {
+      background: linear-gradient(135deg, rgba(15,63,146,0.98), rgba(21,84,192,0.95));
+      color: white;
+      padding: 20px 16px;
+      box-shadow: 0 10px 26px rgba(21,84,192,0.16);
+    }
+
+    .topo-wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .topo-esquerda {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .logo-box {
+      width: 52px;
+      height: 52px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.14);
+      flex-shrink: 0;
+    }
+
+    .topo h1 {
+      margin: 0 0 4px;
+      font-size: 24px;
+      line-height: 1.1;
+    }
+
+    .topo p {
+      margin: 0;
+      color: rgba(255,255,255,0.9);
+      font-size: 13px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 24px 16px 36px;
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card {
+      width: 100%;
+      background: rgba(255,255,255,0.97);
+      border: 1px solid rgba(21,84,192,0.08);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 8px;
+      background: linear-gradient(180deg, var(--secondary), var(--primary));
+      opacity: 0.95;
+    }
+
+    .card-wrap {
+      padding: 34px 32px 30px 38px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 24px;
+      align-items: center;
+    }
+
+    .hero-left {
+      min-width: 0;
+    }
+
+    .success-icon {
+      width: 84px;
+      height: 84px;
+      border-radius: 24px;
+      background: var(--success-soft);
+      color: var(--success);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 34px;
+      box-shadow: inset 0 0 0 1px rgba(22,163,74,0.08);
+      margin-bottom: 18px;
+    }
+
+    .hero-left h2 {
+      margin: 0 0 12px;
+      font-size: 35px;
+      line-height: 1.12;
+      color: var(--primary-dark);
+    }
+
+    .hero-left p {
+      margin: 0;
+      color: var(--text-soft);
+      line-height: 1.75;
+      font-size: 15px;
+      max-width: 640px;
+    }
+
+    .mini-benefits {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .mini-benefit {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: #f7fbff;
+      border: 1px solid #e1ebf8;
+      color: var(--primary-dark);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .hero-right {
+      background: linear-gradient(180deg, #fbfdff, #f5f9ff);
+      border: 1px solid #dbe6f2;
+      border-radius: 22px;
+      padding: 22px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .hero-right h3 {
+      margin: 0 0 12px;
+      font-size: 18px;
+      color: var(--primary-dark);
+    }
+
+    .hero-right p {
+      margin: 0;
+      color: var(--text-soft);
+      line-height: 1.7;
+      font-size: 14px;
+    }
+
+    .pedido-box {
+      margin-top: 18px;
+      background: linear-gradient(180deg, #f7fbff, #eef5ff);
+      border: 1px solid #d9e7fb;
+      border-radius: 20px;
+      padding: 16px;
+    }
+
+    .pedido-label {
+      font-size: 12px;
+      color: var(--text-soft);
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .pedido-id-row {
+      display: flex;
+      gap: 10px;
+      align-items: stretch;
+      flex-wrap: wrap;
+    }
+
+    .pedido-id {
+      flex: 1;
+      min-width: 0;
+      background: white;
+      border: 1px solid #dbe6f2;
+      border-radius: 16px;
+      padding: 15px 16px;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--primary-dark);
+      word-break: break-word;
+    }
+
+    .btn-mini,
+    .btn,
+    .btn-link {
+      border: none;
+      border-radius: 16px;
+      padding: 15px 18px;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 14px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      min-height: 52px;
+      transition: 0.25s ease;
+      text-align: center;
+    }
+
+    .btn-mini:hover,
+    .btn:hover,
+    .btn-link:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn-outline {
+      background: white;
+      color: var(--primary-dark);
+      border: 1px solid #dbe6f2;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--secondary), #20d58c);
+      color: white;
+      box-shadow: 0 10px 22px rgba(17,184,116,0.16);
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(135deg, var(--secondary-dark), #18bf7c);
+    }
+
+    .btn-sec {
+      background: #edf4ff;
+      color: var(--primary-dark);
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 26px;
+    }
+
+    .step {
+      background: #fbfdff;
+      border: 1px solid #e5edf8;
+      border-radius: 18px;
+      padding: 18px;
+    }
+
+    .step-icon {
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+      background: #edf4ff;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      margin-bottom: 12px;
+    }
+
+    .step h4 {
+      margin: 0 0 8px;
+      font-size: 15px;
+      color: var(--text);
+    }
+
+    .step p {
+      margin: 0;
+      font-size: 13px;
+      line-height: 1.65;
+      color: var(--text-soft);
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 26px;
+    }
+
+    .helper {
+      margin-top: 18px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 14px;
+      color: var(--text-soft);
+      font-size: 13px;
+    }
+
+    .helper div {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,0.9);
+      border: 1px solid #e5edf8;
+      padding: 10px 12px;
+      border-radius: 999px;
+    }
+
+    .rodape {
+      text-align: center;
+      color: var(--text-soft);
+      padding: 16px 20px 28px;
+      font-size: 13px;
+    }
+
+    @media (max-width: 920px) {
+      .hero,
+      .steps {
+        grid-template-columns: 1fr;
+      }
+
+      .card-wrap {
+        padding: 28px 22px 24px 28px;
+      }
+
+      .hero-left h2 {
+        font-size: 30px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .topo {
+        padding: 16px 14px;
+      }
+
+      .topo h1 {
+        font-size: 20px;
+      }
+
+      .container {
+        padding: 16px 12px 26px;
+        align-items: flex-start;
+      }
+
+      .card-wrap {
+        padding: 22px 16px 20px 22px;
+      }
+
+      .success-icon {
+        width: 72px;
+        height: 72px;
+        font-size: 29px;
+        border-radius: 20px;
+      }
+
+      .hero-left h2 {
+        font-size: 27px;
+      }
+
+      .hero-left p {
+        font-size: 14px;
+      }
+
+      .pedido-id {
+        font-size: 16px;
+      }
+
+      .pedido-id-row,
+      .actions {
+        flex-direction: column;
+      }
+
+      .btn-mini,
+      .btn,
+      .btn-link {
+        width: 100%;
+      }
+
+      .step {
+        padding: 16px;
+      }
+
+      .mini-benefits {
+        gap: 8px;
+      }
+
+      .mini-benefit {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .helper {
+        flex-direction: column;
+      }
+
+      .helper div {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="topo">
+    <div class="topo-wrap">
+      <div class="topo-esquerda">
+        <div class="logo-box">
+          <i class="fa-solid fa-circle-check"></i>
+        </div>
+        <div>
+          <h1>MEDFLIX TELEMEDICINA</h1>
+          <p>Seu pedido foi recebido com sucesso</p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <div class="card-wrap">
+        <div class="hero">
+          <div class="hero-left">
+            <div class="success-icon">
+              <i class="fa-solid fa-file-circle-check"></i>
+            </div>
+
+            <h2>Pronto, recebemos seu pedido</h2>
+
+            <p>
+              Agora é só acompanhar pela sua área do paciente. Lá você poderá ver o andamento,
+              localizar seu pedido com facilidade e acessar seu documento quando ele estiver disponível.
+            </p>
+
+            <div class="mini-benefits">
+              <div class="mini-benefit"><i class="fa-solid fa-gauge-high"></i> Acesso rápido</div>
+              <div class="mini-benefit"><i class="fa-solid fa-shield-heart"></i> Ambiente seguro</div>
+            </div>
+          </div>
+
+          <div class="hero-right">
+            <h3>Guarde o número do seu pedido</h3>
+            <p>
+              Esse número facilita encontrar seu atendimento depois. Ele também fica salvo
+              automaticamente neste navegador para tornar o acesso mais prático.
+            </p>
+
+            <div class="pedido-box">
+              <div class="pedido-label">Número do pedido</div>
+
+              <div class="pedido-id-row">
+                <div id="pedidoIdBox" class="pedido-id">Carregando...</div>
+
+                <button id="btnCopiarId" class="btn-mini btn-outline" type="button">
+                  <i class="fa-solid fa-copy"></i>
+                  Copiar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="steps">
+          <div class="step">
+            <div class="step-icon">
+              <i class="fa-solid fa-user"></i>
+            </div>
+            <h4>Acesse sua área</h4>
+            <p>Entre na sua área do paciente para acompanhar tudo em um só lugar.</p>
+          </div>
+
+          <div class="step">
+            <div class="step-icon">
+              <i class="fa-solid fa-eye"></i>
+            </div>
+            <h4>Acompanhe com facilidade</h4>
+            <p>Veja as atualizações do seu pedido de forma simples e rápida.</p>
+          </div>
+
+          <div class="step">
+            <div class="step-icon">
+              <i class="fa-solid fa-file-pdf"></i>
+            </div>
+            <h4>Baixe quando estiver disponível</h4>
+            <p>Assim que o documento estiver pronto, ele aparecerá para você na sua área.</p>
+          </div>
+        </div>
+
+        <div class="actions">
+          <a id="btnIrPaciente" class="btn-link btn-primary" href="paciente.html">
+            <i class="fa-solid fa-arrow-right"></i>
+            Ir para minha área do paciente
+          </a>
+
+          <a href="index.html" class="btn-link btn-sec">
+            <i class="fa-solid fa-house"></i>
+            Voltar ao início
+          </a>
+        </div>
+
+        <div class="helper">
+          <div><i class="fa-solid fa-bookmark"></i> Salve este número caso precise consultar depois</div>
+          <div><i class="fa-solid fa-clock"></i> Você pode acessar sua área a qualquer momento</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="rodape">
+    © 2026 MEDFLIX TELEMEDICINA
+  </footer>
+
+  <script>
+    const pedidoIdBox = document.getElementById("pedidoIdBox");
+    const btnCopiarId = document.getElementById("btnCopiarId");
+    const btnIrPaciente = document.getElementById("btnIrPaciente");
+
+    function getParametro(nome) {
+      const url = new URL(window.location.href);
+      return url.searchParams.get(nome);
+    }
+
+    function obterPedidoId() {
+      const idUrl = getParametro("id");
+      const ultimoPedido = JSON.parse(localStorage.getItem("ultimoPedido") || "{}");
+      const idLocal = ultimoPedido.pedidoId || localStorage.getItem("ultimoPedidoId") || "";
+      return idUrl || idLocal || "";
+    }
+
+    function configurarLinks(pedidoId) {
+      btnIrPaciente.href = pedidoId
+        ? `paciente.html?id=${encodeURIComponent(pedidoId)}`
+        : "paciente.html";
+    }
+
+    function salvarPedidoSeNecessario(pedidoId) {
+      if (!pedidoId) return;
+
+      const ultimoPedido = JSON.parse(localStorage.getItem("ultimoPedido") || "{}");
+
+      localStorage.setItem("ultimoPedidoId", pedidoId);
+      localStorage.setItem("ultimoPedido", JSON.stringify({
+        ...ultimoPedido,
+        pedidoId
+      }));
+    }
+
+    async function copiarPedido() {
+      const texto = pedidoIdBox.innerText.trim();
+
+      if (!texto || texto === "Não identificado" || texto === "Carregando...") {
+        return;
+      }
+
+      try {
+        await navigator.clipboard.writeText(texto);
+        btnCopiarId.innerHTML = '<i class="fa-solid fa-check"></i> Copiado!';
+        setTimeout(() => {
+          btnCopiarId.innerHTML = '<i class="fa-solid fa-copy"></i> Copiar';
+        }, 1600);
+      } catch (e) {
+        alert("Não foi possível copiar o número do pedido.");
+      }
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+      const pedidoId = obterPedidoId();
+
+      if (pedidoId) {
+        salvarPedidoSeNecessario(pedidoId);
+        pedidoIdBox.innerText = pedidoId;
+      } else {
+        pedidoIdBox.innerText = "Não identificado";
+      }
+
+      configurarLinks(pedidoId);
+      btnCopiarId.addEventListener("click", copiarPedido);
+    });
+  </script>
+</body>
+</html>

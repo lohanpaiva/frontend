@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login Admin - MEDFLIX</title>
+  <script src="https://kit.fontawesome.com/917245ba0f.js" crossorigin="anonymous"></script>
+  <style>
+    :root {
+      --primary: #1554c0;
+      --primary-dark: #0f3f92;
+      --secondary: #11b874;
+      --secondary-dark: #0d925c;
+      --danger: #dc2626;
+      --text: #17324d;
+      --text-soft: #64748b;
+      --bg: #eef5fc;
+      --white: #ffffff;
+      --border: #dbe6f2;
+      --shadow: 0 18px 45px rgba(21, 84, 192, 0.12);
+      --radius: 24px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(21, 84, 192, 0.08), transparent 28%),
+        radial-gradient(circle at bottom right, rgba(17, 184, 116, 0.08), transparent 24%),
+        linear-gradient(180deg, #f8fbff 0%, #eef5fc 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      color: var(--text);
+    }
+
+    .login-box {
+      width: 100%;
+      max-width: 430px;
+      background: rgba(255,255,255,0.96);
+      border: 1px solid rgba(21,84,192,0.08);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 32px;
+    }
+
+    .logo {
+      width: 70px;
+      height: 70px;
+      border-radius: 20px;
+      margin: 0 auto 18px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      box-shadow: 0 14px 30px rgba(21,84,192,0.22);
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      text-align: center;
+      font-size: 28px;
+      color: var(--primary-dark);
+    }
+
+    .sub {
+      margin: 0 0 24px;
+      text-align: center;
+      color: var(--text-soft);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .campo {
+      margin-bottom: 16px;
+    }
+
+    .campo label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-soft);
+    }
+
+    .campo input {
+      width: 100%;
+      padding: 14px 15px;
+      border-radius: 14px;
+      border: 1px solid #cfdceb;
+      font-size: 15px;
+      outline: none;
+      transition: 0.25s ease;
+    }
+
+    .campo input:focus {
+      border-color: rgba(21, 84, 192, 0.4);
+      box-shadow: 0 0 0 4px rgba(21, 84, 192, 0.08);
+    }
+
+    .btn {
+      width: 100%;
+      border: none;
+      border-radius: 14px;
+      padding: 15px 16px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      color: white;
+      background: linear-gradient(135deg, var(--secondary), #20d58c);
+      box-shadow: 0 12px 24px rgba(17,184,116,0.18);
+      transition: 0.25s ease;
+    }
+
+    .btn:hover {
+      background: linear-gradient(135deg, var(--secondary-dark), #18bf7c);
+      transform: translateY(-1px);
+    }
+
+    .erro {
+      display: none;
+      margin-top: 16px;
+      background: #fee2e2;
+      color: #991b1b;
+      border: 1px solid #fecaca;
+      border-radius: 14px;
+      padding: 13px 14px;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .info {
+      margin-top: 18px;
+      background: #eff6ff;
+      color: #1d4ed8;
+      border: 1px solid #bfdbfe;
+      border-radius: 14px;
+      padding: 13px 14px;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-box">
+    <div class="logo">
+      <i class="fa-solid fa-user-shield"></i>
+    </div>
+
+    <h1>Admin MEDFLIX</h1>
+    <p class="sub">
+      Acesso restrito ao painel administrativo de conferência, aprovação e emissão de documentos.
+    </p>
+
+    <form id="loginForm">
+      <div class="campo">
+        <label for="usuario">Usuário</label>
+        <input type="text" id="usuario" placeholder="Digite o usuário" autocomplete="username" required>
+      </div>
+
+      <div class="campo">
+        <label for="senha">Senha</label>
+        <input type="password" id="senha" placeholder="Digite a senha" autocomplete="current-password" required>
+      </div>
+
+      <button type="submit" class="btn">
+        <i class="fa-solid fa-right-to-bracket"></i>
+        Entrar no painel
+      </button>
+    </form>
+
+    <div class="erro" id="erroLogin"></div>
+
+    <div class="info">
+      Esta é uma proteção simples para a fase atual do projeto. Quando for hospedar oficialmente,
+      o ideal é migrar para autenticação no backend.
+    </div>
+  </div>
+
+  <script>
+    const ADMIN_USER = 'admin';
+    const ADMIN_PASS = 'medflix123';
+
+    const form = document.getElementById('loginForm');
+    const erroBox = document.getElementById('erroLogin');
+
+    function mostrarErro(msg) {
+      erroBox.style.display = 'block';
+      erroBox.textContent = msg;
+    }
+
+    function limparErro() {
+      erroBox.style.display = 'none';
+      erroBox.textContent = '';
+    }
+
+    if (localStorage.getItem('medflix_admin_logado') === 'true') {
+      window.location.href = './admin.html';
+    }
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      limparErro();
+
+      const usuario = document.getElementById('usuario').value.trim();
+      const senha = document.getElementById('senha').value;
+
+      if (usuario === ADMIN_USER && senha === ADMIN_PASS) {
+        localStorage.setItem('medflix_admin_logado', 'true');
+        localStorage.setItem('medflix_admin_usuario', usuario);
+        localStorage.setItem('medflix_admin_login_em', new Date().toISOString());
+        window.location.href = './admin.html';
+        return;
+      }
+
+      mostrarErro('Usuário ou senha inválidos.');
+    });
+  </script>
+</body>
+</html>

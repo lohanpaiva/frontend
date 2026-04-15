@@ -1,0 +1,1439 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Área do Paciente | MEDFLIX TELEMEDICINA</title>
+  <script src="https://kit.fontawesome.com/917245ba0f.js" crossorigin="anonymous"></script>
+
+  <style>
+    :root {
+      --primary: #1554c0;
+      --primary-dark: #0f3f92;
+      --primary-soft: #edf4ff;
+      --secondary: #11b874;
+      --secondary-dark: #0d925c;
+      --success: #16a34a;
+      --success-soft: #ecfdf5;
+      --info: #0891b2;
+      --info-soft: #ecfeff;
+      --warning: #b45309;
+      --warning-soft: #fff7ed;
+      --danger: #dc2626;
+      --danger-soft: #fff1f2;
+      --text: #17324d;
+      --text-soft: #64748b;
+      --white: #ffffff;
+      --border: #dbe6f2;
+      --shadow: 0 18px 42px rgba(15, 63, 146, 0.10);
+      --shadow-soft: 0 12px 28px rgba(15, 63, 146, 0.08);
+      --radius: 24px;
+      --radius-sm: 18px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(21,84,192,0.08), transparent 28%),
+        radial-gradient(circle at bottom right, rgba(17,184,116,0.08), transparent 22%),
+        linear-gradient(180deg, #f8fbff 0%, #eef5fc 100%);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    .topo {
+      background: linear-gradient(135deg, rgba(15,63,146,0.98), rgba(21,84,192,0.95));
+      color: white;
+      padding: 20px 16px;
+      box-shadow: 0 10px 26px rgba(21,84,192,0.16);
+    }
+
+    .topo-wrap {
+      max-width: 1180px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .topo-esquerda {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .logo-box {
+      width: 54px;
+      height: 54px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 23px;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.14);
+      flex-shrink: 0;
+    }
+
+    .topo h1 {
+      margin: 0 0 4px;
+      font-size: 24px;
+      line-height: 1.1;
+    }
+
+    .topo p {
+      margin: 0;
+      color: rgba(255,255,255,0.92);
+      font-size: 13px;
+    }
+
+    .topo-chip {
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.14);
+      color: white;
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-size: 13px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .container {
+      max-width: 1180px;
+      margin: 28px auto 40px;
+      padding: 0 16px;
+    }
+
+    .hero,
+    .consulta-card,
+    .status-card,
+    .card {
+      background: rgba(255,255,255,0.97);
+      border: 1px solid rgba(21,84,192,0.08);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .hero {
+      padding: 28px;
+      margin-bottom: 22px;
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 20px;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 8px;
+      background: linear-gradient(180deg, var(--primary), var(--secondary));
+      opacity: 0.95;
+    }
+
+    .hero-left {
+      padding-left: 10px;
+    }
+
+    .hero h2 {
+      margin: 0 0 10px;
+      font-size: 32px;
+      color: var(--primary-dark);
+      line-height: 1.15;
+    }
+
+    .hero p {
+      margin: 0;
+      color: var(--text-soft);
+      line-height: 1.75;
+      font-size: 15px;
+    }
+
+    .hero-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border-radius: 999px;
+      padding: 10px 14px;
+      background: #f7fbff;
+      border: 1px solid #e1ebf8;
+      color: var(--primary-dark);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .hero-side {
+      background: linear-gradient(180deg, #fbfdff, #f5f9ff);
+      border: 1px solid #dbe6f2;
+      border-radius: 22px;
+      padding: 22px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .hero-side h3 {
+      margin: 0 0 10px;
+      color: var(--primary-dark);
+      font-size: 18px;
+    }
+
+    .hero-side p {
+      margin: 0;
+      color: var(--text-soft);
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .consulta-card {
+      padding: 24px;
+      margin-bottom: 22px;
+    }
+
+    .consulta-topo {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+
+    .consulta-topo h3 {
+      margin: 0;
+      color: var(--primary-dark);
+      font-size: 22px;
+    }
+
+    .consulta-topo p {
+      margin: 6px 0 0;
+      color: var(--text-soft);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .busca-box {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto auto;
+      gap: 10px;
+      align-items: center;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 14px 15px;
+      border-radius: 14px;
+      border: 1px solid #cfdceb;
+      font-size: 15px;
+      outline: none;
+      background: white;
+      color: var(--text);
+      transition: 0.25s ease;
+    }
+
+    textarea {
+      resize: none;
+      min-height: 110px;
+      line-height: 1.55;
+    }
+
+    input:focus, textarea:focus {
+      border-color: rgba(21,84,192,0.4);
+      box-shadow: 0 0 0 4px rgba(21,84,192,0.08);
+    }
+
+    button, .btn-link {
+      border: none;
+      border-radius: 16px;
+      padding: 14px 16px;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 14px;
+      transition: 0.25s ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 50px;
+      text-align: center;
+    }
+
+    button:hover, .btn-link:hover {
+      transform: translateY(-1px);
+    }
+
+    button:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--secondary), #20d58c);
+      color: white;
+      box-shadow: 0 10px 22px rgba(17,184,116,0.16);
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(135deg, var(--secondary-dark), #18bf7c);
+    }
+
+    .btn-sec {
+      background: #edf4ff;
+      color: var(--primary-dark);
+    }
+
+    .btn-dark {
+      background: linear-gradient(135deg, #16355f, #0f2541);
+      color: white;
+    }
+
+    .btn-light {
+      background: white;
+      color: var(--primary-dark);
+      border: 1px solid #dbe6f2;
+    }
+
+    .status-card {
+      padding: 26px;
+      overflow: hidden;
+      position: relative;
+      margin-bottom: 22px;
+    }
+
+    .status-card::before {
+      content: "";
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 7px;
+      background: linear-gradient(180deg, var(--primary), var(--secondary));
+      opacity: 0.9;
+    }
+
+    .status-topo {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+      padding-left: 10px;
+    }
+
+    .status-head {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .status-icon {
+      width: 72px;
+      height: 72px;
+      border-radius: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 30px;
+      background: #eff6ff;
+      color: #1d4ed8;
+      box-shadow: inset 0 0 0 1px rgba(0,0,0,0.03);
+    }
+
+    .status-head h2 {
+      margin: 0 0 8px;
+      font-size: 28px;
+      color: var(--primary-dark);
+    }
+
+    .status-head p {
+      margin: 0;
+      color: var(--text-soft);
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 11px 16px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      white-space: nowrap;
+    }
+
+    .pendente_pagamento {
+      background: #fff7ed;
+      color: #9a3412;
+    }
+
+    .pago {
+      background: #ecfeff;
+      color: #155e75;
+    }
+
+    .comprovante_enviado {
+      background: #eff6ff;
+      color: #1d4ed8;
+    }
+
+    .emitido {
+      background: #ecfdf5;
+      color: #166534;
+    }
+
+    .reprovado {
+      background: #fff1f2;
+      color: #be123c;
+    }
+
+    .cancelado {
+      background: #f8fafc;
+      color: #475569;
+    }
+
+    .grid-main {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 18px;
+      padding-left: 10px;
+    }
+
+    .bloco {
+      background: #f9fcff;
+      border: 1px solid #e0ebf7;
+      border-radius: 18px;
+      padding: 18px;
+      height: 100%;
+    }
+
+    .bloco h3 {
+      margin: 0 0 14px;
+      font-size: 16px;
+      color: var(--primary-dark);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .grid-info {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .info-box {
+      background: white;
+      border: 1px solid #e4edf8;
+      border-radius: 14px;
+      padding: 13px;
+    }
+
+    .info-box span {
+      display: block;
+      font-size: 12px;
+      color: var(--text-soft);
+      margin-bottom: 6px;
+    }
+
+    .info-box strong {
+      color: var(--text);
+      font-size: 14px;
+      line-height: 1.45;
+      word-break: break-word;
+    }
+
+    .mensagem-box,
+    .pix-area,
+    .timeline-card,
+    .destaque-card {
+      margin-top: 18px;
+      border-radius: 18px;
+      padding: 18px;
+    }
+
+    .mensagem-box {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      color: var(--text-soft);
+      line-height: 1.7;
+      font-size: 14px;
+    }
+
+    .destaque-card {
+      background: linear-gradient(180deg, #f7fbff, #eef6ff);
+      border: 1px solid #d9e7fb;
+      color: var(--text);
+    }
+
+    .destaque-card h3 {
+      margin: 0 0 10px;
+      color: var(--primary-dark);
+      font-size: 18px;
+    }
+
+    .destaque-card p {
+      margin: 0;
+      color: var(--text-soft);
+      line-height: 1.7;
+      font-size: 14px;
+    }
+
+    .timeline-card {
+      background: #fbfdff;
+      border: 1px solid #e2ebf7;
+    }
+
+    .timeline-card h3 {
+      margin: 0 0 14px;
+      color: var(--primary-dark);
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .timeline {
+      display: grid;
+      gap: 12px;
+    }
+
+    .timeline-item {
+      display: grid;
+      grid-template-columns: 40px 1fr;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .timeline-bullet {
+      width: 40px;
+      height: 40px;
+      border-radius: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f1f5f9;
+      color: #64748b;
+      border: 1px solid #dbe6f2;
+      font-size: 15px;
+    }
+
+    .timeline-item.active .timeline-bullet,
+    .timeline-item.done .timeline-bullet {
+      background: var(--success-soft);
+      color: var(--success);
+      border-color: rgba(22,163,74,0.14);
+    }
+
+    .timeline-content {
+      background: white;
+      border: 1px solid #e4edf8;
+      border-radius: 14px;
+      padding: 12px 14px;
+    }
+
+    .timeline-content strong {
+      display: block;
+      font-size: 14px;
+      color: var(--text);
+      margin-bottom: 5px;
+    }
+
+    .timeline-content span {
+      display: block;
+      font-size: 13px;
+      color: var(--text-soft);
+      line-height: 1.6;
+    }
+
+    .pix-area {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+    }
+
+    .pix-area h3 {
+      margin: 0 0 10px;
+      color: var(--primary-dark);
+      font-size: 16px;
+    }
+
+    .pix-area p {
+      margin: 0;
+      color: var(--text-soft);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .pix-qrcode {
+      margin-top: 16px;
+      text-align: center;
+    }
+
+    .pix-qrcode img {
+      max-width: 240px;
+      width: 100%;
+      height: auto;
+      background: white;
+      border: 1px solid #dbe6f2;
+      border-radius: 16px;
+      padding: 12px;
+    }
+
+    .acoes {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 20px;
+      padding-left: 10px;
+    }
+
+    .loading-box {
+      text-align: center;
+      color: var(--text-soft);
+      padding: 32px 20px;
+    }
+
+    .loading-box i {
+      font-size: 24px;
+      color: var(--primary);
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .rodape {
+      text-align: center;
+      color: var(--text-soft);
+      padding: 16px 20px 28px;
+      font-size: 13px;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    @media (max-width: 980px) {
+      .hero,
+      .grid-main {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .container {
+        padding: 0 12px;
+      }
+
+      .hero,
+      .consulta-card,
+      .status-card {
+        padding-left: 18px;
+        padding-right: 18px;
+      }
+
+      .busca-box,
+      .grid-info {
+        grid-template-columns: 1fr;
+      }
+
+      .status-topo,
+      .status-head,
+      .consulta-topo {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .acoes {
+        flex-direction: column;
+      }
+
+      .acoes .btn-link,
+      .acoes button {
+        width: 100%;
+      }
+
+      .hero h2 {
+        font-size: 28px;
+      }
+
+      .status-head h2 {
+        font-size: 24px;
+      }
+
+      .hero-badge,
+      .topo-chip {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="topo">
+    <div class="topo-wrap">
+      <div class="topo-esquerda">
+        <div class="logo-box">
+          <i class="fa-solid fa-user-shield"></i>
+        </div>
+        <div>
+          <h1>MEDFLIX TELEMEDICINA</h1>
+          <p>Sua área para acompanhar o pedido com rapidez e praticidade</p>
+        </div>
+      </div>
+
+      <div class="topo-chip">
+        <i class="fa-solid fa-mobile-screen-button"></i>
+        Fácil no celular e no computador
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div class="hero-left">
+        <h2>Área do paciente</h2>
+        <p>
+          Aqui você acompanha seu pedido de forma simples. Use o número do pedido para localizar,
+          veja as atualizações e acesse seu documento quando ele estiver disponível.
+        </p>
+
+        <div class="hero-badges">
+          <div class="hero-badge"><i class="fa-solid fa-magnifying-glass"></i> Consulta rápida</div>
+          <div class="hero-badge"><i class="fa-solid fa-file-pdf"></i> Documento em um só lugar</div>
+          <div class="hero-badge"><i class="fa-solid fa-bolt"></i> Acesso prático</div>
+        </div>
+      </div>
+
+      <div class="hero-side">
+        <h3>Como usar</h3>
+        <p>
+          Digite o número do seu pedido ou use o último pedido salvo neste navegador.
+          Depois disso, basta acompanhar as informações mostradas abaixo.
+        </p>
+      </div>
+    </section>
+
+    <section class="consulta-card">
+      <div class="consulta-topo">
+        <div>
+          <h3>Encontrar meu pedido</h3>
+          <p>Digite o número recebido após a solicitação ou use o preenchimento automático.</p>
+        </div>
+
+        <button id="btnAutoPreencher" class="btn-sec" type="button">
+          <i class="fa-solid fa-wand-magic-sparkles"></i>
+          Usar último pedido
+        </button>
+      </div>
+
+      <div class="busca-box">
+        <input id="pedidoId" placeholder="Digite o número do pedido" />
+        <button id="btnConsultar" class="btn-primary" type="button">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          Ver meu pedido
+        </button>
+        <button id="btnLimpar" class="btn-dark" type="button">
+          <i class="fa-solid fa-xmark"></i>
+          Limpar
+        </button>
+      </div>
+    </section>
+
+    <section id="loadingWrap" class="consulta-card hidden">
+      <div class="loading-box">
+        <i class="fa-solid fa-spinner fa-spin"></i>
+        Buscando seu pedido...
+      </div>
+    </section>
+
+    <section id="resultadoWrap" class="status-card hidden">
+      <div class="status-topo">
+        <div class="status-head">
+          <div id="icon" class="status-icon">
+            <i class="fa-solid fa-spinner fa-spin"></i>
+          </div>
+
+          <div>
+            <h2 id="titulo">Carregando pedido...</h2>
+            <p id="sub1"></p>
+            <p id="sub2"></p>
+          </div>
+        </div>
+
+        <div id="statusBadge" class="status-badge hidden"></div>
+      </div>
+
+      <div class="grid-main">
+        <div class="bloco">
+          <h3><i class="fa-solid fa-receipt"></i> Resumo do seu pedido</h3>
+
+          <div id="info" class="grid-info">
+            <div class="info-box">
+              <span>Carregando</span>
+              <strong>Aguarde...</strong>
+            </div>
+          </div>
+
+          <div id="mensagemBox" class="mensagem-box">
+            Aguardando informações do seu pedido.
+          </div>
+
+          <div class="timeline-card">
+            <h3><i class="fa-solid fa-list-check"></i> Andamento</h3>
+            <div id="timeline" class="timeline"></div>
+          </div>
+        </div>
+
+        <div class="bloco">
+          <h3><i class="fa-solid fa-star"></i> O que fazer agora</h3>
+
+          <div id="destaqueBox" class="destaque-card">
+            <h3>Estamos localizando seu pedido</h3>
+            <p>Assim que ele for encontrado, mostraremos aqui a melhor próxima ação para você.</p>
+          </div>
+
+          <div id="pixArea" class="pix-area hidden">
+            <h3>Pagamento</h3>
+            <p id="pixTextoAuxiliar">Use o QR Code ou copie o código abaixo para pagar.</p>
+
+            <div class="pix-qrcode">
+              <img id="pixQrCode" alt="QR Code PIX" class="hidden" />
+            </div>
+
+            <textarea id="pixCopiaECola" readonly></textarea>
+          </div>
+
+          <div id="authResumo" class="mensagem-box">
+            Quando o documento estiver disponível, as opções importantes aparecerão aqui.
+          </div>
+        </div>
+      </div>
+
+      <div class="acoes">
+        <a id="btnPdf" class="btn-link btn-primary hidden" target="_blank">
+          <i class="fa-solid fa-file-pdf"></i>
+          Baixar documento
+        </a>
+
+        <a id="btnValidar" class="btn-link btn-sec hidden" target="_blank">
+          <i class="fa-solid fa-shield-check"></i>
+          Validar documento
+        </a>
+
+        <button id="btnCopiarCodigo" class="btn-dark hidden" type="button">
+          <i class="fa-solid fa-copy"></i>
+          Copiar código
+        </button>
+
+        <button id="btnCopiarPix" class="btn-sec hidden" type="button">
+          <i class="fa-solid fa-copy"></i>
+          Copiar código de pagamento
+        </button>
+
+        <button id="btnAtualizar" class="btn-primary" type="button">
+          <i class="fa-solid fa-rotate-right"></i>
+          Atualizar
+        </button>
+
+        <a href="index.html" class="btn-link btn-light">
+          <i class="fa-solid fa-house"></i>
+          Voltar ao início
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="rodape">
+    © 2026 MEDFLIX TELEMEDICINA
+  </footer>
+
+  <script>
+    const API_BASE = "https://SEU-BACKEND.onrender.com";
+
+    const pedidoIdInput = document.getElementById("pedidoId");
+    const btnConsultar = document.getElementById("btnConsultar");
+    const btnLimpar = document.getElementById("btnLimpar");
+    const btnAutoPreencher = document.getElementById("btnAutoPreencher");
+
+    const resultadoWrap = document.getElementById("resultadoWrap");
+    const loadingWrap = document.getElementById("loadingWrap");
+
+    const info = document.getElementById("info");
+    const titulo = document.getElementById("titulo");
+    const sub1 = document.getElementById("sub1");
+    const sub2 = document.getElementById("sub2");
+    const icon = document.getElementById("icon");
+    const badge = document.getElementById("statusBadge");
+    const mensagemBox = document.getElementById("mensagemBox");
+    const authResumo = document.getElementById("authResumo");
+    const destaqueBox = document.getElementById("destaqueBox");
+    const timeline = document.getElementById("timeline");
+
+    const btnPdf = document.getElementById("btnPdf");
+    const btnValidar = document.getElementById("btnValidar");
+    const btnCopiarCodigo = document.getElementById("btnCopiarCodigo");
+    const btnCopiarPix = document.getElementById("btnCopiarPix");
+    const btnAtualizar = document.getElementById("btnAtualizar");
+
+    const pixArea = document.getElementById("pixArea");
+    const pixQrCode = document.getElementById("pixQrCode");
+    const pixCopiaECola = document.getElementById("pixCopiaECola");
+    const pixTextoAuxiliar = document.getElementById("pixTextoAuxiliar");
+
+    let ultimoStatusConsultado = "";
+
+    function getParametro(nome) {
+      const url = new URL(window.location.href);
+      return url.searchParams.get(nome);
+    }
+
+    function formatStatus(status) {
+      if (!status) return "-";
+      return status.replaceAll("_", " ");
+    }
+
+    function formatarMoeda(valor) {
+      const numero = Number(valor || 0);
+      if (!numero) return "-";
+      return numero.toLocaleString("pt-BR", {
+        style: "currency",
+        currency: "BRL"
+      });
+    }
+
+    function mascararCpf(cpf = "") {
+      const numeros = String(cpf).replace(/\D/g, "");
+      if (numeros.length !== 11) return cpf || "-";
+      return `***.***.***-${numeros.slice(9)}`;
+    }
+
+    function setIcon(html, bg, color) {
+      icon.innerHTML = html;
+      icon.style.background = bg;
+      icon.style.color = color;
+    }
+
+    function setVisual(status) {
+      badge.className = "status-badge " + (status || "cancelado");
+      badge.innerText = formatStatus(status || "desconhecido");
+      badge.classList.remove("hidden");
+
+      if (status === "emitido") {
+        setIcon('<i class="fa-solid fa-circle-check"></i>', '#ecfdf5', '#166534');
+        titulo.innerText = "Seu documento está disponível";
+        sub1.innerText = "Tudo certo. Você já pode acessar seu documento.";
+        sub2.innerText = "Use os botões abaixo para baixar ou validar.";
+      } else if (status === "pago") {
+        setIcon('<i class="fa-solid fa-circle-check"></i>', '#ecfeff', '#155e75');
+        titulo.innerText = "Pagamento confirmado";
+        sub1.innerText = "Seu pagamento foi identificado com sucesso.";
+        sub2.innerText = "Agora é só acompanhar as próximas atualizações.";
+      } else if (status === "comprovante_enviado") {
+        setIcon('<i class="fa-solid fa-hourglass-half"></i>', '#eff6ff', '#1d4ed8');
+        titulo.innerText = "Recebemos sua atualização";
+        sub1.innerText = "Seu pedido foi localizado e está seguindo normalmente.";
+        sub2.innerText = "Continue acompanhando por esta página.";
+      } else if (status === "pendente_pagamento") {
+        setIcon('<i class="fa-solid fa-clock"></i>', '#fff7ed', '#9a3412');
+        titulo.innerText = "Falta concluir esta etapa";
+        sub1.innerText = "Seu pedido foi criado com sucesso.";
+        sub2.innerText = "Para seguir, finalize o pagamento mostrado abaixo.";
+      } else if (status === "reprovado") {
+        setIcon('<i class="fa-solid fa-circle-xmark"></i>', '#fff1f2', '#be123c');
+        titulo.innerText = "Seu pedido foi encerrado";
+        sub1.innerText = "No momento, este pedido não seguiu para liberação.";
+        sub2.innerText = "Se necessário, você pode fazer uma nova solicitação.";
+      } else if (status === "cancelado") {
+        setIcon('<i class="fa-solid fa-ban"></i>', '#f8fafc', '#475569');
+        titulo.innerText = "Pedido não disponível";
+        sub1.innerText = "Não foi possível localizar informações válidas agora.";
+        sub2.innerText = "";
+      } else {
+        setIcon('<i class="fa-solid fa-circle-info"></i>', '#f1f5f9', '#475569');
+        titulo.innerText = "Pedido localizado";
+        sub1.innerText = "Encontramos seu pedido.";
+        sub2.innerText = "Veja abaixo as informações disponíveis.";
+      }
+    }
+
+    function renderInfoBoxes(pedido) {
+      const nome = pedido.paciente?.nome || pedido.nome || "-";
+      const cpf = pedido.paciente?.cpf || pedido.cpf || "-";
+      const email = pedido.paciente?.email || pedido.email || "-";
+      const cidade = pedido.paciente?.cidade || pedido.cidade || "-";
+      const estado = pedido.paciente?.estado || pedido.estado || "-";
+      const valor = pedido.pagamento?.valor ? formatarMoeda(pedido.pagamento.valor) : "-";
+      const pedidoId = pedido.id || pedido.pedidoId || "-";
+      const codigo = pedido.documento?.codigoValidacao || "-";
+
+      info.innerHTML = `
+        <div class="info-box">
+          <span>Número do pedido</span>
+          <strong>${pedidoId}</strong>
+        </div>
+        <div class="info-box">
+          <span>Situação</span>
+          <strong>${formatStatus(pedido.status || "-")}</strong>
+        </div>
+        <div class="info-box">
+          <span>Paciente</span>
+          <strong>${nome}</strong>
+        </div>
+        <div class="info-box">
+          <span>CPF</span>
+          <strong>${mascararCpf(cpf)}</strong>
+        </div>
+        <div class="info-box">
+          <span>E-mail</span>
+          <strong>${email}</strong>
+        </div>
+        <div class="info-box">
+          <span>Cidade / Estado</span>
+          <strong>${cidade} / ${estado}</strong>
+        </div>
+        <div class="info-box">
+          <span>Valor</span>
+          <strong>${valor}</strong>
+        </div>
+        <div class="info-box">
+          <span>Código do documento</span>
+          <strong>${codigo}</strong>
+        </div>
+      `;
+    }
+
+    function atualizarMensagem(pedido) {
+      if (pedido.status === "emitido") {
+        mensagemBox.innerHTML = `
+          Seu pedido foi concluído e o documento já está disponível nesta página.
+          Use os botões abaixo para abrir o arquivo e validar quando quiser.
+        `;
+      } else if (pedido.status === "pago") {
+        mensagemBox.innerHTML = `
+          O pagamento já foi confirmado. Agora basta acompanhar esta página para ver as próximas atualizações.
+        `;
+      } else if (pedido.status === "comprovante_enviado") {
+        mensagemBox.innerHTML = `
+          Recebemos sua atualização. Continue acompanhando por aqui para visualizar qualquer mudança no pedido.
+        `;
+      } else if (pedido.status === "pendente_pagamento") {
+        mensagemBox.innerHTML = `
+          Seu pedido já foi criado. Para continuar, finalize o pagamento usando as informações mostradas nesta página.
+        `;
+      } else if (pedido.status === "reprovado") {
+        mensagemBox.innerHTML = `
+          Este pedido foi encerrado. Se precisar, você pode voltar ao início e fazer uma nova solicitação.
+        `;
+      } else {
+        mensagemBox.innerHTML = `
+          Seu pedido foi localizado. As informações disponíveis estão organizadas nesta página para facilitar seu acompanhamento.
+        `;
+      }
+    }
+
+    function atualizarDestaque(pedido) {
+      if (pedido.status === "emitido") {
+        destaqueBox.innerHTML = `
+          <h3>Seu próximo passo</h3>
+          <p>
+            Clique em <b>Baixar documento</b> para acessar o arquivo.
+            Se quiser confirmar a autenticidade, use também o botão de validação.
+          </p>
+        `;
+      } else if (pedido.status === "pendente_pagamento") {
+        destaqueBox.innerHTML = `
+          <h3>Seu próximo passo</h3>
+          <p>
+            Conclua o pagamento usando o código ou o QR Code mostrado abaixo.
+            Depois disso, acompanhe as próximas atualizações nesta mesma página.
+          </p>
+        `;
+      } else if (pedido.status === "pago") {
+        destaqueBox.innerHTML = `
+          <h3>Seu próximo passo</h3>
+          <p>
+            Agora é só acompanhar esta página. Assim que houver novidade, ela aparecerá aqui.
+          </p>
+        `;
+      } else if (pedido.status === "comprovante_enviado") {
+        destaqueBox.innerHTML = `
+          <h3>Seu próximo passo</h3>
+          <p>
+            Seu pedido já está em andamento. Continue acompanhando esta página até a liberação do documento.
+          </p>
+        `;
+      } else if (pedido.status === "reprovado") {
+        destaqueBox.innerHTML = `
+          <h3>Informação importante</h3>
+          <p>
+            Este pedido foi encerrado. Se precisar continuar, você pode iniciar uma nova solicitação pelo site.
+          </p>
+        `;
+      } else {
+        destaqueBox.innerHTML = `
+          <h3>Informação importante</h3>
+          <p>
+            Acompanhe seu pedido por esta página. Sempre que necessário, use o botão de atualizar.
+          </p>
+        `;
+      }
+    }
+
+    function atualizarTimeline(status) {
+      const etapas = [
+        {
+          classe: "done",
+          icone: "fa-file-circle-plus",
+          titulo: "Pedido criado",
+          texto: "Seu pedido foi registrado com sucesso."
+        },
+        {
+          classe: status === "pendente_pagamento"
+            ? "active"
+            : ["pago", "comprovante_enviado", "emitido", "reprovado"].includes(status) ? "done" : "",
+          icone: "fa-money-bill-wave",
+          titulo: "Etapa inicial",
+          texto: "Aqui ficam as informações para seguir com o pedido."
+        },
+        {
+          classe: ["pago", "comprovante_enviado"].includes(status)
+            ? "active"
+            : ["emitido", "reprovado"].includes(status) ? "done" : "",
+          icone: "fa-hourglass-half",
+          titulo: "Acompanhamento",
+          texto: "Seu pedido segue sendo atualizado nesta área."
+        },
+        {
+          classe: status === "emitido" || status === "reprovado" ? "active" : "",
+          icone: status === "reprovado" ? "fa-circle-xmark" : "fa-file-pdf",
+          titulo: status === "reprovado" ? "Pedido encerrado" : "Documento disponível",
+          texto: status === "reprovado"
+            ? "Este pedido foi finalizado sem liberação."
+            : "Quando concluído, o documento aparece para você aqui."
+        }
+      ];
+
+      timeline.innerHTML = etapas.map(item => `
+        <div class="timeline-item ${item.classe}">
+          <div class="timeline-bullet"><i class="fa-solid ${item.icone}"></i></div>
+          <div class="timeline-content">
+            <strong>${item.titulo}</strong>
+            <span>${item.texto}</span>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    function atualizarPixArea(pedido) {
+      pixArea.classList.add("hidden");
+      btnCopiarPix.classList.add("hidden");
+      pixQrCode.classList.add("hidden");
+      pixQrCode.removeAttribute("src");
+      pixCopiaECola.value = "";
+
+      const status = pedido.status;
+      const pagamento = pedido.pagamento || {};
+      const codigoPix = pagamento.copiaECola || "";
+      const qrCode = pagamento.qrCode || codigoPix || "";
+
+      if (!codigoPix || (status !== "pendente_pagamento" && status !== "pago")) {
+        return;
+      }
+
+      pixArea.classList.remove("hidden");
+      btnCopiarPix.classList.remove("hidden");
+      pixCopiaECola.value = codigoPix;
+
+      if (status === "pago") {
+        pixTextoAuxiliar.innerText = "Seu pagamento já foi identificado. Estas são as informações da cobrança gerada.";
+      } else {
+        pixTextoAuxiliar.innerText = "Use o QR Code ou copie o código abaixo para concluir o pagamento.";
+      }
+
+      if (qrCode) {
+        if (
+          qrCode.startsWith("data:image") ||
+          qrCode.startsWith("http://") ||
+          qrCode.startsWith("https://")
+        ) {
+          pixQrCode.src = qrCode;
+        } else {
+          pixQrCode.src = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(qrCode)}`;
+        }
+        pixQrCode.classList.remove("hidden");
+      }
+    }
+
+    function atualizarBotoes(pedido) {
+      btnPdf.classList.add("hidden");
+      btnValidar.classList.add("hidden");
+      btnCopiarCodigo.classList.add("hidden");
+
+      if (pedido.status === "emitido") {
+        if (pedido.pdf?.url) {
+          btnPdf.href = pedido.pdf.url.startsWith("http")
+            ? pedido.pdf.url
+            : API_BASE + pedido.pdf.url;
+          btnPdf.classList.remove("hidden");
+        }
+
+        const urlValidacao = pedido.urlValidacao || pedido.pdf?.urlValidacao;
+        if (urlValidacao) {
+          btnValidar.href = urlValidacao.startsWith("http")
+            ? urlValidacao
+            : API_BASE + urlValidacao;
+          btnValidar.classList.remove("hidden");
+        }
+
+        const codigo = pedido.documento?.codigoValidacao;
+        if (codigo) {
+          btnCopiarCodigo.dataset.codigo = codigo;
+          btnCopiarCodigo.classList.remove("hidden");
+        }
+      }
+    }
+
+    function atualizarResumoDocumento(pedido) {
+      if (pedido.status === "emitido") {
+        authResumo.innerHTML = `
+          Seu documento já está disponível.
+          Você pode baixar o arquivo, copiar o código e usar a validação pública quando quiser.
+        `;
+      } else if (pedido.status === "pendente_pagamento") {
+        authResumo.innerHTML = `
+          Assim que esta etapa for concluída, as próximas ações aparecerão automaticamente aqui.
+        `;
+      } else if (pedido.status === "pago" || pedido.status === "comprovante_enviado") {
+        authResumo.innerHTML = `
+          Seu pedido está seguindo normalmente. Assim que o documento ficar disponível, esta área será atualizada.
+        `;
+      } else if (pedido.status === "reprovado") {
+        authResumo.innerHTML = `
+          Este pedido foi encerrado e não possui documento disponível para esta consulta.
+        `;
+      } else {
+        authResumo.innerHTML = `
+          As informações principais do seu pedido aparecerão aqui conforme houver atualização.
+        `;
+      }
+    }
+
+    function mostrarResultado() {
+      loadingWrap.classList.add("hidden");
+      resultadoWrap.classList.remove("hidden");
+    }
+
+    function mostrarLoading() {
+      resultadoWrap.classList.add("hidden");
+      loadingWrap.classList.remove("hidden");
+    }
+
+    function esconderTudo() {
+      resultadoWrap.classList.add("hidden");
+      loadingWrap.classList.add("hidden");
+    }
+
+    btnCopiarCodigo.onclick = async () => {
+      const codigo = btnCopiarCodigo.dataset.codigo;
+      if (!codigo) return;
+
+      try {
+        await navigator.clipboard.writeText(codigo);
+        btnCopiarCodigo.innerHTML = '<i class="fa-solid fa-check"></i> Copiado!';
+        setTimeout(() => {
+          btnCopiarCodigo.innerHTML = '<i class="fa-solid fa-copy"></i> Copiar código';
+        }, 1500);
+      } catch (e) {
+        alert("Não foi possível copiar o código.");
+      }
+    };
+
+    btnCopiarPix.onclick = async () => {
+      const codigoPix = pixCopiaECola.value;
+      if (!codigoPix) return;
+
+      try {
+        await navigator.clipboard.writeText(codigoPix);
+        btnCopiarPix.innerHTML = '<i class="fa-solid fa-check"></i> Copiado!';
+        setTimeout(() => {
+          btnCopiarPix.innerHTML = '<i class="fa-solid fa-copy"></i> Copiar código de pagamento';
+        }, 1500);
+      } catch (e) {
+        alert("Não foi possível copiar o código de pagamento.");
+      }
+    };
+
+    async function consultarPedido(idParam = "") {
+      const pedidoId =
+        idParam ||
+        pedidoIdInput.value.trim() ||
+        getParametro("id") ||
+        JSON.parse(localStorage.getItem("ultimoPedido") || "{}").pedidoId ||
+        localStorage.getItem("ultimoPedidoId") ||
+        "";
+
+      if (!pedidoId) {
+        esconderTudo();
+        alert("Digite o número do pedido para continuar.");
+        return;
+      }
+
+      pedidoIdInput.value = pedidoId;
+
+      try {
+        mostrarLoading();
+        btnConsultar.disabled = true;
+        btnAtualizar.disabled = true;
+
+        const response = await fetch(`${API_BASE}/pedido/${encodeURIComponent(pedidoId)}`);
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.mensagem || "Pedido não encontrado.");
+        }
+
+        ultimoStatusConsultado = data.status || "";
+
+        setVisual(data.status);
+        renderInfoBoxes(data);
+        atualizarMensagem(data);
+        atualizarDestaque(data);
+        atualizarTimeline(data.status);
+        atualizarBotoes(data);
+        atualizarPixArea(data);
+        atualizarResumoDocumento(data);
+        mostrarResultado();
+
+        const payloadLocal = {
+          pedidoId: data.id || pedidoId,
+          status: data.status,
+          pagamento: data.pagamento || null,
+          pdf: data.pdf || null,
+          urlValidacao: data.urlValidacao || "",
+          paciente: data.paciente || null
+        };
+
+        localStorage.setItem("ultimoPedido", JSON.stringify({
+          ...(JSON.parse(localStorage.getItem("ultimoPedido") || "{}")),
+          ...payloadLocal
+        }));
+        localStorage.setItem("ultimoPedidoId", data.id || pedidoId);
+        localStorage.setItem("ultimoPedidoStatus", data.status || "");
+        localStorage.setItem("ultimoPagamento", JSON.stringify(data.pagamento || {}));
+      } catch (e) {
+        ultimoStatusConsultado = "cancelado";
+
+        setVisual("cancelado");
+        titulo.innerText = "Não encontramos este pedido";
+        sub1.innerText = "Verifique o número informado e tente novamente.";
+        sub2.innerText = "";
+        badge.classList.add("hidden");
+
+        info.innerHTML = `
+          <div class="info-box">
+            <span>Resultado</span>
+            <strong>${e.message || "Erro ao consultar pedido."}</strong>
+          </div>
+        `;
+
+        mensagemBox.innerHTML = `
+          Não foi possível localizar o pedido informado neste momento.
+          Confira o número e tente novamente.
+        `;
+
+        destaqueBox.innerHTML = `
+          <h3>O que fazer agora</h3>
+          <p>
+            Revise o número do pedido ou tente usar o último pedido salvo neste navegador.
+          </p>
+        `;
+
+        authResumo.innerHTML = `
+          Nenhum documento disponível para este número de pedido.
+        `;
+
+        atualizarTimeline("");
+        pixArea.classList.add("hidden");
+        btnPdf.classList.add("hidden");
+        btnValidar.classList.add("hidden");
+        btnCopiarCodigo.classList.add("hidden");
+        btnCopiarPix.classList.add("hidden");
+
+        mostrarResultado();
+      } finally {
+        btnConsultar.disabled = false;
+        btnAtualizar.disabled = false;
+      }
+    }
+
+    btnConsultar.addEventListener("click", () => consultarPedido());
+    btnAtualizar.addEventListener("click", () => consultarPedido());
+
+    btnAutoPreencher.addEventListener("click", () => {
+      const ultimo =
+        JSON.parse(localStorage.getItem("ultimoPedido") || "{}").pedidoId ||
+        localStorage.getItem("ultimoPedidoId") ||
+        "";
+
+      if (!ultimo) {
+        alert("Nenhum pedido salvo foi encontrado neste navegador.");
+        return;
+      }
+
+      pedidoIdInput.value = ultimo;
+      consultarPedido(ultimo);
+    });
+
+    btnLimpar.addEventListener("click", () => {
+      pedidoIdInput.value = "";
+      esconderTudo();
+    });
+
+    pedidoIdInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        consultarPedido();
+      }
+    });
+
+    window.addEventListener("DOMContentLoaded", () => {
+      const idUrl = getParametro("id");
+      const idLocal =
+        JSON.parse(localStorage.getItem("ultimoPedido") || "{}").pedidoId ||
+        localStorage.getItem("ultimoPedidoId") ||
+        "";
+
+      if (idUrl) {
+        pedidoIdInput.value = idUrl;
+        consultarPedido(idUrl);
+        return;
+      }
+
+      if (idLocal) {
+        pedidoIdInput.value = idLocal;
+      }
+    });
+  </script>
+</body>
+</html>

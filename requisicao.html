@@ -1,0 +1,1193 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Solicitação de Atestado - MEDFLIX TELEMEDICINA</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script src="https://kit.fontawesome.com/917245ba0f.js" crossorigin="anonymous"></script>
+
+<style>
+  :root {
+    --primary: #1554c0;
+    --primary-dark: #0f3f92;
+    --secondary: #11b874;
+    --text: #17324d;
+    --text-soft: #6b7280;
+    --bg: #f4f7fb;
+    --white: #ffffff;
+    --border: #dbe6f2;
+    --danger: #dc2626;
+    --warning: #b45309;
+    --success-bg: #ecfdf5;
+    --success-border: #bbf7d0;
+    --success-text: #166534;
+    --shadow: 0 10px 28px rgba(0,0,0,0.08);
+    --shadow-soft: 0 8px 18px rgba(21, 84, 192, 0.08);
+    --radius: 18px;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: var(--bg);
+    color: #1f2937;
+  }
+
+  .topo {
+    background: linear-gradient(135deg, var(--primary-dark), #4aa3ff);
+    color: white;
+    padding: 28px 20px;
+    text-align: center;
+  }
+
+  .topo h1 {
+    margin: 0;
+    font-size: 28px;
+    letter-spacing: 0.3px;
+  }
+
+  .topo p {
+    margin-top: 8px;
+    opacity: 0.95;
+  }
+
+  .container {
+    max-width: 860px;
+    margin: 30px auto;
+    padding: 0 20px 40px;
+  }
+
+  .barra-wrap {
+    background: white;
+    padding: 18px;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+    margin-bottom: 20px;
+  }
+
+  .barra-texto {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    margin-bottom: 12px;
+    color: #555;
+  }
+
+  .barra {
+    width: 100%;
+    height: 8px;
+    background: #e5e7eb;
+    border-radius: 999px;
+    overflow: hidden;
+  }
+
+  #barraProgresso {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--secondary), var(--primary));
+    border-radius: 999px;
+    transition: 0.35s ease;
+  }
+
+  .etapa {
+    display: none;
+    opacity: 0;
+    transform: translateY(15px);
+    transition: 0.35s ease;
+  }
+
+  .etapa.ativa {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .card {
+    background: white;
+    border-radius: var(--radius);
+    padding: 28px;
+    box-shadow: var(--shadow);
+  }
+
+  .card h2 {
+    margin-top: 0;
+    margin-bottom: 8px;
+    font-size: 26px;
+    color: var(--text);
+  }
+
+  .sub {
+    color: var(--text-soft);
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 22px;
+  }
+
+  .opcoes {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .opcao {
+    background: linear-gradient(180deg, #fbfdff, #f5f9ff);
+    border: 1px solid #dfe9f7;
+    border-radius: 16px;
+    padding: 14px 16px;
+    cursor: pointer;
+    transition: 0.22s ease;
+    font-size: 15px;
+    line-height: 1.4;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    box-shadow: var(--shadow-soft);
+  }
+
+  .opcao:hover {
+    transform: translateY(-1px);
+    border-color: #bfd5f5;
+    background: linear-gradient(180deg, #f8fbff, #eef5ff);
+  }
+
+  .opcao.ativa {
+    border-color: var(--primary);
+    background: linear-gradient(180deg, #eef5ff, #e4efff);
+    box-shadow: 0 8px 20px rgba(21, 84, 192, 0.14);
+  }
+
+  .icone-opcao {
+    width: 42px;
+    min-width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(180deg, #f0f6ff, #e1edff);
+    color: var(--primary);
+    font-size: 18px;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.9);
+  }
+
+  .opcao.ativa .icone-opcao {
+    background: linear-gradient(180deg, var(--primary), #2d74e6);
+    color: #fff;
+  }
+
+  .texto-opcao {
+    flex: 1;
+    font-weight: 600;
+    color: #213547;
+  }
+
+  textarea,
+  input,
+  select {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 13px 14px;
+    border: 1px solid #d1d5db;
+    border-radius: 12px;
+    margin-top: 10px;
+    font-size: 15px;
+    background: white;
+    outline: none;
+    transition: 0.2s ease;
+  }
+
+  textarea:focus,
+  input:focus,
+  select:focus {
+    border-color: rgba(21, 84, 192, 0.35);
+    box-shadow: 0 0 0 4px rgba(21, 84, 192, 0.08);
+  }
+
+  label.campo {
+    display: block;
+    margin-top: 15px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #374151;
+  }
+
+  .grid-2 {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .aviso-dados {
+    margin-top: 16px;
+    background: #fff7ed;
+    border: 1px solid #fed7aa;
+    color: #9a3412;
+    padding: 14px;
+    border-radius: 12px;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .confirmacao-box {
+    margin-top: 16px;
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    color: #1d4ed8;
+    padding: 14px;
+    border-radius: 12px;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .confirmacao-check {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-top: 10px;
+  }
+
+  .confirmacao-check input[type="checkbox"] {
+    width: 18px;
+    min-width: 18px;
+    height: 18px;
+    margin: 2px 0 0;
+    padding: 0;
+  }
+
+  .confirmacao-check label {
+    margin: 0;
+    font-size: 14px;
+    color: #1e3a8a;
+    line-height: 1.6;
+    font-weight: 600;
+  }
+
+  .nav {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 24px;
+  }
+
+  button {
+    border: none;
+    border-radius: 12px;
+    padding: 14px 18px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: bold;
+    transition: 0.2s ease;
+  }
+
+  button:hover {
+    transform: translateY(-1px);
+  }
+
+  button:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .btn {
+    background: var(--secondary);
+    color: white;
+    flex: 1;
+    box-shadow: 0 10px 20px rgba(17, 184, 116, 0.16);
+  }
+
+  .voltar {
+    background: #e5e7eb;
+    color: #111827;
+    min-width: 140px;
+  }
+
+  .preview {
+    background: #f8fafc;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    padding: 22px;
+    line-height: 1.7;
+  }
+
+  .preview h3 {
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 22px;
+    color: var(--primary-dark);
+  }
+
+  .alerta {
+    margin-top: 18px;
+    background: #fff7ed;
+    border: 1px solid #fed7aa;
+    color: #9a3412;
+    padding: 14px;
+    border-radius: 12px;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .pix-box {
+    background: #f8fafc;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    padding: 18px;
+  }
+
+  .pix-box textarea {
+    min-height: 120px;
+    margin-top: 14px;
+    resize: none;
+  }
+
+  .status-pagamento {
+    display: inline-block;
+    background: #dbeafe;
+    color: #1d4ed8;
+    padding: 8px 12px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: bold;
+    margin-bottom: 16px;
+  }
+
+  .copy-btn {
+    background: var(--primary);
+    color: white;
+    margin-top: 12px;
+    width: 100%;
+  }
+
+  .mensagem-erro {
+    margin-top: 16px;
+    background: #fff1f2;
+    border: 1px solid #fecdd3;
+    color: #be123c;
+    border-radius: 12px;
+    padding: 12px 14px;
+    display: none;
+  }
+
+  .mensagem-ok {
+    margin-top: 16px;
+    background: var(--success-bg);
+    border: 1px solid var(--success-border);
+    color: var(--success-text);
+    border-radius: 12px;
+    padding: 12px 14px;
+    display: none;
+  }
+
+  .carregando {
+    opacity: 0.7;
+    pointer-events: none;
+  }
+
+  .pix-qrcode-wrap {
+    margin-top: 16px;
+    text-align: center;
+  }
+
+  .pix-qrcode-wrap img {
+    max-width: 220px;
+    width: 100%;
+    height: auto;
+    background: white;
+    border: 1px solid #dbe6f2;
+    border-radius: 14px;
+    padding: 10px;
+  }
+
+  .pix-info {
+    margin-top: 14px;
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    color: #1e3a8a;
+    border-radius: 12px;
+    padding: 12px 14px;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  @media (max-width: 700px) {
+    .opcoes,
+    .grid-2 {
+      grid-template-columns: 1fr;
+    }
+
+    .nav {
+      flex-direction: column;
+    }
+
+    .voltar,
+    .btn {
+      width: 100%;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="topo">
+  <h1>MEDFLIX TELEMEDICINA</h1>
+  <p>Solicitação digital de atendimento e emissão de atestado médico</p>
+</div>
+
+<div class="container">
+
+  <div class="barra-wrap">
+    <div class="barra-texto">
+      <span id="tituloEtapa">Etapa 1 de 7</span>
+      <span id="percentualEtapa">0%</span>
+    </div>
+    <div class="barra">
+      <div id="barraProgresso"></div>
+    </div>
+  </div>
+
+  <div class="etapa ativa" id="etapa1">
+    <div class="card">
+      <h2>Qual seu problema de saúde?</h2>
+      <div class="sub">Selecione o motivo principal do seu atestado.</div>
+
+      <div class="opcoes single" id="problemaSaude">
+        <div class="opcao">
+          <span class="icone-opcao"><i class="fa-solid fa-head-side-cough"></i></span>
+          <span class="texto-opcao">Resfriado / gripe</span>
+        </div>
+
+        <div class="opcao">
+          <span class="icone-opcao"><i class="fa-solid fa-stomach"></i></span>
+          <span class="texto-opcao">Gastroenterite</span>
+        </div>
+
+        <div class="opcao">
+          <span class="icone-opcao"><i class="fa-solid fa-virus-covid"></i></span>
+          <span class="texto-opcao">Sintoma de coronavírus</span>
+        </div>
+
+        <div class="opcao">
+          <span class="icone-opcao"><i class="fa-solid fa-brain"></i></span>
+          <span class="texto-opcao">Estresse</span>
+        </div>
+
+        <div class="opcao">
+          <span class="icone-opcao"><i class="fa-solid fa-head-side-virus"></i></span>
+          <span class="texto-opcao">Enxaqueca</span>
+        </div>
+
+        <div class="opcao">
+          <span class="icone-opcao"><i class="fa-solid fa-bone"></i></span>
+          <span class="texto-opcao">Dor nas costas</span>
+        </div>
+
+        <div class="opcao">
+          <span class="icone-opcao"><i class="fa-solid fa-droplet"></i></span>
+          <span class="texto-opcao">Cólica menstrual</span>
+        </div>
+
+        <div class="opcao">
+          <span class="icone-opcao"><i class="fa-solid fa-toilet"></i></span>
+          <span class="texto-opcao">Cistite</span>
+        </div>
+
+        <div class="opcao">
+          <span class="icone-opcao"><i class="fa-solid fa-notes-medical"></i></span>
+          <span class="texto-opcao">Outros</span>
+        </div>
+      </div>
+
+      <div class="nav">
+        <button type="button" class="btn" onclick="next()">Continuar</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="etapa" id="etapa2">
+    <div class="card">
+      <h2>Diagnóstico prévio</h2>
+      <div class="sub">Informação importante para o médico avaliador.</div>
+
+      <div class="opcoes single" id="diagnosticoPrevio">
+        <div class="opcao">
+          <span class="icone-opcao"><i class="fa-solid fa-circle-check"></i></span>
+          <span class="texto-opcao">Sim</span>
+        </div>
+
+        <div class="opcao">
+          <span class="icone-opcao"><i class="fa-solid fa-circle-xmark"></i></span>
+          <span class="texto-opcao">Não</span>
+        </div>
+
+        <div class="opcao">
+          <span class="icone-opcao"><i class="fa-solid fa-user-shield"></i></span>
+          <span class="texto-opcao">Prefiro não informar</span>
+        </div>
+      </div>
+
+      <div class="nav">
+        <button type="button" class="voltar" onclick="back()">Voltar</button>
+        <button type="button" class="btn" onclick="next()">Continuar</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="etapa" id="etapa3">
+    <div class="card">
+      <h2>Seus sintomas</h2>
+      <div class="sub">Escolha os sintomas que você está sentindo no momento.</div>
+
+      <div class="opcoes multi" id="sintomasAtuais">
+        <div class="opcao">
+          <span class="icone-opcao"><i class="fa-solid fa-temperature-high"></i></span>
+          <span class="texto-opcao">Febre</span>
+        </div>
+
+        <div class="opcao">
+          <span class="icone-opcao"><i class="fa-solid fa-face-dizzy"></i></span>
+          <span class="texto-opcao">Náusea</span>
+        </div>
+
+        <div class="opcao">
+          <span class="icone-opcao"><i class="fa-solid fa-toilet-paper"></i></span>
+          <span class="texto-opcao">Diarreia</span>
+        </div>
+
+        <div class="opcao">
+          <span class="icone-opcao"><i class="fa-solid fa-lungs-virus"></i></span>
+          <span class="texto-opcao">Tosse sem catarro</span>
+        </div>
+
+        <div class="opcao">
+          <span class="icone-opcao"><i class="fa-solid fa-lungs"></i></span>
+          <span class="texto-opcao">Tosse com catarro</span>
+        </div>
+
+        <div class="opcao">
+          <span class="icone-opcao"><i class="fa-solid fa-face-tired"></i></span>
+          <span class="texto-opcao">Mal-estar</span>
+        </div>
+
+        <div class="opcao">
+          <span class="icone-opcao"><i class="fa-solid fa-battery-quarter"></i></span>
+          <span class="texto-opcao">Fadiga</span>
+        </div>
+
+        <div class="opcao">
+          <span class="icone-opcao"><i class="fa-solid fa-heart-pulse"></i></span>
+          <span class="texto-opcao">Pressão arterial elevada</span>
+        </div>
+
+        <div class="opcao">
+          <span class="icone-opcao"><i class="fa-solid fa-wheelchair-move"></i></span>
+          <span class="texto-opcao">O corpo não pode se mover livremente</span>
+        </div>
+
+        <div class="opcao">
+          <span class="icone-opcao"><i class="fa-solid fa-bolt"></i></span>
+          <span class="texto-opcao">Evento estressante na vida</span>
+        </div>
+
+        <div class="opcao">
+          <span class="icone-opcao"><i class="fa-solid fa-bed"></i></span>
+          <span class="texto-opcao">Distúrbio do sono</span>
+        </div>
+
+        <div class="opcao">
+          <span class="icone-opcao"><i class="fa-solid fa-notes-medical"></i></span>
+          <span class="texto-opcao">Outros</span>
+        </div>
+      </div>
+
+      <div class="nav">
+        <button type="button" class="voltar" onclick="back()">Voltar</button>
+        <button type="button" class="btn" onclick="next()">Continuar</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="etapa" id="etapa4">
+    <div class="card">
+      <h2>Detalhes finais</h2>
+      <div class="sub">Informações sobre o início dos sintomas e período desejado.</div>
+
+      <label class="campo">Quando os sintomas começaram? (o período de afastamento começará a contar a partir deste dia)</label>
+      <input type="date" id="dataInicioSintomas">
+
+      <label class="campo">Outros sintomas ou detalhes que gostaria de mencionar?</label>
+      <textarea id="detalhes" placeholder="Descreva aqui outros sintomas ou detalhes importantes..."></textarea>
+
+      <label class="campo">Por quantos dias você precisa do atestado?</label>
+      <select id="dias">
+        <option value="1">1 dia — R$ 29,67</option>
+        <option value="2">2 dias — R$ 39,43</option>
+        <option value="3">3 dias — R$ 49,87</option>
+        <option value="5">5 dias — R$ 59,31</option>
+        <option value="7">7 dias — R$ 69,72</option>
+        <option value="10">10 dias — R$ 79,46</option>
+        <option value="15">15 dias — R$ 89,23</option>
+      </select>
+
+      <div class="nav">
+        <button type="button" class="voltar" onclick="back()">Voltar</button>
+        <button type="button" class="btn" onclick="next()">Continuar</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="etapa" id="etapa5">
+    <div class="card">
+      <h2>Informe seus dados pessoais</h2>
+      <div class="sub">
+        Essas informações serão utilizadas para a emissão do seu atestado médico e para contato sobre seu atendimento.
+      </div>
+
+      <input id="nome" placeholder="Nome completo" autocomplete="name">
+      <input id="cpf" placeholder="CPF" inputmode="numeric" autocomplete="off">
+      <input id="telefone" placeholder="Telefone / WhatsApp" inputmode="tel" autocomplete="tel">
+      <input id="email" placeholder="E-mail" inputmode="email" autocomplete="email">
+
+      <div class="grid-2">
+        <input id="estado" placeholder="Estado" autocomplete="address-level1">
+        <input id="cidade" placeholder="Cidade" autocomplete="address-level2">
+      </div>
+
+      <div class="aviso-dados">
+        <strong>Atenção:</strong> os dados informados de <strong>Nome, CPF, Telefone, Estado e Cidade</strong>
+        serão utilizados <strong>exatamente como digitados</strong> para a emissão do seu atestado e contato sobre o pedido.
+        Verifique com atenção antes de prosseguir.
+      </div>
+
+      <div class="confirmacao-box">
+        <strong>Confirmação obrigatória</strong>
+        <div class="confirmacao-check">
+          <input type="checkbox" id="confirmacaoDados">
+          <label for="confirmacaoDados">
+            Declaro que os dados informados estão corretos e autorizo seu uso para emissão do documento e contato sobre este atendimento.
+          </label>
+        </div>
+      </div>
+
+      <div class="nav">
+        <button type="button" class="voltar" onclick="back()">Voltar</button>
+        <button type="button" class="btn" onclick="next()">Continuar</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="etapa" id="etapa6">
+    <div class="card">
+      <h2>Prévia do seu atestado</h2>
+      <div class="sub">
+        Confira os principais dados antes de seguir para o pagamento.
+      </div>
+
+      <div class="preview">
+        <h3>ATESTADO MÉDICO</h3>
+
+        <p><strong>Paciente:</strong> <span id="prevNome"></span></p>
+        <p><strong>CPF:</strong> <span id="prevCpf"></span></p>
+        <p><strong>Telefone:</strong> <span id="prevTelefone"></span></p>
+        <p><strong>E-mail:</strong> <span id="prevEmail"></span></p>
+        <p><strong>Estado:</strong> <span id="prevEstado"></span></p>
+        <p><strong>Cidade:</strong> <span id="prevCidade"></span></p>
+        <p><strong>Início informado dos sintomas:</strong> <span id="prevDataInicioSintomas"></span></p>
+        <p><strong>Período solicitado:</strong> <span id="prevDias"></span> dia(s)</p>
+        <p><strong>Validade solicitada a partir de:</strong> <span id="prevDataValidade"></span></p>
+        <p><strong>Data da solicitação:</strong> <span id="dataAtual"></span></p>
+        <p><strong>Resumo informado:</strong> <span id="prevResumoClinico"></span></p>
+
+        <p style="margin-top:20px;">
+          Atesto, para os devidos fins, que o(a) paciente acima identificado(a) foi submetido(a)
+          à avaliação médica, podendo necessitar de afastamento de suas atividades conforme análise
+          clínica final do médico responsável, considerando a data informada de início dos sintomas.
+        </p>
+      </div>
+
+      <div class="alerta">
+        O documento oficial em PDF será liberado somente após a confirmação do pagamento e aprovação da equipe.
+      </div>
+
+      <div class="nav">
+        <button type="button" class="voltar" onclick="back()">Voltar</button>
+        <button type="button" class="btn" onclick="next()">Ir para pagamento</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="etapa" id="etapa7">
+    <div class="card" id="cardPagamento">
+      <h2>Pagamento via PIX</h2>
+      <div class="sub">Após o pagamento, seu pedido poderá ser acompanhado automaticamente. O envio de comprovante fica como alternativa opcional.</div>
+
+      <div class="status-pagamento">PIX gerado com sucesso</div>
+
+      <div class="pix-box">
+        <div class="pix-info" id="pixInfoPedido">
+          Aguardando geração do pagamento...
+        </div>
+
+        <div class="pix-qrcode-wrap">
+          <img id="pixQrCode" alt="QR Code PIX" style="display:none;">
+        </div>
+
+        <strong>Copie o código abaixo:</strong>
+        <textarea id="pix" rows="6" readonly></textarea>
+        <button type="button" class="copy-btn" onclick="copiarPix()">Copiar código PIX</button>
+      </div>
+
+      <label class="campo">Envie o comprovante de pagamento (opcional)</label>
+      <input type="file" id="comprovante" accept=".jpg,.jpeg,.png,.pdf,.webp">
+
+      <div class="mensagem-erro" id="mensagemErro"></div>
+      <div class="mensagem-ok" id="mensagemOk"></div>
+
+      <div class="nav">
+        <button type="button" class="voltar" onclick="back()">Voltar</button>
+        <button type="button" class="btn" id="btnEnviarComprovante" onclick="seguirParaSucesso()">
+          Já gerei meu PIX / acompanhar pedido
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  let etapa = 1;
+  let dados = {};
+  let pedidoId = null;
+  let pedidoCriado = false;
+  let pagamentoAtual = null;
+
+  function atualizarBarra() {
+    const percentual = Math.round(((etapa - 1) / 6) * 100);
+    document.getElementById('barraProgresso').style.width = percentual + '%';
+    document.getElementById('tituloEtapa').innerText = `Etapa ${etapa} de 7`;
+    document.getElementById('percentualEtapa').innerText = percentual + '%';
+  }
+
+  function mostrarEtapa() {
+    document.querySelectorAll('.etapa').forEach(e => e.classList.remove('ativa'));
+    document.getElementById('etapa' + etapa).classList.add('ativa');
+    atualizarBarra();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  async function next() {
+    if (!validar()) return;
+
+    if (etapa === 5) {
+      salvarDados();
+      montarResumo();
+    }
+
+    etapa++;
+    mostrarEtapa();
+
+    if (etapa === 7) {
+      await garantirPedidoCriado();
+      gerarPix();
+    }
+  }
+
+  function back() {
+    if (etapa > 1) {
+      etapa--;
+      mostrarEtapa();
+    }
+  }
+
+  function validarEmail(email) {
+    if (!email) return true;
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  }
+
+  function validar() {
+    const atual = document.getElementById('etapa' + etapa);
+    const opcoesContainer = atual.querySelector('.opcoes');
+    const opcoesAtivas = atual.querySelectorAll('.opcao.ativa');
+
+    if (opcoesContainer && opcoesAtivas.length === 0) {
+      alert('Selecione pelo menos uma opção para continuar.');
+      return false;
+    }
+
+    if (etapa === 4) {
+      const dataInicioSintomas = document.getElementById('dataInicioSintomas').value;
+      if (!dataInicioSintomas) {
+        alert('Selecione a data de início dos sintomas para continuar.');
+        return false;
+      }
+    }
+
+    if (etapa === 5) {
+      const nome = document.getElementById('nome').value.trim();
+      const cpf = document.getElementById('cpf').value.trim();
+      const telefone = document.getElementById('telefone').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const estado = document.getElementById('estado').value.trim();
+      const cidade = document.getElementById('cidade').value.trim();
+      const confirmacaoDados = document.getElementById('confirmacaoDados').checked;
+
+      if (!nome || !cpf || !telefone || !estado || !cidade) {
+        alert('Preencha nome, CPF, telefone, estado e cidade para continuar.');
+        return false;
+      }
+
+      if (email && !validarEmail(email)) {
+        alert('Informe um e-mail válido ou deixe o campo em branco.');
+        return false;
+      }
+
+      if (!confirmacaoDados) {
+        alert('Você precisa confirmar que os dados informados estão corretos para continuar.');
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  document.querySelectorAll('.opcoes').forEach(container => {
+    const multi = container.classList.contains('multi');
+
+    container.querySelectorAll('.opcao').forEach(op => {
+      op.onclick = () => {
+        if (!multi) {
+          container.querySelectorAll('.opcao').forEach(o => o.classList.remove('ativa'));
+          op.classList.add('ativa');
+        } else {
+          op.classList.toggle('ativa');
+        }
+      };
+    });
+  });
+
+  function getOpcaoUnica(containerId) {
+    const ativa = document.querySelector(`#${containerId} .opcao.ativa`);
+    if (!ativa) return '';
+    const texto = ativa.querySelector('.texto-opcao');
+    return texto ? texto.innerText.trim() : ativa.innerText.trim();
+  }
+
+  function getOpcoesMultiplas(containerId) {
+    return Array.from(document.querySelectorAll(`#${containerId} .opcao.ativa`))
+      .map(el => {
+        const texto = el.querySelector('.texto-opcao');
+        return texto ? texto.innerText.trim() : el.innerText.trim();
+      });
+  }
+
+  function formatarDataBR(dataISO) {
+    if (!dataISO) return '-';
+    const [ano, mes, dia] = dataISO.split('-');
+    return `${dia}/${mes}/${ano}`;
+  }
+
+  function formatarMoeda(valor) {
+    return Number(valor || 0).toLocaleString('pt-BR', {
+      style: 'currency',
+      currency: 'BRL'
+    });
+  }
+
+  function salvarDados() {
+    dados.problemaSaude = getOpcaoUnica('problemaSaude');
+    dados.diagnosticoPrevio = getOpcaoUnica('diagnosticoPrevio');
+    dados.sintomasLista = getOpcoesMultiplas('sintomasAtuais');
+    dados.dataInicioSintomas = document.getElementById('dataInicioSintomas').value;
+    dados.detalhes = document.getElementById('detalhes').value.trim();
+    dados.dias = document.getElementById('dias').value;
+    dados.nome = document.getElementById('nome').value.trim();
+    dados.cpf = document.getElementById('cpf').value.trim();
+    dados.telefone = document.getElementById('telefone').value.trim();
+    dados.email = document.getElementById('email').value.trim();
+    dados.estado = document.getElementById('estado').value.trim();
+    dados.cidade = document.getElementById('cidade').value.trim();
+
+    const resumoClinico = [
+      dados.problemaSaude ? `Problema principal: ${dados.problemaSaude}` : '',
+      dados.diagnosticoPrevio ? `Diagnóstico prévio: ${dados.diagnosticoPrevio}` : '',
+      dados.sintomasLista.length ? `Sintomas: ${dados.sintomasLista.join(', ')}` : '',
+      dados.dataInicioSintomas ? `Início dos sintomas: ${formatarDataBR(dados.dataInicioSintomas)}` : '',
+      dados.detalhes ? `Detalhes: ${dados.detalhes}` : ''
+    ].filter(Boolean).join(' | ');
+
+    dados.resumoClinico = resumoClinico;
+  }
+
+  function montarResumo() {
+    document.getElementById('prevNome').innerText = dados.nome || '-';
+    document.getElementById('prevCpf').innerText = dados.cpf || '-';
+    document.getElementById('prevTelefone').innerText = dados.telefone || '-';
+    document.getElementById('prevEmail').innerText = dados.email || '-';
+    document.getElementById('prevEstado').innerText = dados.estado || '-';
+    document.getElementById('prevCidade').innerText = dados.cidade || '-';
+    document.getElementById('prevDataInicioSintomas').innerText = formatarDataBR(dados.dataInicioSintomas);
+    document.getElementById('prevDataValidade').innerText = formatarDataBR(dados.dataInicioSintomas);
+    document.getElementById('prevDias').innerText = dados.dias || '-';
+    document.getElementById('dataAtual').innerText = new Date().toLocaleDateString('pt-BR');
+    document.getElementById('prevResumoClinico').innerText = dados.resumoClinico || 'Não informado';
+  }
+
+  function gerarPix() {
+    esconderErro();
+    esconderOk();
+
+    const pixEl = document.getElementById('pix');
+    const qrEl = document.getElementById('pixQrCode');
+    const infoEl = document.getElementById('pixInfoPedido');
+
+    if (!pagamentoAtual) {
+      pixEl.value = '';
+      qrEl.style.display = 'none';
+      infoEl.innerText = 'Não foi possível carregar os dados do pagamento.';
+      mostrarErro('PIX ainda não disponível para este pedido.');
+      return;
+    }
+
+    pixEl.value = pagamentoAtual.copiaECola || '';
+
+    const qrValue = pagamentoAtual.qrCode || pagamentoAtual.copiaECola || '';
+    if (qrValue) {
+      if (
+        qrValue.startsWith('data:image') ||
+        qrValue.startsWith('http://') ||
+        qrValue.startsWith('https://')
+      ) {
+        qrEl.src = qrValue;
+      } else {
+        qrEl.src = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(qrValue)}`;
+      }
+      qrEl.style.display = 'inline-block';
+    } else {
+      qrEl.style.display = 'none';
+    }
+
+    infoEl.innerText = `Pedido ${pedidoId || '-'} gerado com valor ${formatarMoeda(pagamentoAtual.valor || 0)}.`;
+  }
+
+  async function garantirPedidoCriado() {
+    if (pedidoCriado && pedidoId) return;
+
+    try {
+      const response = await fetch('pedido', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          nome: dados.nome,
+          cpf: dados.cpf,
+          telefone: dados.telefone,
+          email: dados.email,
+          estado: dados.estado,
+          cidade: dados.cidade,
+          nascimento: '',
+          dataInicioSintomas: dados.dataInicioSintomas,
+          sintomas: dados.resumoClinico,
+          detalhes: dados.resumoClinico,
+          diasAfastamento: dados.dias,
+          dias: dados.dias,
+          validadeAtestadoAPartirDe: dados.dataInicioSintomas
+        })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.detalhe || data.mensagem || 'Erro ao criar pedido.');
+      }
+
+      pedidoId = data.pedidoId;
+      pedidoCriado = true;
+      pagamentoAtual = data.pagamento || null;
+
+      const payload = {
+        pedidoId: data.pedidoId,
+        status: data.status,
+        nome: dados.nome,
+        cpf: dados.cpf,
+        telefone: dados.telefone,
+        email: dados.email,
+        estado: dados.estado,
+        cidade: dados.cidade,
+        dias: dados.dias,
+        dataInicioSintomas: dados.dataInicioSintomas,
+        sintomas: dados.resumoClinico,
+        pagamento: data.pagamento || null
+      };
+
+      localStorage.setItem('ultimoPedido', JSON.stringify(payload));
+      localStorage.setItem('ultimoPedidoId', data.pedidoId || '');
+      localStorage.setItem('ultimoPedidoStatus', data.status || '');
+      localStorage.setItem('ultimoPagamento', JSON.stringify(data.pagamento || {}));
+    } catch (error) {
+      mostrarErro(error.message || 'Erro ao criar pedido.');
+      throw error;
+    }
+  }
+
+  function copiarPix() {
+    const campo = document.getElementById('pix');
+    campo.select();
+    campo.setSelectionRange(0, 99999);
+    document.execCommand('copy');
+    alert('Código PIX copiado com sucesso.');
+  }
+
+  function mostrarErro(msg) {
+    const el = document.getElementById('mensagemErro');
+    el.style.display = 'block';
+    el.innerText = msg;
+  }
+
+  function esconderErro() {
+    const el = document.getElementById('mensagemErro');
+    el.style.display = 'none';
+    el.innerText = '';
+  }
+
+  function mostrarOk(msg) {
+    const el = document.getElementById('mensagemOk');
+    el.style.display = 'block';
+    el.innerText = msg;
+  }
+
+  function esconderOk() {
+    const el = document.getElementById('mensagemOk');
+    el.style.display = 'none';
+    el.innerText = '';
+  }
+
+  function seguirParaSucesso() {
+    if (!pedidoId) {
+      mostrarErro('Pedido ainda não foi gerado corretamente.');
+      return;
+    }
+
+    mostrarOk('Redirecionando para o acompanhamento do pedido...');
+    setTimeout(() => {
+      window.location.href = `sucesso.html?id=${encodeURIComponent(pedidoId)}`;
+    }, 700);
+  }
+
+  async function enviarComprovante() {
+    esconderErro();
+    esconderOk();
+
+    try {
+      if (!pedidoId) {
+        await garantirPedidoCriado();
+      }
+
+      if (!pedidoId) {
+        mostrarErro('Pedido não identificado.');
+        return;
+      }
+
+      const arquivo = document.getElementById('comprovante').files[0];
+
+      if (!arquivo) {
+        mostrarErro('Selecione um comprovante antes de enviar.');
+        return;
+      }
+
+      const btn = document.getElementById('btnEnviarComprovante');
+      const card = document.getElementById('cardPagamento');
+
+      btn.disabled = true;
+      btn.innerText = 'Enviando comprovante...';
+      card.classList.add('carregando');
+
+      const formData = new FormData();
+      formData.append('comprovante', arquivo);
+
+      const response = await fetch(`https://SEU-BACKEND.onrender.com/pedido/${pedidoId}/comprovante`, {
+        method: 'POST',
+        body: formData
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        mostrarErro(data.mensagem || 'Erro ao enviar comprovante.');
+        btn.disabled = false;
+        btn.innerText = 'Já gerei meu PIX / acompanhar pedido';
+        card.classList.remove('carregando');
+        return;
+      }
+
+      mostrarOk('Comprovante enviado com sucesso. Redirecionando...');
+
+      const ultimoPedido = JSON.parse(localStorage.getItem('ultimoPedido') || '{}');
+      ultimoPedido.status = data.status || 'comprovante_enviado';
+      ultimoPedido.comprovanteUrl = data.comprovanteUrl || '';
+      localStorage.setItem('ultimoPedido', JSON.stringify(ultimoPedido));
+      localStorage.setItem('ultimoPedidoStatus', data.status || 'comprovante_enviado');
+
+      setTimeout(() => {
+        window.location.href = 'sucesso.html';
+      }, 900);
+    } catch (error) {
+      mostrarErro(error.message || 'Erro ao enviar comprovante.');
+    } finally {
+      const btn = document.getElementById('btnEnviarComprovante');
+      const card = document.getElementById('cardPagamento');
+      btn.disabled = false;
+      btn.innerText = 'Já gerei meu PIX / acompanhar pedido';
+      card.classList.remove('carregando');
+    }
+  }
+
+  function preencherPreCadastro() {
+    try {
+      const salvo = JSON.parse(localStorage.getItem('preCadastroMedFlix') || '{}');
+
+      if (salvo.nome && document.getElementById('nome')) {
+        document.getElementById('nome').value = salvo.nome;
+      }
+
+      if (salvo.cpf && document.getElementById('cpf')) {
+        document.getElementById('cpf').value = salvo.cpf;
+      }
+
+      if (salvo.telefone && document.getElementById('telefone')) {
+        document.getElementById('telefone').value = salvo.telefone;
+      }
+
+      if (salvo.email && document.getElementById('email')) {
+        document.getElementById('email').value = salvo.email;
+      }
+
+      if (salvo.estado && document.getElementById('estado')) {
+        document.getElementById('estado').value = salvo.estado;
+      }
+
+      if (salvo.cidade && document.getElementById('cidade')) {
+        document.getElementById('cidade').value = salvo.cidade;
+      }
+
+      if (salvo.sintomas && document.getElementById('detalhes')) {
+        const detalhesEl = document.getElementById('detalhes');
+        if (!detalhesEl.value.trim()) {
+          detalhesEl.value = salvo.sintomas;
+        }
+      }
+    } catch (e) {
+      console.error('Erro ao recuperar pré-cadastro:', e);
+    }
+  }
+
+  preencherPreCadastro();
+  mostrarEtapa();
+</script>
+
+</body>
+</html>

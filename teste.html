@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>Gerar PIX</h2>
+
+<button onclick="enviar()">Gerar PIX</button>
+
+<div id="resultado"></div>
+
+<script>
+async function enviar() {
+  try {
+    const res = await fetch('https://SEU-BACKEND.onrender.com/pedido', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        nome: 'Lohan',
+        cpf: '52998224725',
+        sintomas: 'dor de cabeça'
+      })
+    });
+
+    const data = await res.json();
+
+    document.getElementById('resultado').innerHTML = `
+      <h3>PIX Gerado</h3>
+      <textarea rows="5" cols="50">${data.pix.copiaECola}</textarea>
+    `;
+
+  } catch (err) {
+    alert('Erro ao gerar PIX');
+  }
+}
+</script>
+
+</body>
+</html>
