@@ -1,37 +1,41 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const API_BASE = "https://backend-mqk0.onrender.com";
+
+  // =========================
+  // CONFIG API
+  // =========================
+  const API_URL = window.API_URL || "https://api.medflix-atestado24h.com.br";
 
   // =========================
   // SCROLL
   // =========================
   window.scrollToForm = function () {
-    const el = document.getElementById("formSection");
-    if (el) el.scrollIntoView({ behavior: "smooth" });
+    const el = document.getElementById('formSection');
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
   };
 
   // =========================
   // FORM
   // =========================
-  const form = document.getElementById("form");
+  const form = document.getElementById('form');
 
   if (form) {
-    form.addEventListener("submit", async (e) => {
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
 
-      const nome = document.getElementById("nome")?.value?.trim() || "";
-      const cpf = document.getElementById("cpf")?.value?.trim() || "";
-      const sintomas = document.getElementById("sintomas")?.value?.trim() || "";
+      const nome = document.getElementById('nome')?.value?.trim() || '';
+      const cpf = document.getElementById('cpf')?.value?.trim() || '';
+      const sintomas = document.getElementById('sintomas')?.value?.trim() || '';
 
       if (!nome || !cpf) {
-        alert("Preencha nome e CPF.");
+        alert('Preencha nome e CPF.');
         return;
       }
 
       try {
-        const response = await fetch(`${API_BASE}/pedido`, {
-          method: "POST",
+        const response = await fetch(`${API_URL}/pedido`, {
+          method: 'POST',
           headers: {
-            "Content-Type": "application/json"
+            'Content-Type': 'application/json'
           },
           body: JSON.stringify({
             nome,
@@ -42,41 +46,49 @@ document.addEventListener("DOMContentLoaded", () => {
           })
         });
 
-        const data = await response.json();
+        const text = await response.text();
+
+        let data;
+        try {
+          data = JSON.parse(text);
+        } catch {
+          console.error("Resposta não é JSON:", text);
+          throw new Error("Erro na API");
+        }
 
         if (!response.ok) {
-          alert(data.mensagem || "Erro ao criar pedido.");
+          alert(data.mensagem || 'Erro ao criar pedido.');
           return;
         }
 
-        localStorage.setItem("nome", nome);
-        localStorage.setItem("cpf", cpf);
-        localStorage.setItem("sintomas", sintomas);
+        // dados básicos do formulário
+        localStorage.setItem('nome', nome);
+        localStorage.setItem('cpf', cpf);
+        localStorage.setItem('sintomas', sintomas);
 
-        localStorage.setItem(
-          "ultimoPedido",
-          JSON.stringify({
-            pedidoId: data.pedidoId,
-            status: data.status,
-            codigoValidacao: data.codigoValidacao,
-            pdfUrl: data.pdfUrl,
-            urlValidacao: data.urlValidacao,
-            nome,
-            cpf,
-            sintomas
-          })
-        );
+        // novo payload do pedido
+        localStorage.setItem('ultimoPedido', JSON.stringify({
+          pedidoId: data.pedidoId,
+          status: data.status,
+          codigoValidacao: data.codigoValidacao,
+          pdfUrl: data.pdfUrl,
+          urlValidacao: data.urlValidacao,
+          nome,
+          cpf,
+          sintomas
+        }));
 
-        localStorage.setItem("ultimoPedidoId", data.pedidoId || "");
-        localStorage.setItem("ultimoPedidoStatus", data.status || "");
-        localStorage.setItem("ultimoPedidoPdfUrl", data.pdfUrl || "");
-        localStorage.setItem("ultimoPedidoCodigo", data.codigoValidacao || "");
-        localStorage.setItem("ultimoPedidoValidacao", data.urlValidacao || "");
+        localStorage.setItem('ultimoPedidoId', data.pedidoId);
+        localStorage.setItem('ultimoPedidoStatus', data.status);
+        localStorage.setItem('ultimoPedidoPdfUrl', data.pdfUrl || '');
+        localStorage.setItem('ultimoPedidoCodigo', data.codigoValidacao || '');
+        localStorage.setItem('ultimoPedidoValidacao', data.urlValidacao || '');
 
-        window.location.href = "requisicao.html";
+        window.location.href = 'requisicao.html';
+
       } catch (error) {
-        console.error("Erro ao enviar pedido:", error);
-        alert("Não foi possível enviar o pedido agora.");
+        console.error('Erro ao enviar pedido:', error);
+        alert('Não foi possível enviar o pedido agora.');
       }
     });
   }
@@ -84,13 +96,13 @@ document.addEventListener("DOMContentLoaded", () => {
   // =========================
   // ANIMAÇÃO
   // =========================
-  const elements = document.querySelectorAll(".fade");
+  const elements = document.querySelectorAll('.fade');
 
-  window.addEventListener("scroll", () => {
-    elements.forEach((el) => {
+  window.addEventListener('scroll', () => {
+    elements.forEach(el => {
       const top = el.getBoundingClientRect().top;
       if (top < window.innerHeight - 50) {
-        el.classList.add("show");
+        el.classList.add('show');
       }
     });
   });
@@ -99,7 +111,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // CONTADOR
   // =========================
   function atualizarContador() {
-    const el = document.getElementById("contador");
+    const el = document.getElementById('contador');
     if (!el) return;
 
     const num = Math.floor(Math.random() * 20) + 80;
@@ -112,12 +124,12 @@ document.addEventListener("DOMContentLoaded", () => {
   // =========================
   // NOTIFICAÇÃO
   // =========================
-  const nomes = ["Jorge", "Maria", "Lucas", "Ana", "Carlos", "Fernanda"];
-  const estados = ["SP", "RJ", "MG", "BA", "RS"];
+  const nomes = ["Jorge","Maria","Lucas","Ana","Carlos","Fernanda"];
+  const estados = ["SP","RJ","MG","BA","RS"];
 
   function mostrarNotificacao() {
-    const el = document.getElementById("notificacao");
-    const som = document.getElementById("somNotificacao");
+    const el = document.getElementById('notificacao');
+    const som = document.getElementById('somNotificacao');
 
     if (!el) return;
 
@@ -125,7 +137,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const estado = estados[Math.floor(Math.random() * estados.length)];
 
     el.innerText = `${nome} (${estado}) acabou de receber um atestado`;
-    el.style.display = "block";
+    el.style.display = 'block';
 
     if (som) {
       som.currentTime = 0;
@@ -133,7 +145,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     setTimeout(() => {
-      el.style.display = "none";
+      el.style.display = 'none';
     }, 4000);
   }
 
@@ -145,7 +157,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let vendas = 127;
 
   function atualizarVendas() {
-    const el = document.getElementById("vendasNum");
+    const el = document.getElementById('vendasNum');
     if (!el) return;
 
     vendas += Math.floor(Math.random() * 3);
@@ -164,7 +176,7 @@ document.addEventListener("DOMContentLoaded", () => {
   ];
 
   function atualizarChat() {
-    const el = document.getElementById("chatMsg");
+    const el = document.getElementById('chatMsg');
     if (!el) return;
 
     el.innerText = mensagens[Math.floor(Math.random() * mensagens.length)];
@@ -175,11 +187,11 @@ document.addEventListener("DOMContentLoaded", () => {
   // =========================
   // FAQ
   // =========================
-  document.querySelectorAll(".pergunta").forEach((p) => {
-    p.addEventListener("click", () => {
+  document.querySelectorAll('.pergunta').forEach(p => {
+    p.addEventListener('click', () => {
       const r = p.nextElementSibling;
       if (r) {
-        r.style.display = r.style.display === "block" ? "none" : "block";
+        r.style.display = r.style.display === 'block' ? 'none' : 'block';
       }
     });
   });
@@ -190,7 +202,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let posicao = Math.floor(Math.random() * 10) + 8;
 
   function atualizarFila() {
-    const el = document.getElementById("posicaoFila");
+    const el = document.getElementById('posicaoFila');
     if (!el) return;
 
     if (posicao > 1) posicao--;
@@ -203,16 +215,16 @@ document.addEventListener("DOMContentLoaded", () => {
   // MÁSCARAS
   // =========================
   function mascaraCPF(v) {
-    v = v.replace(/\D/g, "");
-    v = v.replace(/(\d{3})(\d)/, "$1.$2");
-    v = v.replace(/(\d{3})(\d)/, "$1.$2");
-    v = v.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+    v = v.replace(/\D/g,'');
+    v = v.replace(/(\d{3})(\d)/,'$1.$2');
+    v = v.replace(/(\d{3})(\d)/,'$1.$2');
+    v = v.replace(/(\d{3})(\d{1,2})$/,'$1-$2');
     return v;
   }
 
-  const cpfInput = document.getElementById("cpf");
+  const cpfInput = document.getElementById('cpf');
   if (cpfInput) {
-    cpfInput.addEventListener("input", (e) => {
+    cpfInput.addEventListener('input', e => {
       e.target.value = mascaraCPF(e.target.value);
     });
   }
@@ -220,21 +232,27 @@ document.addEventListener("DOMContentLoaded", () => {
   // =========================
   // OPÇÕES
   // =========================
-  document.querySelectorAll(".opcoes").forEach((container) => {
-    const isMulti = container.classList.contains("multi");
+  document.querySelectorAll('.opcoes').forEach(container => {
 
-    container.querySelectorAll(".opcao").forEach((opcao) => {
-      opcao.addEventListener("click", () => {
+    const isMulti = container.classList.contains('multi');
+
+    container.querySelectorAll('.opcao').forEach(opcao => {
+
+      opcao.addEventListener('click', () => {
+
         if (!isMulti) {
-          container
-            .querySelectorAll(".opcao")
-            .forEach((o) => o.classList.remove("ativa"));
+          container.querySelectorAll('.opcao')
+            .forEach(o => o.classList.remove('ativa'));
 
-          opcao.classList.add("ativa");
+          opcao.classList.add('ativa');
         } else {
-          opcao.classList.toggle("ativa");
+          opcao.classList.toggle('ativa');
         }
+
       });
+
     });
+
   });
+
 });
