@@ -7,6 +7,8 @@
 
 <script src="https://kit.fontawesome.com/917245ba0f.js" crossorigin="anonymous"></script>
 
+  const API_URL = 'https://backend-mqx0.onrender.com';
+
 <style>
   :root {
     --primary: #1554c0;
@@ -751,8 +753,12 @@
 
       <div class="nav">
         <button type="button" class="voltar" onclick="back()">Voltar</button>
-        <button type="button" class="btn" id="btnEnviarComprovante" onclick="seguirParaSucesso()">
-          Já gerei meu PIX / acompanhar pedido
+        <button type="button" class="btn" onclick="enviarComprovante()">
+          Enviar comprovante
+        </button>
+
+        <button type="button" class="voltar" onclick="seguirParaSucesso()">
+          Já paguei / acompanhar pedido
         </button>
       </div>
     </div>
@@ -979,7 +985,7 @@
     if (pedidoCriado && pedidoId) return;
 
     try {
-      const response = await fetch('pedido', {
+      const response = await fetch(`${API_URL}/pedido`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -999,7 +1005,12 @@
         })
       });
 
-      const data = await response.json();
+      let data;
+      try {
+          data = await response.json();
+      } catch {
+        throw new Error('Erro inesperado no servidor.');
+      }
 
       if (!response.ok) {
         throw new Error(data.detalhe || data.mensagem || 'Erro ao criar pedido.');
@@ -1109,7 +1120,7 @@
       const formData = new FormData();
       formData.append('comprovante', arquivo);
 
-      const response = await fetch(`https://SEU-BACKEND.onrender.com/pedido/${pedidoId}/comprovante`, {
+      const response = await fetch(`${API_URL}/pedido/${pedidoId}/comprovante`, {
         method: 'POST',
         body: formData
       });
@@ -1133,7 +1144,7 @@
       localStorage.setItem('ultimoPedidoStatus', data.status || 'comprovante_enviado');
 
       setTimeout(() => {
-        window.location.href = 'sucesso.html';
+        window.location.href = `sucesso.html?id=${encodeURIComponent(pedidoId)}`;
       }, 900);
     } catch (error) {
       mostrarErro(error.message || 'Erro ao enviar comprovante.');
